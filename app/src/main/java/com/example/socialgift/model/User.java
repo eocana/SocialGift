@@ -3,14 +3,14 @@ package com.example.socialgift.model;
 import java.util.UUID;
 
 public class User {
-    private UUID UUID;
+    private String UUID;
     private String name;
     private String last_name;
     private String image;
     private String email;
 
 
-    public User(java.util.UUID UUID, String name, String last_name, String image, String email) {
+    public User(String UUID, String name, String last_name, String image, String email) {
         this.UUID = UUID;
         this.name = name;
         this.last_name = last_name;
@@ -19,12 +19,11 @@ public class User {
     }
 
 
-
-    public java.util.UUID getUUID() {
+    public String getUUID() {
         return UUID;
     }
 
-    public void setUUID(java.util.UUID UUID) {
+    public void setUUID(String UUID) {
         this.UUID = UUID;
     }
 

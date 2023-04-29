@@ -68,10 +68,9 @@ public class LoginActivity extends AppCompatActivity {
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(LoginActivity.this, "Me quiero registrar", Toast.LENGTH_SHORT).show();
-
-                //Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
-                //startActivity(intent);
+                //Toast.makeText(LoginActivity.this, "Me quiero registrar", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+                startActivity(intent);
             }
         });
 
