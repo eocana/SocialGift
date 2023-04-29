@@ -26,8 +26,8 @@ it, there would be the possibility of moving it to another list for a future eve
 
 ### User Management
 
-- [ ] User register
-- [ ] Login
+- [x] User register
+- [x] Login
 - [ ] Logout
 - [ ] View profile
 - [ ] Edit profile
