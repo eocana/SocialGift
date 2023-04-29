@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">SocialGift</string>
+    <string name="hint_password">**********</string>
+    <string name="login">Login</string>
+    <string name="register">Register</string>
+    <string name="hint_email">lore.ipsum@email.com</string>
 </resources>
