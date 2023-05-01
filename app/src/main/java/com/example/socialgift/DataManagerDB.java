@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 
 import com.example.socialgift.model.Product;
 import com.example.socialgift.model.User;
+import com.example.socialgift.model.Wishlist;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -27,9 +28,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
 public class DataManagerDB {
@@ -277,13 +280,150 @@ public class DataManagerDB {
 
             result.addAll(products);
             // Mostrar los resultados
-            //for (Product product : products) {
-                //.d("DB_PRODUCTS", product.getName());
-            //}
+            for (Product product : products) {
+                Log.d("DB_PRODUCTS", product.getName());
+            }
         }).addOnFailureListener(e -> Log.e("DB_PRODUCTS", "Error searching products", e));
 
         return result;
     }
+
+    //FIN BLOQUE PRODUCTS
+
+    //INICIO WISHLISTS
+    /**
+     * Crea una nueva wishlist en la base de datos.
+     * @param userId el UUID del usuario que crea la wishlist
+     * @param name el nombre de la wishlist
+     * @param finishedAt la fecha límite para completar la wishlist, puede ser null si no se especifica
+     * @return el ID de la wishlist creada
+     */
+    public static void createWishlist(String userId, String name, Date finishedAt) {
+        // Generar el ID de la wishlist
+        String wishlistId = UUID.randomUUID().toString();
+
+        // Crear el objeto de la wishlist
+        Map<String, Object> wishlist = new HashMap<>();
+        wishlist.put("UUID", wishlistId);
+        wishlist.put("created_at", new Date());
+        wishlist.put("id_user", userId);
+        wishlist.put("name", name);
+
+        if (finishedAt != null) {
+            wishlist.put("finished_at", finishedAt);
+        }
+
+        // Guardar la wishlist en la base de datos
+        db.collection("wishlist").document(wishlistId).set(wishlist)
+                .addOnSuccessListener(aVoid -> Log.d("DB_WISHLIST", "Wishlist created successfully"))
+                .addOnFailureListener(e -> Log.e("DB_WISHLIST", "Error creating wishlist", e));
+    }
+
+
+    /**
+     * Obtiene una wishlist por su id.
+     *
+     * @param wishlistId El id de la wishlist a buscar.
+     * @return La wishlist si se encuentra, o null si no existe.
+     */
+    public static Wishlist getWishlist(String wishlistId) {
+        Wishlist wishlist = null;
+        DocumentSnapshot document = null;
+
+        try {
+            Task<DocumentSnapshot> task = db.collection("wishlist").document(wishlistId).get();
+            Tasks.await(task);
+            if (task.isSuccessful()) {
+                document = task.getResult();
+                if (document.exists()) {
+                    wishlist = document.toObject(Wishlist.class);
+                }
+            }
+        } catch (ExecutionException | InterruptedException e) {
+            Log.e("DB_WISHLIST", "Error getting wishlist", e);
+        }
+
+        return wishlist;
+    }
+
+    /**
+     * Función que actualiza una wishlist
+     */
+    public static void updateWishlist(Wishlist wishlist) {
+        Map<String, Object> data = new HashMap<>();
+        data.put("created_at", wishlist.getCreated_at());
+
+        if (wishlist.getFinished_at() != null) {
+            data.put("finished_at", wishlist.getFinished_at());
+        }
+
+        data.put("id_user", wishlist.getId_user());
+        data.put("name", wishlist.getName());
+
+        db.collection("wishlist").document(wishlist.getUUID()).set(data)
+                .addOnSuccessListener(aVoid -> Log.d("DB_WISHLIST", "Wishlist updated successfully"))
+                .addOnFailureListener(e -> Log.e("DB_WISHLIST", "Error updating wishlist", e));
+    }
+
+    /**
+     * Elimina una wishlist de la base de datos.
+     *
+     * @param wishlistId El ID de la wishlist a eliminar.
+     */
+    public static void deleteWishlist(String wishlistId) {
+        db.collection("wishlist").document(wishlistId).delete()
+                .addOnSuccessListener(aVoid -> Log.d("DB_WISHLIST", "Wishlist deleted: " + wishlistId))
+                .addOnFailureListener(e -> Log.e("DB_WISHLIST", "Error deleting wishlist: " + wishlistId, e));
+    }
+
+    /**
+     * Funcion que retorna todas las wihslist del usuario
+     * @param userId UUID del usuario
+     * @return List<Wishlist> del usuario UUID
+     */
+    public static List<Wishlist> getUserWishlists(String userId) {
+        List<Wishlist> result = new ArrayList<>();
+
+        db.collection("wishlist")
+                .whereEqualTo("id_user", userId)
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
+                        Wishlist wishlist = document.toObject(Wishlist.class);
+                        result.add(wishlist);
+                    }
+                })
+                .addOnFailureListener(e -> Log.e("DB_WISHLIST", "Error getting user wishlists", e));
+
+        return result;
+    }
+
+    //FIN BLOQUE WISHLIST
+
+    //INICIO BLOQUE GIFT
+
+    /**
+     * Crea un nuevo regalo asociado a una wishlist y a un producto.
+     * @param wishlistId El UUID de la wishlist a la que se asocia el regalo.
+     * @param productId  El UUID del producto que se regala.
+     * @param priority   La prioridad del regalo en la wishlist.
+     * @return El UUID del regalo creado.
+     */
+    public static void createGift(String productId, String wishlistId, int priority, String userIdBooked) {
+        Map<String, Object> gift = new HashMap<>();
+        String uuid = UUID.randomUUID().toString();
+        gift.put("UUID", uuid);
+        gift.put("id_product", productId);
+        gift.put("id_wishlist", wishlistId);
+        gift.put("priority", priority);
+        gift.put("user_id_booked", userIdBooked);
+
+        db.collection("gifts").document(uuid).set(gift)
+                .addOnSuccessListener(aVoid -> Log.d("DB_GIFTS", "Gift created successfully"))
+                .addOnFailureListener(e -> Log.e("DB_GIFTS", "Error creating gift", e));
+    }
+
+
 
 
 
