@@ -6,6 +6,8 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.example.socialgift.model.Category;
+import com.example.socialgift.model.Friendship;
 import com.example.socialgift.model.Gift;
 import com.example.socialgift.model.Product;
 import com.example.socialgift.model.User;
@@ -17,16 +19,16 @@ import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import org.apache.commons.lang3.StringUtils;
 
-
-
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -35,6 +37,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
 
 public class DataManagerDB {
     private static FirebaseFirestore db;
@@ -54,7 +57,7 @@ public class DataManagerDB {
      * <a href="https://www.youtube.com/watch?v=4oTFJOQpmRY">Comparación Cadenas Distancia Levenshtein</a>
      * @param s Cadena 1
      * @param t Cadena 2
-     * @return
+     * @return la disntacia (int)
      */
     public static int levenshteinDistance(String s, String t) {
         int m = s.length();
@@ -297,7 +300,6 @@ public class DataManagerDB {
      * @param userId el UUID del usuario que crea la wishlist
      * @param name el nombre de la wishlist
      * @param finishedAt la fecha límite para completar la wishlist, puede ser null si no se especifica
-     * @return el ID de la wishlist creada
      */
     public static void createWishlist(String userId, String name, Date finishedAt) {
         // Generar el ID de la wishlist
@@ -507,6 +509,269 @@ public class DataManagerDB {
 
 
 
+    //FIN BLOQUE GIFT
+
+    //INICIO FRIENDSHIP
+    /**
+     * Crea una nueva petición de amistad desde un usuario a otro.
+     *
+     * @param idUserFrom El UUID del usuario que realiza la petición de amistad.
+     * @param idUserTo   El UUID del usuario al que se dirige la petición de amistad.
+     */
+    public static void createFriendshipRequest(String idUserFrom, String idUserTo) {
+        db.collection("friendship")
+                .whereEqualTo("id_user_from", idUserFrom)
+                .whereEqualTo("id_user_to", idUserTo)
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    if (!queryDocumentSnapshots.isEmpty()) {
+                        // Ya existe una solicitud de amistad entre estos dos usuarios
+                        Log.d("DB_FRIENDSHIP", "Ya existe una solicitud de amistad entre estos dos usuarios");
+                    } else {
+                        db.collection("friendship")
+                                .whereEqualTo("id_user_from", idUserTo)
+                                .whereEqualTo("id_user_to", idUserFrom)
+                                .get()
+                                .addOnSuccessListener(queryDocumentSnapshots2 -> {
+                                    if (!queryDocumentSnapshots2.isEmpty()) {
+                                        // Ya existe una solicitud de amistad entre estos dos usuarios
+                                        Log.d("DB_FRIENDSHIP", "Ya existe una solicitud de amistad entre estos dos usuarios");
+                                    } else {
+                                        // Crear nueva solicitud de amistad
+                                        Friendship friendship = new Friendship(idUserFrom, idUserTo, new Timestamp(System.currentTimeMillis()), "pending");
+                                        db.collection("friendship").document().set(friendship)
+                                                .addOnSuccessListener(aVoid -> Log.d("DB_FRIENDSHIP", "Solicitud de amistad creada"))
+                                                .addOnFailureListener(e -> Log.e("DB_FRIENDSHIP", "Error al crear solicitud de amistad", e));
+                                    }
+                                })
+                                .addOnFailureListener(e -> Log.e("DB_FRIENDSHIP", "Error al buscar solicitud de amistad", e));
+                    }
+                })
+                .addOnFailureListener(e -> Log.e("DB_FRIENDSHIP", "Error al buscar solicitud de amistad", e));
+    }
+
+
+
+    /**
+     * Obtiene las solicitudes de amistad pendientes para un usuario.
+     *
+     * @param userId El UUID del usuario al que se le buscarán las solicitudes de amistad pendientes.
+     * @return Una lista de objetos Friendship con el campo "status" en "pending" y donde el "id_user_to" coincide con el "userId".
+     */
+    public static List<Friendship> getPendingFriendRequests(String userId) {
+        List<Friendship> result = new ArrayList<>();
+
+        db.collection("friendship")
+                .whereEqualTo("id_user_to", userId)
+                .whereEqualTo("status", "pending")
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
+                        Friendship friendship = document.toObject(Friendship.class);
+                        result.add(friendship);
+                    }
+                })
+                .addOnFailureListener(e -> Log.e("DB_FRIENDSHIP", "Error getting pending friend requests", e));
+
+        return result;
+    }
+
+    /**
+     * Obtiene una lista de los UUIDs de los usuarios amigos de un usuario dado.
+     * @param userId El UUID del usuario cuyos amigos se desean obtener.
+     * @return Una lista con los UUIDs de los usuarios amigos del usuario dado.
+     */
+    public static List<String> getAcceptedFriendships(String userId) {
+        List<String> friendIds = new ArrayList<>();
+
+        db.collection("friendship")
+                .whereEqualTo("status", "accepted")
+                .whereEqualTo("id_user_from", userId)
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
+                        Friendship friendship = document.toObject(Friendship.class);
+                        friendIds.add(friendship.getId_user_to());
+                    }
+                })
+                .addOnFailureListener(e -> Log.e("DB_FRIENDSHIP", "Error getting accepted friendships", e));
+
+        return friendIds;
+    }
+
+    /**
+     * Elimina las solicitudes de amistad pendientes que llevan más de X días sin respuesta.
+     * TODO: Realmente hace falta? Revisar, porque puede ser interesante para limpiar la DB
+     */
+    public static void deleteExpiredFriendshipRequests() {
+        // Obtener la fecha actual
+        Date currentDate = new Date();
+        int daysToExpire = 30;
+
+        // Obtener las solicitudes de amistad pendientes
+        db.collection("friendship")
+                .whereEqualTo("status", "pending")
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
+                        // Obtener la fecha de envío de la solicitud de amistad
+                        Friendship friendship = document.toObject(Friendship.class);
+                        Date sendDate = friendship.getSend_at();
+
+                        // Obtener la diferencia de días entre la fecha actual y la fecha de envío
+                        long differenceInMilliseconds = currentDate.getTime() - sendDate.getTime();
+                        long differenceInDays = TimeUnit.DAYS.convert(differenceInMilliseconds, TimeUnit.MILLISECONDS);
+
+                        // Verificar si han pasado más de 30 días desde la creación de la solicitud de amistad
+                        if (differenceInDays > daysToExpire) {
+                            // Eliminar la solicitud de amistad
+                            db.collection("friendship").document(document.getId()).delete();
+                        }
+                    }
+                })
+                .addOnFailureListener(e -> Log.e("DB_FRIENDSHIP", "Error deleting expired friendship requests", e));
+    }
+
+
+    //FIN FRIENDSHIP
+
+    /**
+     * Crea una nueva categoría con el id especificado.
+     *
+     * @param id          El id de la categoría.
+     * @param category    Objecto Category.
+     */
+    public static void createCategory(int id, Category category) {
+
+        db.collection("categories").document(Integer.toString(id))
+                .set(category)
+                .addOnSuccessListener(aVoid -> Log.d("DB_CATEGORIES", "Category created successfully with ID: " + id))
+                .addOnFailureListener(e -> Log.e("DB_CATEGORIES", "Error creating category", e));
+    }
+
+    /**
+     * Actualiza la categoría especificada.
+     *
+     * @param category La categoría a actualizar.
+     */
+    public static void updateCategory(Category category) {
+        db.collection("categories")
+                .whereEqualTo("name", category.getName())
+                .get()
+                .addOnSuccessListener(queryDocumentSnapshots -> {
+                    for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
+                        String documentId = document.getId();
+                        db.collection("categories").document(documentId).set(category);
+                    }
+                })
+                .addOnFailureListener(e -> Log.e("DB_CATEGORIES", "Error updating category", e));
+    }
+
+    /**
+     * Obtiene todas las categorías que tengan como categoría padre el ID especificado.
+     *
+     * @param parentId El ID de la categoría padre.
+     * @return Una lista de categorías.
+     */
+    public static List<Category> getCategoriesByParentId(String parentId) {
+        List<Category> categories = new ArrayList<>();
+
+        db.collection("categories").whereEqualTo("id_parent_category", parentId)
+                .get().addOnSuccessListener(queryDocumentSnapshots -> {
+                    for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
+                        Category category = document.toObject(Category.class);
+                        categories.add(category);
+                    }
+                }).addOnFailureListener(e -> Log.e("DB_CATEGORIES", "Error getting categories by parent ID", e));
+
+        return categories;
+    }
+
+
+
+    /**
+     * Busca una categoría por su nombre.
+     * @param name El nombre de la categoría.
+     * @return La categoría con el nombre especificado, o null si no se encuentra.
+     */
+    public static Category getCategoryByName(String name) {
+        Task<QuerySnapshot> task = db.collection("categories")
+                .whereEqualTo("name", name)
+                .limit(1)
+                .get();
+        try {
+            QuerySnapshot querySnapshot = Tasks.await(task);
+            if (!querySnapshot.isEmpty()) {
+                DocumentSnapshot documentSnapshot = querySnapshot.getDocuments().get(0);
+                Category category = documentSnapshot.toObject(Category.class);
+                return category;
+            } else {
+                return null;
+            }
+        } catch (ExecutionException | InterruptedException e) {
+            Log.e("DB_CATEGORIES", "Error getting category by name from Firestore", e);
+            return null;
+        }
+    }
+
+    /**
+     * Retrieves all parent categories from Firestore.
+     *
+     * @return a list of parent categories
+     */
+    public static List<Category> getAllParentCategories() {
+        List<Category> categories = new ArrayList<>();
+        Task<QuerySnapshot> queryTask = db.collection("categories").whereEqualTo("id_parent_category", null).get();
+        try {
+            QuerySnapshot querySnapshot = Tasks.await(queryTask);
+            for (DocumentSnapshot document : querySnapshot.getDocuments()) {
+                Category category = document.toObject(Category.class);
+                categories.add(category);
+            }
+        } catch (ExecutionException | InterruptedException e) {
+            Log.e("DB_CATEGORIES", "Error getting all parent categories from Firestore", e);
+        }
+        return categories;
+    }
+
+
+    /**
+      *Returns a list of subcategories for the given parent category name.
+     * @param parentCategoryId The name of the parent category.
+     * @return A list of subcategories for the given parent category name.
+     */
+    public static List<Category> getSubcategories(int parentCategoryId) {
+        List<Category> subcategories = new ArrayList<>();
+        Task<QuerySnapshot> queryTask = db.collection("categories").whereEqualTo("id_parent_category", parentCategoryId).get();
+        try {
+            QuerySnapshot querySnapshot = Tasks.await(queryTask);
+            for (DocumentSnapshot document : querySnapshot.getDocuments()) {
+                Category category = document.toObject(Category.class);
+                subcategories.add(category);
+            }
+        } catch (ExecutionException | InterruptedException e) {
+            Log.e("DB_CATEGORIES", "Error getting subcategories from Firestore", e);
+        }
+        return subcategories;
+    }
+
+    /**
+     * Elimina una categoría por su nombre de la colección de categorías en Firestore.
+     * TODO: Si la categoría tiene subcategorías, también se eliminan (en cascada, peligroso).
+     * @param name el nombre de la categoría a eliminar
+     * @return true si se eliminó correctamente, false si ocurrió un error o la categoría no existe
+     */
+    public static void deleteCategoryByName(String name) {
+        db.collection("categories").whereEqualTo("name", name).get()
+                .addOnSuccessListener(querySnapshot -> {
+                    for (DocumentSnapshot document : querySnapshot.getDocuments()) {
+                        db.collection("categories").document(document.getId()).delete();
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    Log.e("DB_CATEGORIES", "Error deleting category by name from Firestore", e);
+                });
+    }
 
 
 

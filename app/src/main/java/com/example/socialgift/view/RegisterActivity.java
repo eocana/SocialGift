@@ -54,6 +54,7 @@ public class RegisterActivity extends AppCompatActivity {
         });
     }
 
+    //TODO Comprobar porque no funciona correctamente
     private boolean validateFields(String name, String lastName, String email, String password, String confirmPassword) {
         if (TextUtils.isEmpty(name) || TextUtils.isEmpty(lastName) || TextUtils.isEmpty(email) || TextUtils.isEmpty(password) || TextUtils.isEmpty(confirmPassword)) {
             Toast.makeText(RegisterActivity.this, "Escribe todos los campos", Toast.LENGTH_SHORT).show();
