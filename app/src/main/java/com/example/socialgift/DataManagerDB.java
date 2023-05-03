@@ -6,6 +6,7 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.example.socialgift.model.Gift;
 import com.example.socialgift.model.Product;
 import com.example.socialgift.model.User;
 import com.example.socialgift.model.Wishlist;
@@ -401,7 +402,10 @@ public class DataManagerDB {
     //FIN BLOQUE WISHLIST
 
     //INICIO BLOQUE GIFT
-
+    //TODO getGiftsByProduct(String productId): Obtiene todos los regalos que tienen como producto
+    // asociado el UUID especificado. (Necesario?)
+    //TODO getGiftsByWishlist(String wishlistId): Obtiene todos los regalos que tienen como wishlist
+    // asociada el UUID especificado. (Necesario?)
     /**
      * Crea un nuevo regalo asociado a una wishlist y a un producto.
      * @param wishlistId El UUID de la wishlist a la que se asocia el regalo.
@@ -416,12 +420,91 @@ public class DataManagerDB {
         gift.put("id_product", productId);
         gift.put("id_wishlist", wishlistId);
         gift.put("priority", priority);
-        gift.put("user_id_booked", userIdBooked);
+        if (!userIdBooked.isEmpty() || !userIdBooked.equals("") || !userIdBooked.equals(" ")){
+            gift.put("user_id_booked", userIdBooked);
+        }
 
         db.collection("gifts").document(uuid).set(gift)
                 .addOnSuccessListener(aVoid -> Log.d("DB_GIFTS", "Gift created successfully"))
                 .addOnFailureListener(e -> Log.e("DB_GIFTS", "Error creating gift", e));
     }
+
+    /**
+     * Obtiene un regalo de la base de datos.
+     *
+     * @param id El UUID del regalo.
+     * @return El regalo correspondiente al UUID especificado, o null si no existe.
+     */
+    public static Gift getGift(String id) {
+        Gift gift = null;
+        try {
+            DocumentSnapshot document = Tasks.await(db.collection("gifts").document(id).get());
+            if (document.exists()) {
+                gift = document.toObject(Gift.class);
+                gift.setUUID(document.getId());
+            }
+        } catch (ExecutionException | InterruptedException e) {
+            Log.e("DB_GIFTS", "Error getting gift", e);
+        }
+        return gift;
+    }
+
+    /**
+     * Actualiza los datos de un regalo en la base de datos.
+     *
+     * @param id           El UUID del regalo a actualizar.
+     * @param idProduct    El UUID del producto del regalo.
+     * @param idWishlist   El UUID de la wishlist a la que pertenece el regalo.
+     * @param priority     La prioridad del regalo dentro de la wishlist.
+     * @param userIdBooked El UUID del usuario que ha reservado el regalo.
+     */
+    public static void updateGift(String id, String idProduct, String idWishlist, int priority, String userIdBooked) {
+        DocumentReference giftRef = db.collection("gifts").document(id);
+
+        Map<String, Object> updates = new HashMap<>();
+        updates.put("id_product", idProduct);
+        updates.put("id_wishlist", idWishlist);
+        updates.put("priority", priority);
+        if (!userIdBooked.isEmpty() || !userIdBooked.equals("") || !userIdBooked.equals(" ")){
+            updates.put("user_id_booked", userIdBooked);
+        }
+
+        giftRef.update(updates)
+                .addOnSuccessListener(aVoid -> Log.d("DB_GIFTS", "Gift updated successfully"))
+                .addOnFailureListener(e -> Log.e("DB_GIFTS", "Error updating gift", e));
+    }
+
+    /**
+     * Elimina un regalo de la colección "gifts" de Firestore, según su UUID.
+     *
+     * @param id El UUID del regalo a eliminar.
+     */
+    public static void deleteGift(String id) {
+        db.collection("gifts").document(id).delete()
+                .addOnSuccessListener(aVoid -> Log.d("DB_GIFTS", "Gift deleted successfully"))
+                .addOnFailureListener(e -> Log.e("DB_GIFTS", "Error deleting gift", e));
+    }
+
+    /**
+     * Obtiene los regalos que han sido reservados por un usuario.
+     *
+     * @param userId El UUID del usuario que ha reservado los regalos.
+     * @return Una lista de los regalos reservados por el usuario.
+     */
+    public static List<Gift> getGiftsByUser(String userId) {
+        List<Gift> result = new ArrayList<>();
+
+        db.collection("gifts").whereEqualTo("user_id_booked", userId)
+                .get().addOnSuccessListener(queryDocumentSnapshots -> {
+                    for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
+                        Gift gift = document.toObject(Gift.class);
+                        result.add(gift);
+                    }
+                }).addOnFailureListener(e -> Log.e("DB_GIFTS", "Error getting gifts by user", e));
+
+        return result;
+    }
+
 
 
 
