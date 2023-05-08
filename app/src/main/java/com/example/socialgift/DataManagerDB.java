@@ -165,21 +165,24 @@ public class DataManagerDB {
      * @param email El correo electrónico del usuario
      * @return Un objeto User si se encuentra el usuario en Firestore, o null si no se encuentra
      */
-    public static User getUserByEmail(String email) {
+    public static Task<User> getUserByEmail(String email) {
         String documentName = email.split("@")[0];
-        Task<DocumentSnapshot> documentTask = db.collection("users").document(documentName).get();
-        try {
-            DocumentSnapshot document = Tasks.await(documentTask);
-            if (document.exists()) {
-                User user = document.toObject(User.class);
-                return user;
+        DocumentReference documentRef = db.collection("users").document(documentName);
+
+        return documentRef.get().continueWith(task -> {
+            if (task.isSuccessful()) {
+                DocumentSnapshot document = task.getResult();
+                if (document.exists()) {
+                    User user = document.toObject(User.class);
+                    return user;
+                } else {
+                    return null;
+                }
             } else {
-                return null;
+                Exception e = task.getException();
+                throw e;
             }
-        } catch (ExecutionException | InterruptedException e) {
-            Log.e("DB_USERS", "Error getting user by email from Firestore", e);
-            return null;
-        }
+        });
     }
     // FIN BLOQUE USER
 

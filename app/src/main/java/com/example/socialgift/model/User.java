@@ -1,14 +1,18 @@
 package com.example.socialgift.model;
 
+import java.io.Serializable;
 import java.util.UUID;
 
-public class User {
+public class User implements Serializable {
     private String UUID;
     private String name;
     private String last_name;
     private String image;
     private String email;
 
+    public User() {
+        // constructor sin argumentos requerido para la serialización/deserialización
+    }
 
     public User(String UUID, String name, String last_name, String image, String email) {
         this.UUID = UUID;

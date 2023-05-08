@@ -15,9 +15,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.socialgift.DataManagerDB;
 import com.example.socialgift.R;
 import com.example.socialgift.controller.LoginController;
+import com.example.socialgift.model.UserSession;
 import com.google.firebase.FirebaseApp;
+
+import java.util.Objects;
 
 public class LoginActivity extends AppCompatActivity {
     private EditText emailEditText;
@@ -34,7 +38,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         FirebaseApp.initializeApp(this);
-
+        DataManagerDB.connectDataManagerDB();
         emailEditText = findViewById(R.id.emailEditText);
         passwordEditText = findViewById(R.id.passwordEditText);
         loginButton = findViewById(R.id.loginButton);
@@ -42,7 +46,6 @@ public class LoginActivity extends AppCompatActivity {
         loginController = new LoginController(this);
 
         loginButton.setEnabled(false);
-
 
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -119,10 +122,25 @@ public class LoginActivity extends AppCompatActivity {
     private boolean isValidEmail(CharSequence email) {
         return !TextUtils.isEmpty(email) && android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
+
     public void onLoginSuccess() {
-        // El login fue exitoso, hacer algo aquí
-        Log.d(TAG, "Inicio de sesión exitoso");
-        Toast.makeText(this, "Login exitoso", Toast.LENGTH_SHORT).show();
+        DataManagerDB.getUserByEmail(emailEditText.getText().toString().trim())
+                .addOnSuccessListener(user -> {
+                    if (user != null) {
+                        UserSession userSession = new UserSession(user);
+                        Intent intent = new Intent(this, MainActivity.class);
+                        intent.putExtra("session", userSession);
+                        Log.d(TAG, "Inicio de sesión exitoso");
+                        //Toast.makeText(this, "Login exitoso", Toast.LENGTH_SHORT).show();
+                        startActivity(intent);
+                        finish();
+                    }
+                })
+                .addOnFailureListener(e -> {
+                    // manejar la excepción aquí
+                    // mostrar mensaje de error o realizar alguna acción en consecuencia
+                    Log.d(TAG, String.valueOf(e));
+                });
     }
 
     public void onLoginError(String message) {
