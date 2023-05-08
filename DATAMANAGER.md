@@ -119,7 +119,7 @@ public static List<Product> searchProducts(String query)
 **Retorna:**
 - `List<Product>`: Una lista con los 5 (como máximo) objetos Product que más se asemejan al término de búsqueda.
 
-# Collection Wishlist
+# Collection Wishlists
 
 ### createWishlist
 
