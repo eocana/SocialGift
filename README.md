@@ -1,6 +1,6 @@
 # SOCIALGIFT
 
-The development of an applica1on to manage "wishlists" is proposed, allowing users to create their
+The development of an application to manage "wishlists" is proposed, allowing users to create their
 own wish list, as well as view those of their friends and thus be able to reserve products to give them
 as gifts without them knowing, while maintaining the anonymity of the gift givers.
 This would be applicable to various types of events, such as birthdays, wedding registries, or Christmas
