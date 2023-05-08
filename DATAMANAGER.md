@@ -57,7 +57,7 @@ Un ejemplo de como luego podeis recoger <Task>User
 - `email` (String): El correo electrónico del usuario.
 
 **Retorna:**
-- `User`: Un objeto User si se encuentra el usuario en Firestore, o null si no se encuentra. (Es <Task> User pero sigue siendo User)
+- `User`: Un objeto User si se encuentra el usuario en Firestore, o null si no se encuentra. (Es Task-User pero sigue siendo User)
 
 # Collection Products
 
