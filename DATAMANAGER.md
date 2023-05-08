@@ -43,7 +43,14 @@ public static void deleteUser(String documentId)
 Obtiene un usuario de Firestore según su correo electrónico.
 
 ```java
-public static User getUserByEmail(String email)
+public static <Task>User getUserByEmail(String email)
+```
+Un ejemplo de como luego podeis recoger <Task>User (que no cambia mucho)
+  
+```java
+ DataManagerDB.getUserByEmail(emailEditText.getText().toString().trim())
+                .addOnSuccessListener(user -> { /* Codigo */}
+                }).addOnFailureListener(e -> { /* Codigo */  });
 ```
 
 **Parámetros:**
