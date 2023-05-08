@@ -44,34 +44,28 @@ public class LoginActivity extends AppCompatActivity {
         loginButton.setEnabled(false);
 
 
-        loginButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String email = emailEditText.getText().toString().trim();
-                String password = passwordEditText.getText().toString().trim();
+        loginButton.setOnClickListener(view -> {
+            String email = emailEditText.getText().toString().trim();
+            String password = passwordEditText.getText().toString().trim();
 
-                if (!isValidEmail(email)) {
-                    emailEditText.setError("Correo inválido");
-                    return;
-                }
-
-                if (TextUtils.isEmpty(email) || TextUtils.isEmpty(password)) {
-                    Toast.makeText(LoginActivity.this, "Por favor complete todos los campos", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-
-                loginController.login(email, password);
+            if (!isValidEmail(email)) {
+                emailEditText.setError("Correo inválido");
+                return;
             }
+
+            if (TextUtils.isEmpty(email) || TextUtils.isEmpty(password)) {
+                Toast.makeText(LoginActivity.this, "Por favor complete todos los campos", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            loginController.login(email, password);
         });
 
 
-        registerButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //Toast.makeText(LoginActivity.this, "Me quiero registrar", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
-                startActivity(intent);
-            }
+        registerButton.setOnClickListener(view -> {
+            //Toast.makeText(LoginActivity.this, "Me quiero registrar", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+            startActivity(intent);
         });
 
 
@@ -123,6 +117,9 @@ public class LoginActivity extends AppCompatActivity {
         // El login fue exitoso, hacer algo aquí
         Log.d(TAG, "Inicio de sesión exitoso");
         Toast.makeText(this, "Login exitoso", Toast.LENGTH_SHORT).show();
+        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+        intent.putExtra("email", emailEditText.getText().toString().trim());
+        startActivity(intent);
     }
 
     public void onLoginError(String message) {
