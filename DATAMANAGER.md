@@ -45,19 +45,19 @@ Obtiene un usuario de Firestore según su correo electrónico.
 ```java
 public static <Task>User getUserByEmail(String email)
 ```
-Un ejemplo de como luego podeis recoger <Task>User (que no cambia mucho)
+Un ejemplo de como luego podeis recoger <Task>User
   
 ```java
- DataManagerDB.getUserByEmail(emailEditText.getText().toString().trim())
-                .addOnSuccessListener(user -> { /* Codigo */}
-                }).addOnFailureListener(e -> { /* Codigo */  });
+ DataManagerDB.getUserByEmail(email)
+                .addOnSuccessListener(user -> { /* Codigo */}})
+                .addOnFailureListener(e -> { /* Codigo */  });
 ```
 
 **Parámetros:**
 - `email` (String): El correo electrónico del usuario.
 
 **Retorna:**
-- `User`: Un objeto User si se encuentra el usuario en Firestore, o null si no se encuentra.
+- `User`: Un objeto User si se encuentra el usuario en Firestore, o null si no se encuentra. (Es <Task>User pero sigue siendo User)
 
 # Collection Products
 
