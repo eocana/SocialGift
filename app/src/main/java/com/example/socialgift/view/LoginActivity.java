@@ -140,6 +140,7 @@ public class LoginActivity extends AppCompatActivity {
                     // manejar la excepción aquí
                     // mostrar mensaje de error o realizar alguna acción en consecuencia
                     Log.d(TAG, String.valueOf(e));
+                    Toast.makeText(this, "Error: " + e, Toast.LENGTH_SHORT).show();
                 });
     }
 
