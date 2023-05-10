@@ -15,8 +15,5 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        UserSession userSession = new UserSession((User) getIntent().getSerializableExtra("session"));
-
-        System.out.println("MY USER IS: "+userSession.getEmail());
     }
 }
