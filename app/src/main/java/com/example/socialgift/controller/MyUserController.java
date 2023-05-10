@@ -5,6 +5,7 @@ import android.util.Log;
 import com.example.socialgift.DataManagerDB;
 import com.example.socialgift.model.User;
 import com.example.socialgift.view.EditUserFragment;
+import com.example.socialgift.view.ShowMyUserFragment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
