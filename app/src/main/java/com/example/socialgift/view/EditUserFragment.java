@@ -24,7 +24,7 @@ import com.google.firebase.auth.FirebaseUser;
 public class EditUserFragment extends Fragment {
 
     private EditText firstNameEditText, lastNameEditText, imageUrl;
-    private Button saveButton;
+    private Button saveButton, cancelButton;
 
     private MyUserController editUserController;
 
@@ -38,6 +38,7 @@ public class EditUserFragment extends Fragment {
         lastNameEditText = view.findViewById(R.id.edit_user_lastname);
         imageUrl = view.findViewById(R.id.edit_user_image_url);
         saveButton = view.findViewById(R.id.edit_user_save_button);
+        cancelButton = view.findViewById(R.id.edit_user_cancel_button);
 
         editUserController = new MyUserController(this);
 
@@ -50,6 +51,17 @@ public class EditUserFragment extends Fragment {
                 String lastName = lastNameEditText.getText().toString();
                 String imageURL = imageUrl.getText().toString();
                 editUserController.saveUserChanges(firstName, lastName, imageURL);
+
+                ShowMyUserActivity activity = (ShowMyUserActivity) requireActivity();
+                activity.replaceWithShowMyUserFragment();
+            }
+        });
+
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ShowMyUserActivity activity = (ShowMyUserActivity) requireActivity();
+                activity.replaceWithShowMyUserFragment();
             }
         });
 

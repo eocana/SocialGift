@@ -15,9 +15,6 @@
         android:theme="@style/Theme.SocialGift"
         tools:targetApi="31">
         <activity
-            android:name=".view.EditUserActivity"
-            android:exported="false" />
-        <activity
             android:name=".view.ShowMyUserActivity"
             android:exported="false" />
         <activity

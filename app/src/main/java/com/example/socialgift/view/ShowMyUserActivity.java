@@ -1,41 +1,46 @@
 package com.example.socialgift.view;
 
-import android.app.Activity;
-import android.content.Intent;
+
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.socialgift.R;
-import com.example.socialgift.controller.MyUserController;
+
 
 
 public class ShowMyUserActivity extends AppCompatActivity {
-
-    private MyUserController myUserController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_my_user);
 
+        // Agregar el fragmento del encabezado
+        /*HeaderFragment headerFragment = new HeaderFragment();
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.header_container, headerFragment)
+                .commit();*/
+
         // Crea una instancia del fragment ShowMyUserFragment
         ShowMyUserFragment showMyUserFragment = new ShowMyUserFragment();
-        getSupportFragmentManager()
-                .beginTransaction()
-                .add(R.id.show_my_user_fragment, showMyUserFragment)
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.show_my_user_container, showMyUserFragment)
                 .commit();
+
+        // Agregar el fragmento del pie de página
+       /* FooterFragment footerFragment = new FooterFragment();
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.footer_container, footerFragment)
+                .commit();*/
     }
 
-    // Método que se llama cuando se presiona el botón "Cerrar Sesión"
-    public void signOutButtonClicked(View view) {
-        myUserController.signOut();
-    }
-
-    // Método que se llama cuando se presiona el botón "Editar"
-    public void editButtonClicked(View view) {
-        Intent intent = new Intent(this, EditUserActivity.class);
-        startActivity(intent);
+    public void replaceWithShowMyUserFragment() {
+        ShowMyUserFragment showMyUserFragment = new ShowMyUserFragment();
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.show_my_user_container, showMyUserFragment)
+                .commit();
     }
 }

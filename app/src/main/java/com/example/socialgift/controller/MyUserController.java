@@ -15,6 +15,7 @@ public class MyUserController {
     private User currentUser;
 
     public MyUserController(ShowMyUserFragment showMyUserFragment) {
+
         this.showMyUserFragment = showMyUserFragment;
         // Obtener el usuario actual de la sesión
         FirebaseUser mAuth = FirebaseAuth.getInstance().getCurrentUser();

@@ -1,12 +1,9 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/show_my_user_container"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".view.ShowMyUserActivity">
-<!--
-    <fragment
+    android:layout_height="match_parent">
+
+    <!-- <fragment
         android:id="@+id/show_my_user_header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -17,41 +14,24 @@
         android:id="@+id/show_my_user_fragment"
         android:name="com.example.socialgift.view.ShowMyUserFragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="wrap_content"/>
        <!-- android:layout_below="@+id/show_my_user_header"
         android:layout_above="@+id/show_my_user_footer"/> -->
 
-    <Button
-        android:id="@+id/show_my_user_edit_button"
-        android:layout_width="wrap_content"
+    <FrameLayout
+        android:id="@+id/edit_user_container"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/btn_edit"
-        android:textColor="@color/white"
-        android:backgroundTint="@color/button_enabled"
-        android:drawablePadding="8dp"
-        android:padding="8dp"
         android:layout_below="@+id/show_my_user_fragment"
-        android:layout_alignParentStart="true"/>
+        android:layout_marginTop="16dp"/>
 
-    <Button
-        android:id="@+id/show_my_user_sign_out_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/btn_logout"
-        android:backgroundTint="@color/button_enabled"
-        android:textColor="@color/white"
-        android:drawableStart="@drawable/ic_logout"
-        android:drawablePadding="8dp"
-        android:padding="8dp"
-        android:layout_below="@+id/show_my_user_fragment"
-        android:layout_alignParentEnd="true"/>
 
-    <!--<fragment
+   <!--<fragment
         android:id="@+id/show_my_user_footer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:padding="8dp"
-        android:layout_alignParentBottom="true"/>-->
+        android:layout_alignParentBottom="true"/> -->
 
 </RelativeLayout>
