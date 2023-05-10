@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
         System.out.println("MY USER IS: "+userSession.getEmail());
 
         editUserButton.setOnClickListener(view -> {
-            Intent intent = new Intent(this, EditUserActivity.class);
+            Intent intent = new Intent(this, ShowMyUserActivity.class);
             startActivity(intent);
         });
 
