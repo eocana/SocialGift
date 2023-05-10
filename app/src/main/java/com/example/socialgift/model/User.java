@@ -1,7 +1,6 @@
 package com.example.socialgift.model;
 
 import java.io.Serializable;
-import java.util.UUID;
 
 public class User implements Serializable {
     private String UUID;
@@ -39,11 +38,11 @@ public class User implements Serializable {
         this.name = name;
     }
 
-    public String getLast_name() {
+    public String getLastName() {
         return last_name;
     }
 
-    public void setLast_name(String last_name) {
+    public void setLastName(String last_name) {
         this.last_name = last_name;
     }
 
