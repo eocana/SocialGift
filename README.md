@@ -30,7 +30,7 @@ it, there would be the possibility of moving it to another list for a future eve
 - [x] Login
 - [ ] Login with token
 - [x] Logout
-- [?] View profile
+- [x] View profile
 - [x] Edit profile
 
 ### Interaction with users (social)
