@@ -128,7 +128,7 @@ public class LoginActivity extends AppCompatActivity {
                 .addOnSuccessListener(user -> {
                     if (user != null) {
                         UserSession userSession = new UserSession(user);
-                        Intent intent = new Intent(this, MainActivity.class);
+                        Intent intent = new Intent(this, ShowMyUserActivity.class);
                         intent.putExtra("session", userSession);
                         Log.d(TAG, "Inicio de sesión exitoso");
                         //Toast.makeText(this, "Login exitoso", Toast.LENGTH_SHORT).show();

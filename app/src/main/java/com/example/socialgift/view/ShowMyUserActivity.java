@@ -1,7 +1,9 @@
 package com.example.socialgift.view;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -20,15 +22,10 @@ public class ShowMyUserActivity extends AppCompatActivity {
 
         // Crea una instancia del fragment ShowMyUserFragment
         ShowMyUserFragment showMyUserFragment = new ShowMyUserFragment();
-
-        // Agrega el fragment al layout activity_show_my_user_container
         getSupportFragmentManager()
                 .beginTransaction()
-                .add(R.id.activity_show_my_user_container, showMyUserFragment)
+                .add(R.id.show_my_user_fragment, showMyUserFragment)
                 .commit();
-
-        // Crea una instancia del controlador MyUserController
-        myUserController = new MyUserController(showMyUserFragment);
     }
 
     // Método que se llama cuando se presiona el botón "Cerrar Sesión"
@@ -38,17 +35,7 @@ public class ShowMyUserActivity extends AppCompatActivity {
 
     // Método que se llama cuando se presiona el botón "Editar"
     public void editButtonClicked(View view) {
-        // Crea una instancia del fragment EditUserFragment
-        EditUserFragment editUserFragment = new EditUserFragment();
-
-        // Reemplaza el fragment actual con el fragment de edición
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.activity_show_my_user_container, editUserFragment)
-                .addToBackStack(null)
-                .commit();
-
-        // Crea una nueva instancia del controlador MyUserController con el fragment de edición
-        myUserController = new MyUserController(editUserFragment);
+        Intent intent = new Intent(this, EditUserActivity.class);
+        startActivity(intent);
     }
 }

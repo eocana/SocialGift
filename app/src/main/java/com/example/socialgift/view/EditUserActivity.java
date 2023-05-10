@@ -23,7 +23,7 @@ public class EditUserActivity extends AppCompatActivity {
         // Agregar el fragmento del cuerpo principal
         EditUserFragment editUserFragment = new EditUserFragment();
         getSupportFragmentManager().beginTransaction()
-                .add(R.id.main_container, editUserFragment)
+                .add(R.id.edit_user_fragrment, editUserFragment)
                 .commit();
 
         // Agregar el fragmento del pie de página

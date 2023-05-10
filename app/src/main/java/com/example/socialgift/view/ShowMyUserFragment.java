@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.bumptech.glide.Glide;
 import com.example.socialgift.R;
 import com.example.socialgift.controller.MyUserController;
 import com.example.socialgift.model.User;
@@ -19,7 +20,7 @@ import com.example.socialgift.model.User;
 public class ShowMyUserFragment extends Fragment {
 
     private ImageView userImageView;
-    private TextView nameTextView, emailTextView;
+    private TextView nameTextView;
 
     private MyUserController userController;
 
@@ -29,9 +30,8 @@ public class ShowMyUserFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_show_my_user, container, false);
 
         // Obtener los elementos de la interfaz de usuario
-        userImageView = view.findViewById(R.id.show_user_image);
-        nameTextView = view.findViewById(R.id.show_user_name);
-        emailTextView = view.findViewById(R.id.show_user_email);
+        userImageView = view.findViewById(R.id.user_image);
+        nameTextView = view.findViewById(R.id.user_name);
 
         // Crear el controlador
         userController = new MyUserController(this);
@@ -42,10 +42,13 @@ public class ShowMyUserFragment extends Fragment {
     public void showUserData(User user) {
         // Mostrar los datos del usuario en la interfaz de usuario
         nameTextView.setText(user.getName() + " " + user.getLastName());
-        emailTextView.setText(user.getEmail());
-        Glide.with(requireContext())
-                .load(user.getImage())
-                .placeholder(R.drawable.ic_user)
+        ImageView userImageView = requireView().findViewById(R.id.user_image);
+        String url = user.getImage();
+
+        Glide.with(this)
+                .load(url)
+                .error(R.drawable.baseline_person_24)
+                .circleCrop()
                 .into(userImageView);
     }
 
@@ -55,4 +58,7 @@ public class ShowMyUserFragment extends Fragment {
         startActivity(intent);
         requireActivity().finish();
     }
+
+
+
 }

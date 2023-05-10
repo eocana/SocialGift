@@ -1,66 +1,57 @@
-<?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/show_my_user_container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".view.ShowMyUserActivity">
-
+<!--
     <fragment
         android:id="@+id/show_my_user_header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="HardcodedText">
-
-    </fragment>
+        tools:ignore="HardcodedText"/> -->
 
     <fragment
         android:id="@+id/show_my_user_fragment"
-        android:name="com.example.app.view.ShowMyUserFragment"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/show_my_user_footer"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/show_my_user_header" />
+        android:name="com.example.socialgift.view.ShowMyUserFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+       <!-- android:layout_below="@+id/show_my_user_header"
+        android:layout_above="@+id/show_my_user_footer"/> -->
 
     <Button
         android:id="@+id/show_my_user_edit_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
         android:text="@string/btn_edit"
         android:textColor="@color/white"
         android:backgroundTint="@color/button_enabled"
         android:drawablePadding="8dp"
-        android:padding="8dp" />
+        android:padding="8dp"
+        android:layout_below="@+id/show_my_user_fragment"
+        android:layout_alignParentStart="true"/>
 
     <Button
         android:id="@+id/show_my_user_sign_out_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
         android:text="@string/btn_logout"
         android:backgroundTint="@color/button_enabled"
         android:textColor="@color/white"
         android:drawableStart="@drawable/ic_logout"
         android:drawablePadding="8dp"
-        android:padding="8dp" />
+        android:padding="8dp"
+        android:layout_below="@+id/show_my_user_fragment"
+        android:layout_alignParentEnd="true"/>
 
-    <fragment
+    <!--<fragment
         android:id="@+id/show_my_user_footer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:padding="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"/>
+        android:layout_alignParentBottom="true"/>-->
 
-
-    </fragment>
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</RelativeLayout>
