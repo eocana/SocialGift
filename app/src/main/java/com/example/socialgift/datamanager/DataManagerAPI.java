@@ -1,4 +1,4 @@
-package com.example.socialgift;
+package com.example.socialgift.datamanager;
 
 import android.content.Context;
 import android.util.Log;
@@ -22,6 +22,16 @@ import java.util.Map;
 
 public class DataManagerAPI {
 
+    //TODO: Dividir DataManagerAPI en bloques de funcionalidad?
+    //TODO: Crear un DataManagerAPI para cada entidad?
+    /*
+    URL de interes:
+        https://balandrau.salle.url.edu/i3/socialgift/api/v1/users/login
+        https://balandrau.salle.url.edu/i3/socialgift/api/v1/users
+
+    */
+
+
     private static String accessToken;
 
     private static String mailSession;
@@ -33,12 +43,7 @@ public class DataManagerAPI {
     private static int MyIdSession;
     private static final String url = "https://balandrau.salle.url.edu/i3/socialgift/api/v1/";
 
-    /*
-    URL de interes:
-        https://balandrau.salle.url.edu/i3/socialgift/api/v1/users/login
-        https://balandrau.salle.url.edu/i3/socialgift/api/v1/users
 
-    */
 
 
 
@@ -304,11 +309,46 @@ public class DataManagerAPI {
             }
         };
 
-
-
         // Agregar la solicitud a la cola de solicitudes de Volley
         RequestQueue queue = Volley.newRequestQueue(context);
         queue.add(request);
     }
 
+    /**
+     * !!WARNING IF YOU DELETE THE USER CAN BE CRASH THE APP!!
+     * Método para eliminar un usuario
+     * @param context
+     * Lo implementamos para que el usuario pueda eliminar su cuenta y para la asignatura
+     */
+    public static void deleteMyUser(Context context){
+        String urlUser = url + "users";
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.DELETE, urlUser, null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Log.d("API_SUCCES_DELETE_USER", "Usuario eliminado correctamente");
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // Llamar al callback onError en caso de error
+                        Log.e("API_ERROR_DELETE_USER", "Error en la solicitud");
+                    }
+                })
+            {
+            @Override
+            public Map<String, String> getHeaders() {
+                // Agregar el encabezado Authorization con el token de acceso
+                Map<String, String> headers = new HashMap<>();
+                headers.put("Authorization", "Bearer " + DataManagerAPI.getAccessToken());
+                return headers;
+            }
+        };
+
+        // Agregar la solicitud a la cola de solicitudes de Volley
+        RequestQueue queue = Volley.newRequestQueue(context);
+        queue.add(request);
+
+    }
 }

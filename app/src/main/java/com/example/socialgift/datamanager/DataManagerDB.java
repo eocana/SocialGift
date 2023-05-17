@@ -1,4 +1,4 @@
-package com.example.socialgift;
+package com.example.socialgift.datamanager;
 
 import static android.content.ContentValues.TAG;
 

@@ -1,7 +1,6 @@
 package com.example.socialgift.view;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,14 +12,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.example.socialgift.DataManagerDB;
 import com.example.socialgift.R;
-import com.example.socialgift.controller.EditUserController;
-import com.example.socialgift.controller.MyUserController;
 import com.example.socialgift.controller.UsersController;
 import com.example.socialgift.model.User;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
 public class EditUserFragment extends Fragment {
 

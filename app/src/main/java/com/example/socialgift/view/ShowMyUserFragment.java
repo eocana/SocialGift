@@ -2,7 +2,6 @@ package com.example.socialgift.view;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +16,6 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.bumptech.glide.Glide;
 import com.example.socialgift.R;
-import com.example.socialgift.controller.MyUserController;
 import com.example.socialgift.controller.UsersController;
 import com.example.socialgift.model.User;
 

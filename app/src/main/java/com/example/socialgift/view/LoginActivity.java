@@ -16,7 +16,6 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.socialgift.R;
-import com.example.socialgift.controller.LoginController;
 import com.example.socialgift.controller.UsersController;
 import com.google.firebase.FirebaseApp;
 
@@ -27,8 +26,6 @@ public class LoginActivity extends AppCompatActivity {
     private Button loginButton;
 
     private Button registerButton;
-
-    private LoginController loginController;
 
     private UsersController usersController;
 
