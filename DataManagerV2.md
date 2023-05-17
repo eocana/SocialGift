@@ -16,10 +16,10 @@ Tabla de contenidos:
     - [deleteMyUser](#deletemyuser)
     - [wishlistsOfUser](#wishlistsofuser)
   - [Bloque_wishlists](#bloque-wishlists)
-    - [createWishlist](#createwishlist) [TODO]
-    - [getWishlist](#getwishlist) [TODO]
-    - [updateWishlist](#updatewishlist) [TODO]
-    - [deleteWishlist](#deletewishlist) [TODO]
+    - [createWishlist](#createwishlist)
+    - [getWishlist](#getwishlist) [ ]
+    - [updateWishlist](#updatewishlist) [ ]
+    - [deleteWishlist](#deletewishlist) [ ]
   - Next blocks...
   - [Interfaces_Callback](#interfaces-de-callback)
 
@@ -54,10 +54,10 @@ Indice por bloques, que estan divididos por los endpoints de la API.
   - [deleteMyUser](#deletemyuser)
   - [wishlistsOfUser](#wishlistsofuser)
 - [Bloque_wishlists](#bloque-wishlists)
-  - [createWishlist](#createwishlist) [TODO]
-  - [getWishlist](#getwishlist) [TODO]
-  - [updateWishlist](#updatewishlist) [TODO]
-  - [deleteWishlist](#deletewishlist) [TODO]
+  - [createWishlist](#createwishlist)
+  - [getWishlist](#getwishlist) [ ]
+  - [updateWishlist](#updatewishlist) [ ]
+  - [deleteWishlist](#deletewishlist) [ ]
 - Next blocks...
 - [Interfaces_Callback](#interfaces-de-callback)
 ### Bloque usuarios
