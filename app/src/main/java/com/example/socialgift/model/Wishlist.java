@@ -1,51 +1,58 @@
 package com.example.socialgift.model;
 
 import java.util.Date;
+import java.util.List;
 
 public class Wishlist {
-    private String UUID;
-    private Date created_at;
-    private Date finished_at;
-    private String id_user;
+    private int id;
+    private Date creation_date;
+    private Date end_date;
+    private int id_user;
+
     private String name;
 
-    public Wishlist(String UUID, Date created_at, Date finished_at, String id_user, String name) {
-        this.UUID = UUID;
-        this.created_at = created_at;
-        this.finished_at = finished_at;
+    private String description;
+
+    private List<Gift> gifts;
+
+
+    public Wishlist(int id, String name, String description,  int id_user, Date created_at) {
+        this.id = id;
+        this.creation_date = created_at;
         this.id_user = id_user;
         this.name = name;
+        this.description = description;
     }
 
-    public String getUUID() {
-        return UUID;
+    public int getId() {
+        return id;
     }
 
-    public void setUUID(String UUID) {
-        this.UUID = UUID;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public Date getCreated_at() {
-        return created_at;
+    public Date getCreation_date() {
+        return creation_date;
     }
 
-    public void setCreated_at(Date created_at) {
-        this.created_at = created_at;
+    public void setCreation_date(Date creation_date) {
+        this.creation_date = creation_date;
     }
 
-    public Date getFinished_at() {
-        return finished_at;
+    public Date getEnd_date() {
+        return end_date;
     }
 
-    public void setFinished_at(Date finished_at) {
-        this.finished_at = finished_at;
+    public void setEnd_date(Date end_date) {
+        this.end_date = end_date;
     }
 
-    public String getId_user() {
+    public int getId_user() {
         return id_user;
     }
 
-    public void setId_user(String id_user) {
+    public void setId_user(int id_user) {
         this.id_user = id_user;
     }
 
@@ -55,5 +62,21 @@ public class Wishlist {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public List<Gift> getGifts() {
+        return gifts;
+    }
+
+    public void setGifts(List<Gift> gifts) {
+        this.gifts = gifts;
     }
 }

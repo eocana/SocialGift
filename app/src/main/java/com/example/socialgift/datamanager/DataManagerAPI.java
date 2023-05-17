@@ -10,27 +10,35 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.socialgift.model.Gift;
 import com.example.socialgift.model.User;
 import com.example.socialgift.model.UserSession;
+import com.example.socialgift.model.Wishlist;
+
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
-public class DataManagerAPI {
+public class DataManagerAPI implements DataManagerCallbacks{
 
     //TODO: Dividir DataManagerAPI en bloques de funcionalidad?
-    //TODO: Crear un DataManagerAPI para cada entidad?
     /*
     URL de interes:
         https://balandrau.salle.url.edu/i3/socialgift/api/v1/users/login
         https://balandrau.salle.url.edu/i3/socialgift/api/v1/users
 
     */
-
 
     private static String accessToken;
 
@@ -42,9 +50,6 @@ public class DataManagerAPI {
 
     private static int MyIdSession;
     private static final String url = "https://balandrau.salle.url.edu/i3/socialgift/api/v1/";
-
-
-
 
 
 
@@ -71,20 +76,36 @@ public class DataManagerAPI {
         return userSession.getUser();
     }
 
-    public interface DataManagerCallback {
-        void onSuccess();
-        void onError(String errorMessage);
+    /**
+     * La distancia de Levenshtein, distancia entre palabras es el número mínimo de operaciones
+     * requeridas para transformar una cadena de caracteres en otra
+     * (Esta funcion nos servira de cara al futuro para buscar a personas!)
+     * Más información donde he sacado la idea:
+     *
+     * <a href="https://www.youtube.com/watch?v=4oTFJOQpmRY">Comparación Cadenas Distancia Levenshtein</a>
+     * @param s Cadena 1
+     * @param t Cadena 2
+     * @return la disntacia (int)
+     */
+    public static int levenshteinDistance(String s, String t) {
+        int m = s.length();
+        int n = t.length();
+        int[][] dp = new int[m+1][n+1];
+        for (int i = 1; i <= m; i++) {
+            dp[i][0] = i;
+        }
+        for (int j = 1; j <= n; j++) {
+            dp[0][j] = j;
+        }
+        for (int j = 1; j <= n; j++) {
+            for (int i = 1; i <= m; i++) {
+                int cost = s.charAt(i-1) == t.charAt(j-1) ? 0 : 1;
+                dp[i][j] = Math.min(Math.min(dp[i-1][j]+1, dp[i][j-1]+1), dp[i-1][j-1]+cost);
+            }
+        }
+        return dp[m][n];
     }
 
-    public interface DataManagerCallbackUser<User> {
-        void onSuccess(User user);
-        void onError(String errorMessage);
-    }
-
-    public interface DataManagerCallbackLogin {
-        void onSuccess(String token);
-        void onError(String errorMessage);
-    }
 
     /**
      * Método para crear un usuario
@@ -349,6 +370,268 @@ public class DataManagerAPI {
         // Agregar la solicitud a la cola de solicitudes de Volley
         RequestQueue queue = Volley.newRequestQueue(context);
         queue.add(request);
+    }
 
+    /**
+     * Método para buscar usuarios por nombre, apellido o email. Se implementa el metodo leveinshtein
+     * para que la busqueda sea mas eficiente.
+     * @param searchTerm El término de búsqueda
+     * @param context El contexto de la aplicación
+     * @param callback El callback para manejar la respuesta
+     */
+    public static void searchUser(String searchTerm, Context context, final DataManagerCallbackUserList<User> callback) {
+        // Construir la URL para buscar usuarios
+        String urlUsers = url + "users/search?s=" + searchTerm;
+
+        // Crear la solicitud GET utilizando Volley
+        JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, urlUsers, null,
+                new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        try {
+                            // Crear una lista para almacenar los usuarios encontrados
+                            List<User> userList = new ArrayList<>();
+
+                            // Recorrer la respuesta JSON y crear objetos User con los datos obtenidos
+                            for (int i = 0; i < response.length(); i++) {
+                                JSONObject userObject = response.getJSONObject(i);
+                                User user = new User();
+                                user.setId(userObject.getInt("id"));
+                                user.setName(userObject.getString("name"));
+                                user.setLastName(userObject.getString("last_name"));
+                                user.setEmail(userObject.getString("email"));
+                                user.setImage(userObject.getString("image"));
+
+                                userList.add(user);
+                            }
+
+                            //Calcular la distancia de levenshtein para ordenar la lista
+                            // de usuarios por cercania a la busqueda
+                            userList.sort(new Comparator<User>() {
+                                @Override
+                                public int compare(User u1, User u2) {
+                                    String u1Name = u1.getName();
+                                    String u1LastName = u1.getLastName();
+                                    String u1Email = u1.getEmail();
+
+                                    String u2Name = u2.getName();
+                                    String u2LastName = u2.getLastName();
+                                    String u2Email = u2.getEmail();
+
+                                    int u1Distance = Math.min(Math.min(levenshteinDistance(u1Name.toLowerCase(), searchTerm.toLowerCase()),
+                                                    levenshteinDistance(u1LastName.toLowerCase(), searchTerm.toLowerCase())),
+                                            levenshteinDistance(u1Email.toLowerCase(), searchTerm.toLowerCase()));
+
+                                    int u2Distance = Math.min(Math.min(levenshteinDistance(u2Name.toLowerCase(), searchTerm.toLowerCase()),
+                                                    levenshteinDistance(u2LastName.toLowerCase(), searchTerm.toLowerCase())),
+                                            levenshteinDistance(u2Email.toLowerCase(), searchTerm.toLowerCase()));
+
+                                    return Integer.compare(u1Distance, u2Distance);
+                                }
+                            });
+
+
+                            // Llamar al callback onSuccess con la lista de usuarios encontrados
+                            callback.onSuccess(userList);
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            // Llamar al callback onError en caso de error en el formato de la respuesta JSON
+                            callback.onError("Error al procesar la respuesta del servidor");
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // Llamar al callback onError en caso de error en la solicitud
+                        callback.onError("Error en la solicitud: " + error.getMessage());
+                    }
+                }) {
+            @Override
+            public Map<String, String> getHeaders() {
+                // Agregar el encabezado Authorization con el token de acceso
+                Map<String, String> headers = new HashMap<>();
+                headers.put("Authorization", "Bearer " + DataManagerAPI.getAccessToken());
+                return headers;
+            }
+        };
+
+        // Agregar la solicitud a la cola de solicitudes de Volley
+        RequestQueue queue = Volley.newRequestQueue(context);
+        queue.add(request);
+    }
+
+
+    /**
+     * Función que obtiene las wishlists de mi usuario
+     * @param context
+     * @param callback
+     */
+    public static void wishlistsOfUser(Context context, DataManagerCallbackWishlist<Wishlist> callback){
+        String urlWishlists = url + "users/" + userSession.getId() + "/wishlists";
+
+        // Crear la solicitud GET utilizando Volley
+        JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, urlWishlists, null,
+                new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        try {
+                            // Crear una lista para almacenar las wishlists
+
+                            List<Wishlist> wishlistList = new ArrayList<>();
+
+                            // Recorrer cada elemento del JSONArray
+                            for (int i = 0; i < response.length(); i++) {
+
+                                // Obtener el objeto JSON de cada wishlist
+                                JSONObject wishlistObject = response.getJSONObject(i);
+
+                                // Obtener los datos de la wishlist
+                                int id = wishlistObject.getInt("id");
+                                String name = wishlistObject.getString("name");
+                                String description = wishlistObject.getString("description");
+                                int userId = wishlistObject.getInt("user_id");
+                                String creationDateString = wishlistObject.getString("creation_date");
+
+                                // Verificar si el campo 'end_date' está presente en el JSON
+                                String endDateString = wishlistObject.has("end_date") ? wishlistObject.getString("end_date") : null;
+
+                                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault());
+                                Date creationDate = sdf.parse(creationDateString);
+                                Date endDate = null;
+                                if (endDateString != null) {
+                                    endDate = sdf.parse(endDateString);
+                                }
+
+                                // Crear una lista para almacenar los gifts de la wishlist
+                                List<Gift> giftList = new ArrayList<>();
+
+                                // Verificar si el campo 'gifts' está presente en el JSON
+                                if (wishlistObject.has("gifts")) {
+                                    // Obtener el JSONArray de gifts de la wishlist
+                                    JSONArray giftArray = wishlistObject.getJSONArray("gifts");
+                                    // Recorrer cada elemento del JSONArray de gifts
+                                    for (int j = 0; j < giftArray.length(); j++) {
+                                        // Obtener el objeto JSON de cada gift
+                                        JSONObject giftObject = giftArray.getJSONObject(j);
+
+                                        // Obtener los datos del gift
+                                        int giftId = giftObject.getInt("id");
+                                        int wishlistId = giftObject.getInt("wishlist_id");
+                                        String productUrl = giftObject.getString("product_url");
+                                        int priority = giftObject.getInt("priority");
+                                        boolean booked = giftObject.getBoolean("booked");
+
+                                        // Crear el objeto Gift y agregarlo a la lista
+                                        Gift gift = new Gift(giftId, wishlistId, productUrl, priority, booked);
+                                        giftList.add(gift);
+                                    }
+                                }
+
+                                // Crear el objeto Wishlist y agregarlo a la lista de wishlists
+                                Wishlist wishlist = new Wishlist(id, name, description, userSession.getId(), creationDate);
+
+                                if (endDate != null) {
+                                    wishlist.setEnd_date(endDate);
+                                }
+                                if (giftList.size() > 0) {
+                                    wishlist.setGifts(giftList);
+                                }
+
+                                wishlistList.add(wishlist);
+                            }
+
+                            // Llamar al callback onSuccess con la lista de wishlists
+                            callback.onSuccess(wishlistList);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            // Llamar al callback onError en caso de error en el formato de la respuesta JSON
+                            callback.onError("Error al procesar la respuesta del servidor");
+                        } catch (ParseException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // Llamar al callback onError en caso de error en la solicitud
+                        callback.onError("Error en la solicitud: " + error.getMessage());
+                    }
+                }) {
+            @Override
+            public Map<String, String> getHeaders() {
+                // Agregar el encabezado Authorization con el token de acceso
+                Map<String, String> headers = new HashMap<>();
+                headers.put("Authorization", "Bearer " + DataManagerAPI.getAccessToken());
+                return headers;
+            }
+        };
+
+        // Agregar la solicitud a la cola de solicitudes de Volley
+        RequestQueue queue = Volley.newRequestQueue(context);
+        queue.add(request);
+    }
+
+    //-----------------------FIN BLOQUE USERS---------------------------------//
+
+    /**************************************************************************
+     * BLOQUE WISHLIST
+     **************************************************************************/
+
+    /**
+     * Función que crea una wishlist
+     * @param wishlist
+     * @param context
+     * @param callback
+     */
+    public static void createWishlist(Wishlist wishlist, Context context, final DataManagerCallback callback) {
+        // Construir el objeto JSON con los datos de la wishlist
+        JSONObject requestBody = new JSONObject();
+        try {
+
+            requestBody.put("name", wishlist.getName());
+            requestBody.put("description", wishlist.getDescription());
+            requestBody.put("user_id", userSession.getId());
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault());
+            String currentDate = sdf.format(new Date());
+            requestBody.put("date", currentDate);
+
+            if (wishlist.getEnd_date() != null) {
+                requestBody.put("finished_at", wishlist.getEnd_date());
+            }
+
+            if (wishlist.getGifts() != null) {
+                requestBody.put("gifts", wishlist.getGifts());
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        // Realizar la solicitud POST utilizando Volley
+        String urlWishlists = url + "wishlists";
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, urlWishlists, requestBody,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        // Manejar la respuesta exitosa del servidor
+                        callback.onSuccess();
+                        Log.d("API_SUCCES_CREATE_WISHLIST", "Wishlist creada correctamente, "+wishlist.getName());
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // Manejar el error de la solicitud
+                        String errorMessage = error.getMessage();
+                        callback.onError(errorMessage);
+                    }
+                });
+
+        // Agregar la solicitud a la cola de solicitudes de Volley
+        RequestQueue queue = Volley.newRequestQueue(context);
+        queue.add(request);
     }
 }

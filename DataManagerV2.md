@@ -1,11 +1,23 @@
-# DataManagerAPI
+# DataManagerAPI.java
 
 Esta clase actúa como un "motor" para la gestión de datos de la aplicación y se utiliza para realizar solicitudes a la API REST del servidor. Contiene métodos estáticos para realizar diversas operaciones, como crear un usuario, iniciar sesión, obtener información del usuario, editar el perfil del usuario y eliminar un usuario. También incluye interfaces de callback para manejar respuestas exitosas o errores.
+Aqui teneis todo lo necesario para poder desarrollar la aplicacion, en el caso de que necesiteis algo mas, no dudeis en preguntar.
 
-Este md estara dividido en 3 partes:
+Tabla de contenidos:
 - [Atributos](#atributos)
 - [Métodos internos](#métodos-internos)
 - [Funciones de la API](#funciones-de-la-api)
+  - [Bloque usuarios](#bloque-usuarios)
+    - [createUser](#createuser)
+    - [loginUser](#loginuser)
+    - [getMyUser](#getmyuser)
+    - [updateUser](#updateuser)
+    - [searchUser](#searchuser)
+    - [deleteMyUser](#deletemyuser)
+    - [wishlistsOfUser](#wishlistsofuser)
+  - 
+  - Next blocks...
+  - [Interfaces_Callback](#interfaces-de-callback)
 
 ## Atributos
 
@@ -18,6 +30,8 @@ Este md estara dividido en 3 partes:
 
 ## Métodos internos
 
+- `levensteinDistance(String s1, String s2)`: Devuelve la distancia de Levenstein entre dos cadenas.
+  ¿Que es el metodo? *La distancia de Levenshtein, distancia entre palabras es el número mínimo de operaciones requeridas para transformar una cadena de caracteres en otra*
 - `setMailSession(String mailSession)`: Establece el valor del correo electrónico de la sesión actual.
 - `setMyIdSession(int myIdSession)`: Establece el valor del ID del usuario actualmente autenticado.
 - `setAccessToken(String token)`: Establece el token de acceso.
@@ -26,10 +40,18 @@ Este md estara dividido en 3 partes:
 - `getObjectUser()`: Devuelve el objeto User de la sesión actual.
 
 ## Funciones de la API
-Indice por bloques:
-- [Bloque Mi usuario](#bloque-mi-usuario)
-- Next block...
-### Bloque Mi usuario
+Indice por bloques, que estan divididos por los endpoints de la API.
+- [Bloque usuarios](#bloque-usuarios)
+  - [createUser](#createuser)
+  - [loginUser](#loginuser)
+  - [getMyUser](#getmyuser)
+  - [updateUser](#updateuser)
+  - [searchUser](#searchuser)
+  - [deleteMyUser](#deletemyuser)
+  - [wishlistsOfUser](#wishlistsofuser)
+- Next blocks...
+- [Interfaces_Callback](#interfaces-de-callback)
+### Bloque usuarios
 
 #### createUser
 Crea un nuevo usuario con los datos proporcionados.
@@ -81,13 +103,54 @@ public static void updateUser(String firstName, String lastName, String imageUrl
   - `imageUrl` (String): La URL de la imagen de perfil del usuario.
   - `context` (Context): El contexto de la aplicación (Activity/Fragment).
   - `callback` (DataManagerCallback): El callback para gestionar la respuesta. Mirar en [Interfaces de Callback](#interfaces-de-callback).
-   
+
+#### searchUser
+Busca usuarios por nombre y/o apellido y/o email. Se implementa el metodo leveinshtein para ordenar la lista de usuarios por cercania a la busqueda.
+
+```java
+public static void searchUser(String seachTerm, Context context, DataManagerCallbackUser<User> callback)
+```
+#### Parámetros:
+  - `seachTerm` (String): Criterio de busqueda.
+  - `context` (Context): El contexto de la aplicación (Activity/Fragment).
+  - `callback` (DataManagerCallbackUser<User>): El callback para gestionar la respuesta. Mirar en [Interfaces de Callback](#interfaces-de-callback).
+#### Devuelve:
+  - `<List>User`: Lista ordenada de posibles resultados.
 #### deleteMyUser
 Elimina el usuario actualmente autenticado. NO USAR. SE IMPLEMENTA PARA LA PRACTICA
 
 ```java
 public static void deleteMyUser(Context context)
 ```
+
+#### wishlistsOfUser
+Obtiene las listas de deseos del usuario actualmente autenticado.
+
+```java
+public static void wishlistsOfUser(Context context, DataManagerCallbackWishlist<Wishlist> callback)
+```
+##### Parámetros:
+  - `context` (Context): El contexto de la aplicación (Activity/Fragment).
+  - `callback` (DataManagerCallbackWishlist<Wishlist>>): El callback para gestionar la respuesta. Mirar en [Interfaces de Callback](#interfaces-de-callback).
+##### Devuelve:
+  - `<List>Wishlist`: Lista de listas de deseos del usuario actualmente autenticado.
+
+
+### Bloque wishlists
+
+#### createWishlist
+Crea una nueva lista de deseos con los datos proporcionados.
+
+```java
+public static void createWishlist(Wishlist wishlist, Context context, DataManagerCallback callback)
+```
+##### Parámetros:
+  - `wishlist` (Wishlist): La lista de deseos a crear. (No todos los atributos deben estar rellenos).
+  - `context` (Context): El contexto de la aplicación (Activity/Fragment).
+  - `callback` (DataManagerCallback): El callback para gestionar la respuesta. Mirar en [Interfaces de Callback](#interfaces-de-callback).
+
+
+
 
 ## Interfaces de Callback
 
@@ -130,7 +193,34 @@ public interface DataManagerCallbackLogin {
   - `onSuccess(String token)`: Se ejecuta cuando la operación se ha realizado correctamente. Aqui es cuando necesitamos devolver el token de acceso.
   - `onError(String errorMessage)`: Se ejecuta cuando la operación falla y devuelve un mensaje de error.
 
-Ejemplo de como usar los callbacks:
+
+#### DataManagerCallbackList<User>
+Se utiliza para manejar respuestas exitosas o errores en las operaciones que devuelven una lista de usuarios.
+
+```java
+public interface DataManagerCallbackList<User> {
+    void onSuccess(List<User> users);
+    void onError(String errorMessage);
+}
+```
+##### Métodos:
+  - `onSuccess(List<User> users)`: Se ejecuta cuando la operación se ha realizado correctamente. Aqui es cuando necesitamos devolver una lista de usuarios.
+  - `onError(String errorMessage)`: Se ejecuta cuando la operación falla y devuelve un mensaje de error.
+
+#### DataManagerCallbackWishlist<Wishlist>
+Se utiliza para manejar respuestas exitosas o errores en las operaciones que devuelven una lista de wishlists.
+
+```java
+public interface DataManagerCallbackWishlist<Wishlist> {
+    void onSuccess(List<Wishlist> wishlists);
+    void onError(String errorMessage);
+}
+```
+##### Métodos:
+  - `onSuccess(List<Wishlist> wishlists)`: Se ejecuta cuando la operación se ha realizado correctamente. Aqui es cuando necesitamos devolver una lista de wishlists.
+  - `onError(String errorMessage)`: Se ejecuta cuando la operación falla y devuelve un mensaje de error.
+
+ ###### Ejemplo de como usar los callbacks:
 
 ```java
 DataManagerAPI.getMyUser(context, new DataManagerAPI.DataManagerCallbackUser<User>() {
@@ -145,5 +235,8 @@ DataManagerAPI.getMyUser(context, new DataManagerAPI.DataManagerCallbackUser<Use
             }
         });
 ```
-Como podeis ver en el ejemplo, se usa el método `getMyUser` de la clase `DataManagerAPI` y se le pasa el contexto de la aplicación y un callback. El callback es una interfaz que implementa dos métodos, `onSuccess` y `onError`. El método `onSuccess` se ejecuta cuando la operación se ha realizado correctamente y devuelve el objeto User con la información del usuario. El método `onError` se ejecuta cuando la operación falla y devuelve un mensaje de error.
+
+Como podeis ver en el ejemplo, se usa el método `getMyUser` de la clase `DataManagerAPI` y se le pasa el contexto de la aplicación y un callback. 
+
+El callback es una interfaz que implementa dos métodos, `onSuccess` y `onError`. El método `onSuccess` se ejecuta cuando la operación se ha realizado correctamente y devuelve el objeto User con la información del usuario. El método `onError` se ejecuta cuando la operación falla y devuelve un mensaje de error.
 Este ejemplo es la que sirve para mostrar el perfil de usuario.
