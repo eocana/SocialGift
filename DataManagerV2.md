@@ -17,11 +17,12 @@ Tabla de contenidos:
     - [wishlistsOfUser](#wishlistsofuser)
   - [Bloque_wishlists](#bloque-wishlists)
     - [createWishlist](#createwishlist)
-    - [ ] [getWishlist](#getwishlist) 
-    - [ ] [updateWishlist](#updatewishlist) 
-    - [ ] [deleteWishlist](#deletewishlist)
+    - [getWishlist](#getwishlist) [TODO]
+    - [updateWishlist](#updatewishlist) [TODO]
+    - [deleteWishlist](#deletewishlist) [TODO]
   - Next blocks...
   - [Interfaces_Callback](#interfaces-de-callback)
+    -[Ejemplo de como usar los callbacks](#ejemplo-de-como-usar-los-callbacks) 
 
 ## Atributos
 
@@ -55,11 +56,13 @@ Indice por bloques, que estan divididos por los endpoints de la API.
   - [wishlistsOfUser](#wishlistsofuser)
 - [Bloque_wishlists](#bloque-wishlists)
   - [createWishlist](#createwishlist)
-  - [ ] [getWishlist](#getwishlist) 
-  - [ ] [updateWishlist](#updatewishlist) 
-  - [ ] [deleteWishlist](#deletewishlist)
+  - [getWishlist](#getwishlist) [TODO]
+  - [ ] [updateWishlist](#updatewishlist) [TODO]
+  - [ ] [deleteWishlist](#deletewishlist) [TODO]
 - Next blocks...
 - [Interfaces_Callback](#interfaces-de-callback)
+  -[Ejemplo de como usar los callbacks](#ejemplo-de-como-usar-los-callbacks) 
+  
 ### Bloque usuarios
 
 #### createUser
