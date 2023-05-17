@@ -12,12 +12,14 @@ import android.widget.Toast;
 
 import com.example.socialgift.R;
 import com.example.socialgift.controller.RegisterController;
+import com.example.socialgift.controller.UsersController;
 
 public class RegisterActivity extends AppCompatActivity {
 
     private EditText etEmail, etPassword, etFirstName, etLastName, etConfirmPassword;
     private Button btnRegister;
     private RegisterController controller;
+    private UsersController usersController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +34,9 @@ public class RegisterActivity extends AppCompatActivity {
         btnRegister = findViewById(R.id.register_button);
         btnRegister.setEnabled(true);
 
-        controller = new RegisterController(this);
+        //controller = new RegisterController(this);
+        usersController = new UsersController(this, this);
+
 
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -47,7 +51,7 @@ public class RegisterActivity extends AppCompatActivity {
                     btnRegister.setEnabled(true);
                 }
 
-                controller.register(email, password, firstName, lastName);
+                usersController.createUser(email, password, firstName, lastName, "https://rockfm-cdnmed.agilecontent.com/resources/jpg/1/2/1627558630021.jpg");
 
 
             }
@@ -77,8 +81,8 @@ public class RegisterActivity extends AppCompatActivity {
         return !TextUtils.isEmpty(email) && android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
 
-    public void navigateToMainActivity() {
-        Intent intent = new Intent(this, MainActivity.class);
+    public void navigateToLoginActivity() {
+        Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
         finish();
     }

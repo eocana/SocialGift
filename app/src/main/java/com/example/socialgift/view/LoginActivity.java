@@ -15,13 +15,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.socialgift.DataManagerDB;
 import com.example.socialgift.R;
 import com.example.socialgift.controller.LoginController;
-import com.example.socialgift.model.UserSession;
+import com.example.socialgift.controller.UsersController;
 import com.google.firebase.FirebaseApp;
-
-import java.util.Objects;
 
 public class LoginActivity extends AppCompatActivity {
     private EditText emailEditText;
@@ -33,19 +30,22 @@ public class LoginActivity extends AppCompatActivity {
 
     private LoginController loginController;
 
+    private UsersController usersController;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         FirebaseApp.initializeApp(this);
-        DataManagerDB.connectDataManagerDB();
+
         emailEditText = findViewById(R.id.emailEditText);
         passwordEditText = findViewById(R.id.passwordEditText);
         loginButton = findViewById(R.id.loginButton);
         registerButton = findViewById(R.id.registerButton);
-        loginController = new LoginController(this);
-
+        //loginController = new LoginController(this);
+        usersController = new UsersController(this, this);
         loginButton.setEnabled(false);
+
 
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -63,7 +63,7 @@ public class LoginActivity extends AppCompatActivity {
                     return;
                 }
 
-                loginController.login(email, password);
+                usersController.loginUser(email, password);
             }
         });
 
@@ -122,26 +122,12 @@ public class LoginActivity extends AppCompatActivity {
     private boolean isValidEmail(CharSequence email) {
         return !TextUtils.isEmpty(email) && android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
-
     public void onLoginSuccess() {
-        DataManagerDB.getUserByEmail(emailEditText.getText().toString().trim())
-                .addOnSuccessListener(user -> {
-                    if (user != null) {
-                        UserSession userSession = new UserSession(user);
-                        Intent intent = new Intent(this, ShowMyUserActivity.class);
-                        //intent.putExtra("session", userSession);
-                        Log.d(TAG, "Inicio de sesión exitoso");
-                        //Toast.makeText(this, "Login exitoso", Toast.LENGTH_SHORT).show();
-                        startActivity(intent);
-                        finish();
-                    }
-                })
-                .addOnFailureListener(e -> {
-                    // manejar la excepción aquí
-                    // mostrar mensaje de error o realizar alguna acción en consecuencia
-                    Log.d(TAG, String.valueOf(e));
-                    Toast.makeText(this, "Error: " + e, Toast.LENGTH_SHORT).show();
-                });
+        // El login fue exitoso, hacer algo aquí
+        Log.d(TAG, "Inicio de sesión exitoso");
+        Intent intent = new Intent(this, ShowMyUserActivity.class);
+        startActivity(intent);
+        Toast.makeText(this, "Login exitoso", Toast.LENGTH_SHORT).show();
     }
 
     public void onLoginError(String message) {

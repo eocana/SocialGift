@@ -39,7 +39,7 @@ public class RegisterController {
                             // Save user info to Firebase Realtime Database
                             saveUserInfoToDatabase(firstName, lastName, email);
                             // Navigate to the main activity
-                            view.navigateToMainActivity();
+                            view.navigateToLoginActivity();
                         } else {
                             // If sign in fails, display a message to the user.
                             Toast.makeText(view, "Authentication failed.",
