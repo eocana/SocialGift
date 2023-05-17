@@ -11,14 +11,12 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.socialgift.R;
-import com.example.socialgift.controller.RegisterController;
 import com.example.socialgift.controller.UsersController;
 
 public class RegisterActivity extends AppCompatActivity {
 
     private EditText etEmail, etPassword, etFirstName, etLastName, etConfirmPassword;
     private Button btnRegister;
-    private RegisterController controller;
     private UsersController usersController;
 
     @Override
