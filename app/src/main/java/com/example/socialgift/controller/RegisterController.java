@@ -4,6 +4,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
+import com.example.socialgift.DataManagerDB;
 import com.example.socialgift.model.User;
 import com.example.socialgift.view.RegisterActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -51,23 +52,7 @@ public class RegisterController {
     private void saveUserInfoToDatabase(String firstName, String lastName, String email) {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-
-        String[] emailParts = email.split("@");
-        String docName = emailParts[0];
-
-        User user = new User(UUID.randomUUID().toString(),  firstName, lastName, email, "https://source.boringavatars.com/marble/120/" + firstName + "%20" + lastName + "?colors=264653,2a9d8f,e9c46a,f4a261,e76f51");
-        db.collection("users").document(docName).set(user)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        // User saved successfully
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        // Failed to save user
-                    }
-                });
+        //DataManagerDB.connectDataManagerDB();
+        DataManagerDB.addUser(UUID.randomUUID().toString(),  email, "https://source.boringavatars.com/marble/120/" + firstName + "%20" + lastName + "?colors=264653,2a9d8f,e9c46a,f4a261,e76f51",lastName, firstName);
     }
 }

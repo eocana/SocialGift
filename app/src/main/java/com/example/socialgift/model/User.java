@@ -1,14 +1,17 @@
 package com.example.socialgift.model;
 
-import java.util.UUID;
+import java.io.Serializable;
 
-public class User {
+public class User implements Serializable {
     private String UUID;
     private String name;
     private String last_name;
     private String image;
     private String email;
 
+    public User() {
+        // constructor sin argumentos requerido para la serialización/deserialización
+    }
 
     public User(String UUID, String name, String last_name, String image, String email) {
         this.UUID = UUID;
@@ -35,11 +38,11 @@ public class User {
         this.name = name;
     }
 
-    public String getLast_name() {
+    public String getLastName() {
         return last_name;
     }
 
-    public void setLast_name(String last_name) {
+    public void setLastName(String last_name) {
         this.last_name = last_name;
     }
 
