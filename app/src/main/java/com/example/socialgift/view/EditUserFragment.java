@@ -17,6 +17,7 @@ import com.example.socialgift.DataManagerDB;
 import com.example.socialgift.R;
 import com.example.socialgift.controller.EditUserController;
 import com.example.socialgift.controller.MyUserController;
+import com.example.socialgift.controller.UsersController;
 import com.example.socialgift.model.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -26,7 +27,7 @@ public class EditUserFragment extends Fragment {
     private EditText firstNameEditText, lastNameEditText, imageUrl;
     private Button saveButton, cancelButton;
 
-    private MyUserController editUserController;
+   private UsersController usersController;
 
     @Nullable
     @Override
@@ -40,7 +41,7 @@ public class EditUserFragment extends Fragment {
         saveButton = view.findViewById(R.id.edit_user_save_button);
         cancelButton = view.findViewById(R.id.edit_user_cancel_button);
 
-        editUserController = new MyUserController(this);
+        usersController = new UsersController(this, this.getContext());
 
         // Agregar el listener del botón "Guardar"
         saveButton.setOnClickListener(new View.OnClickListener() {
@@ -50,7 +51,7 @@ public class EditUserFragment extends Fragment {
                 String firstName = firstNameEditText.getText().toString();
                 String lastName = lastNameEditText.getText().toString();
                 String imageURL = imageUrl.getText().toString();
-                editUserController.saveUserChanges(firstName, lastName, imageURL);
+                usersController.updateUser(firstName, lastName, imageURL);
 
                 ShowMyUserActivity activity = (ShowMyUserActivity) requireActivity();
                 activity.replaceWithShowMyUserFragment();

@@ -18,6 +18,7 @@ import androidx.fragment.app.FragmentTransaction;
 import com.bumptech.glide.Glide;
 import com.example.socialgift.R;
 import com.example.socialgift.controller.MyUserController;
+import com.example.socialgift.controller.UsersController;
 import com.example.socialgift.model.User;
 
 public class ShowMyUserFragment extends Fragment {
@@ -27,8 +28,8 @@ public class ShowMyUserFragment extends Fragment {
 
     private Button editButton, logoutButton;
 
-    private MyUserController userController;
-
+    //private MyUserController userController;
+     private UsersController userController;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -41,7 +42,8 @@ public class ShowMyUserFragment extends Fragment {
         logoutButton = view.findViewById(R.id.logout_button);
 
         // Crear el controlador
-        userController = new MyUserController(this);
+        //userController = new MyUserController(this);
+        userController = new UsersController(this, this.getContext());
 
         // Agregar el listener del botón "Editar"
         editButton.setOnClickListener(new View.OnClickListener() {
@@ -61,7 +63,7 @@ public class ShowMyUserFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 // Cerrar sesión del usuario y navegar a la pantalla de inicio de sesión
-                userController.signOut();
+                userController.signOut(ShowMyUserFragment.this);
             }
         });
 
