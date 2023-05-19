@@ -8,6 +8,7 @@ public class Gift {
     private int priority;
     private boolean booked;
 
+    public Gift() {    }
     public Gift(int id, int wishlist_id, String product_url, int priority, boolean booked) {
         this.id = id;
         this.wishlist_id = wishlist_id;

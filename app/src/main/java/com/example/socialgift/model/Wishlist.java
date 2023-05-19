@@ -16,6 +16,8 @@ public class Wishlist {
     private List<Gift> gifts;
 
 
+    public Wishlist() {    }
+
     public Wishlist(int id, String name, String description,  int id_user, Date created_at) {
         this.id = id;
         this.creation_date = created_at;
@@ -32,11 +34,11 @@ public class Wishlist {
         this.id = id;
     }
 
-    public Date getCreation_date() {
+    public Date getCreationDate() {
         return creation_date;
     }
 
-    public void setCreation_date(Date creation_date) {
+    public void setCreationDate(Date creation_date) {
         this.creation_date = creation_date;
     }
 
@@ -44,15 +46,15 @@ public class Wishlist {
         return end_date;
     }
 
-    public void setEnd_date(Date end_date) {
+    public void setEndDate(Date end_date) {
         this.end_date = end_date;
     }
 
-    public int getId_user() {
+    public int getIdUser() {
         return id_user;
     }
 
-    public void setId_user(int id_user) {
+    public void setIdUser(int id_user) {
         this.id_user = id_user;
     }
 

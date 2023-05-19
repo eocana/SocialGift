@@ -16,9 +16,9 @@ Tabla de contenidos:
     - [deleteMyUser](#deletemyuser)
     - [wishlistsOfUser](#wishlistsofuser)
   - [Bloque_wishlists](#bloque-wishlists)
-    - [createWishlist](#createwishlist) [TODO]
-    - [getWishlist](#getwishlist) [TODO]
-    - [updateWishlist](#updatewishlist) [TODO]
+    - [createWishlist](#createwishlist) 
+    - [getWishlist](#getwishlist)
+    - [editWishlist](#editwishlist) 
     - [deleteWishlist](#deletewishlist) [TODO]
   - Next blocks...
   - [Interfaces_Callback](#interfaces-de-callback)
@@ -33,7 +33,7 @@ Tabla de contenidos:
 - `url`: Almacena la URL base de la API.
 
 ## Métodos internos
-
+- `parseDateFromString(String stringDate)`: Devuelve un objeto Date a partir de una cadena de fecha.
 - `levensteinDistance(String s1, String s2)`: Devuelve la distancia de Levenstein entre dos cadenas.
   ¿Que es el metodo? *La distancia de Levenshtein, distancia entre palabras es el número mínimo de operaciones requeridas para transformar una cadena de caracteres en otra*
 - `setMailSession(String mailSession)`: Establece el valor del correo electrónico de la sesión actual.
@@ -55,11 +55,17 @@ Indice por bloques, que estan divididos por los endpoints de la API.
   - [wishlistsOfUser](#wishlistsofuser)
 - [Bloque_wishlists](#bloque-wishlists)
   - [createWishlist](#createwishlist) [TODO]
-  - [getWishlist](#getwishlist) [TODO]
-  - [updateWishlist](#updatewishlist) [TODO]
+  - [getWishlist](#getwishlist) 
+  - [editWishlist](#editwishlist)
   - [deleteWishlist](#deletewishlist) [TODO]
+- [Bloque_Gifts](#bloque-gifts)
+  - [createGift](#creategift) [TODO]
+  - [getGift](#getgift) [TODO]
+  - [editGift](#editgift) [TODO]
+  - [deleteGift](#deletegift) [TODO]
 - Next blocks...
-- [Interfaces_Callback](#interfaces-de-callback)
+- [Interfaces_Callback](#interfaces-de-callback) 
+  -[Ejemplo de como usar los callbacks](#ejemplo-de-como-usar-los-callbacks)
 ### Bloque usuarios
 
 #### createUser
@@ -158,7 +164,18 @@ public static void createWishlist(Wishlist wishlist, Context context, DataManage
   - `context` (Context): El contexto de la aplicación (Activity/Fragment).
   - `callback` (DataManagerCallback): El callback para gestionar la respuesta. Mirar en [Interfaces de Callback](#interfaces-de-callback).
 
+#### getWishlist
+Obtiene la información de la lista de deseos con el id proporcionado.
 
+```java
+public static void getWishlist(String wishlistId, Context context, DataManagerCallbackWishlist<Wishlist> callback)
+```
+##### Parámetros:
+  - `wishlistId` (String): El id de la lista de deseos.
+  - `context` (Context): El contexto de la aplicación (Activity/Fragment).
+  - `callback` (DataManagerCallbackWishlist<Wishlist>): El callback para gestionar la respuesta. Mirar en [Interfaces de Callback](#interfaces-de-callback).
+##### Devuelve:
+  - `Wishlist`: La lista de deseos con el id proporcionado.
 
 
 ## Interfaces de Callback
