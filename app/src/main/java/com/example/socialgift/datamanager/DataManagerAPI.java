@@ -617,8 +617,8 @@ public class DataManagerAPI implements DataManagerCallbacks{
                     JSONObject giftObject = new JSONObject();
                     // Agregar los campos del gift según corresponda
                     giftObject.put("id", gift.getId());
-                    giftObject.put("wishlist_id", gift.getWishlist_id());
-                    giftObject.put("product_url", gift.getProduct_url());
+                    giftObject.put("wishlist_id", gift.getWishlistId());
+                    giftObject.put("product_url", gift.getProductUrl());
                     giftObject.put("priority", gift.getPriority());
                     giftObject.put("booked", gift.isBooked());
                     giftsArray.put(giftObject);
@@ -758,8 +758,8 @@ public class DataManagerAPI implements DataManagerCallbacks{
                     JSONObject giftObject = new JSONObject();
                     // Agregar los campos del gift según corresponda
                     giftObject.put("id", gift.getId());
-                    giftObject.put("wishlist_id", gift.getWishlist_id());
-                    giftObject.put("product_url", gift.getProduct_url());
+                    giftObject.put("wishlist_id", gift.getWishlistId());
+                    giftObject.put("product_url", gift.getProductUrl());
                     giftObject.put("priority", gift.getPriority());
                     giftObject.put("booked", gift.isBooked());
                     giftsArray.put(giftObject);
@@ -821,8 +821,8 @@ public class DataManagerAPI implements DataManagerCallbacks{
         // Construir el objeto JSON con los datos del regalo
         JSONObject requestBody = new JSONObject();
         try {
-            requestBody.put("wishlist_id", gift.getWishlist_id());
-            requestBody.put("product_url", gift.getProduct_url());
+            requestBody.put("wishlist_id", gift.getWishlistId());
+            requestBody.put("product_url", gift.getProductUrl());
             requestBody.put("priority", gift.getPriority());
             requestBody.put("booked", gift.isBooked());
         } catch (JSONException e) {
@@ -853,8 +853,6 @@ public class DataManagerAPI implements DataManagerCallbacks{
         RequestQueue queue = Volley.newRequestQueue(context);
         queue.add(request);
     }
-
-
     public static void getGift(int giftId, Context context, DataManagerCallbackGift<Gift> callback) {
         // Construir la URL para obtener el regalo específico
         String urlGift = url + "gifts/" + giftId;
@@ -906,6 +904,173 @@ public class DataManagerAPI implements DataManagerCallbacks{
         RequestQueue queue = Volley.newRequestQueue(context);
         queue.add(request);
     }
+    public static void editGift(Gift gift, Context context, DataManagerCallback callback) {
+        // Construir la URL para editar el regalo específico
+        String urlGift = url + "gifts/" + gift.getId();
 
+        // Crear el objeto JSON con los datos del regalo
+        JSONObject requestBody = new JSONObject();
+        try {
+            requestBody.put("wishlist_id", gift.getWishlistId());
+            requestBody.put("product_url", gift.getProductUrl());
+            requestBody.put("priority", gift.getPriority());
+            requestBody.put("booked", gift.isBooked());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
+        // Realizar la solicitud PUT utilizando Volley
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.PUT, urlGift, requestBody,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        // Llamar al callback onSuccess en caso de éxito
+                        callback.onSuccess();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // Llamar al callback onError en caso de error
+                        String errorMessage = "Error en la solicitud: " + error.getMessage();
+                        callback.onError(errorMessage);
+                    }
+                }) {
+            @Override
+            public Map<String, String> getHeaders() {
+                // Agregar el encabezado Authorization con el token de acceso
+                Map<String, String> headers = new HashMap<>();
+                headers.put("Authorization", "Bearer " + DataManagerAPI.getAccessToken());
+                return headers;
+            }
+        };
+
+        // Agregar la solicitud a la cola de solicitudes de Volley
+        RequestQueue queue = Volley.newRequestQueue(context);
+        queue.add(request);
+    }
+    public static void bookGift(int giftId, Context context, DataManagerCallback callback) {
+        // Construir la URL para marcar el regalo como reservado
+        String urlBookGift = url + "gifts/" + giftId + "/book";
+
+        // Realizar la solicitud POST utilizando Volley
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, urlBookGift, null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        // Llamar al callback onSuccess en caso de éxito
+                        callback.onSuccess();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // Llamar al callback onError en caso de error
+                        String errorMessage = "Error en la solicitud: " + error.getMessage();
+                        callback.onError(errorMessage);
+                    }
+                }) {
+            @Override
+            public Map<String, String> getHeaders() {
+                // Agregar el encabezado Authorization con el token de acceso
+                Map<String, String> headers = new HashMap<>();
+                headers.put("Authorization", "Bearer " + DataManagerAPI.getAccessToken());
+                return headers;
+            }
+        };
+
+        // Agregar la solicitud a la cola de solicitudes de Volley
+        RequestQueue queue = Volley.newRequestQueue(context);
+        queue.add(request);
+    }
+    public static void unbookGift(int giftId, Context context, DataManagerCallback callback){
+        // Construir la URL para marcar el regalo como reservado
+        String urlBookGift = url + "gifts/" + giftId + "/book";
+
+        // Realizar la solicitud POST utilizando Volley
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.DELETE, urlBookGift, null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        // Llamar al callback onSuccess en caso de éxito
+                        callback.onSuccess();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // Llamar al callback onError en caso de error
+                        String errorMessage = "Error en la solicitud: " + error.getMessage();
+                        callback.onError(errorMessage);
+                    }
+                }) {
+            @Override
+            public Map<String, String> getHeaders() {
+                // Agregar el encabezado Authorization con el token de acceso
+                Map<String, String> headers = new HashMap<>();
+                headers.put("Authorization", "Bearer " + DataManagerAPI.getAccessToken());
+                return headers;
+            }
+        };
+
+        // Agregar la solicitud a la cola de solicitudes de Volley
+        RequestQueue queue = Volley.newRequestQueue(context);
+        queue.add(request);
+    }
+    public static void getGiftUser(int giftId, Context context, DataManagerCallbackUser<User> callback) {
+        // Construir la URL para obtener el usuario asociado al regalo
+        String urlGiftUser = url + "gifts/" + giftId + "/user";
+
+        // Crear la solicitud GET utilizando Volley
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, urlGiftUser, null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            // Obtener los datos del usuario de la respuesta JSON
+                            int userId = response.getInt("id");
+                            String userName = response.getString("name");
+                            String userLastName = response.getString("last_name");
+                            String userEmail = response.getString("email");
+                            String userImage = response.getString("image");
+
+                            // Crear el objeto User con los datos obtenidos
+                            User user = new User();
+                            user.setId(userId);
+                            user.setName(userName);
+                            user.setLastName(userLastName);
+                            user.setEmail(userEmail);
+                            user.setImage(userImage);
+
+                            // Llamar al callback onSuccess con el usuario obtenido
+                            callback.onSuccess(user);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            // Llamar al callback onError en caso de error en el formato de la respuesta JSON
+                            callback.onError("Error al procesar la respuesta del servidor");
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // Llamar al callback onError en caso de error en la solicitud
+                        callback.onError("Error en la solicitud: " + error.getMessage());
+                    }
+                }) {
+            @Override
+            public Map<String, String> getHeaders() {
+                // Agregar el encabezado Authorization con el token de acceso
+                Map<String, String> headers = new HashMap<>();
+                headers.put("Authorization", "Bearer " + DataManagerAPI.getAccessToken());
+                return headers;
+            }
+        };
+
+        // Agregar la solicitud a la cola de solicitudes de Volley
+        RequestQueue queue = Volley.newRequestQueue(context);
+        queue.add(request);
+    }
+
+    //------------------FIN BLOQUE GIFTS------------------//
 }

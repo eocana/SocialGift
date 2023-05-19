@@ -20,6 +20,12 @@ Tabla de contenidos:
     - [getWishlist](#getwishlist)
     - [editWishlist](#editwishlist) 
     - [deleteWishlist](#deletewishlist) [TODO]
+  - [Bloque_Gifts](#bloque-gifts)
+    - [createGift](#creategift)
+    - [getGift](#getgift)
+    - [editGift](#editgift)
+    - [bookGift](#bookgift)
+    - [unbookGift](#unbookgift)
   - Next blocks...
   - [Interfaces_Callback](#interfaces-de-callback)
 
@@ -59,10 +65,11 @@ Indice por bloques, que estan divididos por los endpoints de la API.
   - [editWishlist](#editwishlist)
   - [deleteWishlist](#deletewishlist) [TODO]
 - [Bloque_Gifts](#bloque-gifts)
-  - [createGift](#creategift) [TODO]
-  - [getGift](#getgift) [TODO]
-  - [editGift](#editgift) [TODO]
-  - [deleteGift](#deletegift) [TODO]
+  - [createGift](#creategift)
+  - [getGift](#getgift)
+  - [editGift](#editgift) 
+  - [bookGift](#bookgift)
+  - [unbookGift](#unbookgift)
 - Next blocks...
 - [Interfaces_Callback](#interfaces-de-callback) 
   -[Ejemplo de como usar los callbacks](#ejemplo-de-como-usar-los-callbacks)
@@ -177,6 +184,82 @@ public static void getWishlist(String wishlistId, Context context, DataManagerCa
 ##### Devuelve:
   - `Wishlist`: La lista de deseos con el id proporcionado.
 
+### Bloque gifts
+
+#### createGift
+Crea un nuevo regalo con los datos proporcionados.
+
+```java
+public static void createGift(Gift gift, Context context, DataManagerCallback callback)
+```
+##### Parámetros:
+  - `gift` (Gift): El regalo a crear. (No todos los atributos deben estar rellenos).
+  - `context` (Context): El contexto de la aplicación (Activity/Fragment).
+  - `callback` (DataManagerCallback): El callback para gestionar la respuesta. Mirar en [Interfaces de Callback](#interfaces-de-callback).
+
+#### getGift
+Obtiene la información del regalo con el id proporcionado.
+
+```java
+public static void getGift(String giftId, Context context, DataManagerCallbackGift<Gift> callback)
+```
+##### Parámetros:
+  - `giftId` (String): El id del regalo.
+  - `context` (Context): El contexto de la aplicación (Activity/Fragment).
+  - `callback` (DataManagerCallbackGift<Gift>): El callback para gestionar la respuesta. Mirar en [Interfaces de Callback](#interfaces-de-callback).
+##### Devuelve:
+  - `Gift`: El regalo con el id proporcionado.
+
+#### editGift
+Edita el regalo con los datos proporcionados.
+
+```java
+public static void editGift(Gift gift, Context context, DataManagerCallback callback)
+```
+##### Parámetros:
+  - `gift` (Gift): El regalo a editar.
+  - `context` (Context): El contexto de la aplicación (Activity/Fragment).
+  - `callback` (DataManagerCallback): El callback para gestionar la respuesta. Mirar en [Interfaces de Callback](#interfaces-de-callback).
+
+
+#### bookGift
+Reserva el regalo con el id proporcionado. El usuario que lo reserva lo coge en base al acces token asociado
+
+```java
+public static void bookGift(String giftId, Context context, DataManagerCallback callback)
+```
+
+##### Parámetros:
+  - `giftId` (String): El id del regalo.
+  - `context` (Context): El contexto de la aplicación (Activity/Fragment).
+  - `callback` (DataManagerCallback): El callback para gestionar la respuesta. Mirar en [Interfaces de Callback](#interfaces-de-callback).
+
+#### unbookGift
+Libera el regalo con el id proporcionado. El usuario que lo libera lo hace en base al acces token asociado
+
+```java
+public static void unbookGift(int giftId, Context context, DataManagerCallback callback)
+```
+
+##### Parámetros:
+  - `giftId` (int): El id del regalo.
+  - `context` (Context): El contexto de la aplicación (Activity/Fragment).
+  - `callback` (DataManagerCallback): El callback para gestionar la respuesta. Mirar en [Interfaces de Callback](#interfaces-de-callback).
+
+
+#### getGiftUser
+Obtiene el usuario que ha reservado el regalo con el id proporcionado.
+
+```java
+public static void getGiftUser(int giftId, Context context, DataManagerCallbackUser<User> callback)
+```
+
+##### Parámetros:
+  - `giftId` (int): El id del regalo.
+  - `context` (Context): El contexto de la aplicación (Activity/Fragment).
+  - `callback` (DataManagerCallbackUser<User>): El callback para gestionar la respuesta. Mirar en [Interfaces de Callback](#interfaces-de-callback).
+##### Devuelve:
+  - `User`: El usuario que ha reservado el regalo con el id proporcionado.
 
 ## Interfaces de Callback
 

@@ -25,7 +25,7 @@ public class Gift {
         this.id = id;
     }
 
-    public int getWishlist_id() {
+    public int getWishlistId() {
         return wishlist_id;
     }
 
@@ -33,7 +33,7 @@ public class Gift {
         this.wishlist_id = wishlist_id;
     }
 
-    public String getProduct_url() {
+    public String getProductUrl() {
         return product_url;
     }
 
