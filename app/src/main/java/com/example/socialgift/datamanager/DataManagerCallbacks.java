@@ -38,4 +38,14 @@ public interface DataManagerCallbacks {
         void onSuccess(Gift wishlist);
         void onError(String errorMessage);
     }
+
+    interface DataManagerCallbackProduct<Product> {
+        void onSuccess(Product user);
+        void onError(String errorMessage);
+    }
+
+    interface DataManagerCallbackProductList<Product> {
+        void onSuccess(List<Product> productList);
+        void onError(String errorMessage);
+    }
 }

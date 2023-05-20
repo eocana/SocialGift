@@ -26,6 +26,12 @@ Tabla de contenidos:
     - [editGift](#editgift)
     - [bookGift](#bookgift)
     - [unbookGift](#unbookgift)
+  - [Bloque Products](#bloque-products)
+    - [createProduct](#createproduct)
+    - [getProduct](#getproduct)
+    - [editProduct](#editproduct)
+    - [searchProduct](#searchproduct)
+    - [deleteProduct](#deleteproduct) [TODO]
   - Next blocks...
   - [Interfaces_Callback](#interfaces-de-callback)
 
@@ -70,6 +76,12 @@ Indice por bloques, que estan divididos por los endpoints de la API.
   - [editGift](#editgift) 
   - [bookGift](#bookgift)
   - [unbookGift](#unbookgift)
+- [Bloque Products](#bloque-products)
+  - [createProduct](#createproduct)
+  - [getProduct](#getproduct)
+  - [editProduct](#editproduct)
+  - [searchProduct](#searchproduct)
+  - [deleteProduct](#deleteproduct) [TODO]
 - Next blocks...
 - [Interfaces_Callback](#interfaces-de-callback) 
   -[Ejemplo de como usar los callbacks](#ejemplo-de-como-usar-los-callbacks)
@@ -260,6 +272,62 @@ public static void getGiftUser(int giftId, Context context, DataManagerCallbackU
   - `callback` (DataManagerCallbackUser<User>): El callback para gestionar la respuesta. Mirar en [Interfaces de Callback](#interfaces-de-callback).
 ##### Devuelve:
   - `User`: El usuario que ha reservado el regalo con el id proporcionado.
+
+
+### Bloque products
+Este bloque esta en otra clase que extiende DataManagerAPI para que así no quede tan cargada la clase DataManagerAPI.
+También como se usa otra url para las peticiones, se ha decidido separar en otra clase.
+Se llama MercadoExpressAPI. Logicamente lo pongo el mismo md para que quede todo junto.
+#### createProduct
+Crea un nuevo producto con los datos proporcionados.
+
+```java
+public static void createProduct(Product product, Context context, DataManagerCallback callback)
+```
+##### Parámetros:
+  - `product` (Product): El producto a crear. (No todos los atributos deben estar rellenos).
+  - `context` (Context): El contexto de la aplicación (Activity/Fragment).
+  - `callback` (DataManagerCallback): El callback para gestionar la respuesta. Mirar en [Interfaces de Callback](#interfaces-de-callback).
+
+#### getAProduct
+Obtiene la información del producto con el id proporcionado.
+
+```java
+public static void getAProduct(String productId, Context context, DataManagerCallbackProduct<Product> callback)
+```
+##### Parámetros:
+  - `productId` (String): El id del producto.
+  - `context` (Context): El contexto de la aplicación (Activity/Fragment).
+  - `callback` (DataManagerCallbackProduct<Product>): El callback para gestionar la respuesta. Mirar en [Interfaces de Callback](#interfaces-de-callback).
+##### Devuelve:
+  - `Product`: El producto con el id proporcionado.
+
+#### editProduct
+Edita el producto con los datos proporcionados.
+
+```java
+public static void editProduct(Product product, Context context, DataManagerCallback callback)
+```
+##### Parámetros:
+  - `product` (Product): El producto a editar.
+  - `context` (Context): El contexto de la aplicación (Activity/Fragment).
+  - `callback` (DataManagerCallback): El callback para gestionar la respuesta. Mirar en [Interfaces de Callback](#interfaces-de-callback).
+
+
+#### searchProduct
+Busca productos con los datos proporcionados.
+
+```java
+public static void searchProduct(String query, Context context, DataManagerCallbackProductList<Product> callback)
+```
+##### Parámetros:
+  - `query` (String): La query de busqueda.
+  - `context` (Context): El contexto de la aplicación (Activity/Fragment).
+  - `callback` (DataManagerCallbackProductList<Product>): El callback para gestionar la respuesta. Mirar en [Interfaces de Callback](#interfaces-de-callback).
+##### Devuelve:
+  - `List<Product>`: La lista de productos que coinciden con la query de busqueda.
+
+
 
 ## Interfaces de Callback
 

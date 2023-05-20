@@ -816,7 +816,6 @@ public class DataManagerAPI implements DataManagerCallbacks{
      * BLOQUE GIFTS
      **************************************************************************/
 
-
     public static void createGift(Gift gift, Context context, DataManagerCallback callback) {
         // Construir el objeto JSON con los datos del regalo
         JSONObject requestBody = new JSONObject();
@@ -1073,4 +1072,7 @@ public class DataManagerAPI implements DataManagerCallbacks{
     }
 
     //------------------FIN BLOQUE GIFTS------------------//
+
+
+
 }

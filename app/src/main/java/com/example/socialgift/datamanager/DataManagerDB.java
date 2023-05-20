@@ -184,10 +184,11 @@ public class DataManagerDB {
      * Add a product to Firestore
      * @param product The product to add
      */
+/*
     public static void addProduct(Product product) {
-        String documentName = product.getUUID();
+        String documentName = product.getId();
         Map<String, Object> productData = new HashMap<>();
-        productData.put("UUID", product.getUUID());
+        productData.put("UUID", product.getId());
         productData.put("description", product.getDescription());
         productData.put("id_category", product.getId_category());
         productData.put("link", product.getLink());
@@ -201,15 +202,18 @@ public class DataManagerDB {
                 .addOnFailureListener(e -> Log.e("DB_PRODUCTS", "Error adding product to Firestore", e));
     }
 
-    /**
+    */
+/**
      * Update an existing product in Firestore
      * @param product The updated product
-     */
+     *//*
+
     public static void updateProduct(Product product) {
-        DocumentReference productRef = db.collection("products").document(product.getUUID());
-        productRef.set(product).addOnSuccessListener(aVoid -> Log.d("DB_PRODUCTS", "Product "+product.getUUID()+" updated in Firestore"))
-                .addOnFailureListener(e -> Log.e("DB_PRODUCTS", "Error updating product "+product.getUUID()+" in Firestore", e));
+        DocumentReference productRef = db.collection("products").document(product.getId());
+        productRef.set(product).addOnSuccessListener(aVoid -> Log.d("DB_PRODUCTS", "Product "+product.getId()+" updated in Firestore"))
+                .addOnFailureListener(e -> Log.e("DB_PRODUCTS", "Error updating product "+product.getId()+" in Firestore", e));
     }
+*/
 
     /**
      * Delete a product from Firestore
