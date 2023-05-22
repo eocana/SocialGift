@@ -10,4 +10,8 @@
     <string name="hint_register_email">Your email</string>
     <string name="hint_register_password">Your password</string>
     <string name="hint_register_confirm_password">Confirm your password</string>
+    <string name="ic_home">Home</string>
+    <string name="ic_user">User</string>
+    <string name="ic_basket">Basket</string>
+    <string name="ic_menu">Menu</string>
 </resources>
