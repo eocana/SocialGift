@@ -23,7 +23,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
-        app:backgroundTint="#FF0054FF"
+        app:backgroundTint="@color/purple_500"
         app:itemIconTint="#ffffff"
         app:itemTextColor="#ffffff"
         app:layout_constraintBottom_toBottomOf="parent"
