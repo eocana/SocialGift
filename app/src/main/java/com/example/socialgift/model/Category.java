@@ -5,14 +5,15 @@ public class Category {
     private String name;
     private String description;
     private String photo;
-    private int id_parent_category;
+    private int categoryParentId;
 
-    public Category(int id, String name, String description, String photo, int id_parent_category) {
+    public Category() {    }
+    public Category(int id, String name, String description, String photo, int categoryParentId) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.photo = photo;
-        this.id_parent_category = id_parent_category;
+        this.categoryParentId = categoryParentId;
     }
 
     public int getId() {
@@ -47,11 +48,11 @@ public class Category {
         this.photo = photo;
     }
 
-    public Integer getId_parent_category() {
-        return id_parent_category;
+    public Integer getCategoryParentId() {
+        return categoryParentId;
     }
 
-    public void setId_parent_category(Integer id_parent_category) {
-        this.id_parent_category = id_parent_category;
+    public void setCategoryParentId(Integer categoryParentId) {
+        this.categoryParentId = categoryParentId;
     }
 }

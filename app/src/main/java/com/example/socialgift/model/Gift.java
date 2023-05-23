@@ -2,42 +2,43 @@ package com.example.socialgift.model;
 
 public class Gift {
 
-    private String UUID;
-    private String id_product;
-    private String id_wishlist;
+    private int id;
+    private int wishlist_id;
+    private String product_url;
     private int priority;
-    private String user_id_booked;
+    private boolean booked;
 
-    public Gift(String UUID, String id_product, String id_wishlist, int priority, String user_id_booked) {
-        this.UUID = UUID;
-        this.id_product = id_product;
-        this.id_wishlist = id_wishlist;
+    public Gift() {    }
+    public Gift(int id, int wishlist_id, String product_url, int priority, boolean booked) {
+        this.id = id;
+        this.wishlist_id = wishlist_id;
+        this.product_url = product_url;
         this.priority = priority;
-        this.user_id_booked = user_id_booked;
+        this.booked = booked;
     }
 
-    public String getUUID() {
-        return UUID;
+    public int getId() {
+        return id;
     }
 
-    public void setUUID(String UUID) {
-        this.UUID = UUID;
+    public void setId(int id) {
+        this.id = id;
     }
 
-    public String getId_product() {
-        return id_product;
+    public int getWishlistId() {
+        return wishlist_id;
     }
 
-    public void setId_product(String id_product) {
-        this.id_product = id_product;
+    public void setWishlist_id(int wishlist_id) {
+        this.wishlist_id = wishlist_id;
     }
 
-    public String getId_wishlist() {
-        return id_wishlist;
+    public String getProductUrl() {
+        return product_url;
     }
 
-    public void setId_wishlist(String id_wishlist) {
-        this.id_wishlist = id_wishlist;
+    public void setProduct_url(String product_url) {
+        this.product_url = product_url;
     }
 
     public int getPriority() {
@@ -48,11 +49,11 @@ public class Gift {
         this.priority = priority;
     }
 
-    public String getUser_id_booked() {
-        return user_id_booked;
+    public boolean isBooked() {
+        return booked;
     }
 
-    public void setUser_id_booked(String user_id_booked) {
-        this.user_id_booked = user_id_booked;
+    public void setBooked(boolean booked) {
+        this.booked = booked;
     }
 }

@@ -1,6 +1,4 @@
-package com.example.socialgift;
-
-import static android.content.ContentValues.TAG;
+package com.example.socialgift.datamanager;
 
 import android.util.Log;
 
@@ -16,10 +14,8 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
-import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -27,9 +23,6 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
@@ -165,21 +158,24 @@ public class DataManagerDB {
      * @param email El correo electrónico del usuario
      * @return Un objeto User si se encuentra el usuario en Firestore, o null si no se encuentra
      */
-    public static User getUserByEmail(String email) {
+    public static Task<User> getUserByEmail(String email) {
         String documentName = email.split("@")[0];
-        Task<DocumentSnapshot> documentTask = db.collection("users").document(documentName).get();
-        try {
-            DocumentSnapshot document = Tasks.await(documentTask);
-            if (document.exists()) {
-                User user = document.toObject(User.class);
-                return user;
+        DocumentReference documentRef = db.collection("users").document(documentName);
+
+        return documentRef.get().continueWith(task -> {
+            if (task.isSuccessful()) {
+                DocumentSnapshot document = task.getResult();
+                if (document.exists()) {
+                    User user = document.toObject(User.class);
+                    return user;
+                } else {
+                    return null;
+                }
             } else {
-                return null;
+                Exception e = task.getException();
+                throw e;
             }
-        } catch (ExecutionException | InterruptedException e) {
-            Log.e("DB_USERS", "Error getting user by email from Firestore", e);
-            return null;
-        }
+        });
     }
     // FIN BLOQUE USER
 
@@ -188,10 +184,11 @@ public class DataManagerDB {
      * Add a product to Firestore
      * @param product The product to add
      */
+/*
     public static void addProduct(Product product) {
-        String documentName = product.getUUID();
+        String documentName = product.getId();
         Map<String, Object> productData = new HashMap<>();
-        productData.put("UUID", product.getUUID());
+        productData.put("UUID", product.getId());
         productData.put("description", product.getDescription());
         productData.put("id_category", product.getId_category());
         productData.put("link", product.getLink());
@@ -205,15 +202,18 @@ public class DataManagerDB {
                 .addOnFailureListener(e -> Log.e("DB_PRODUCTS", "Error adding product to Firestore", e));
     }
 
-    /**
+    */
+/**
      * Update an existing product in Firestore
      * @param product The updated product
-     */
+     *//*
+
     public static void updateProduct(Product product) {
-        DocumentReference productRef = db.collection("products").document(product.getUUID());
-        productRef.set(product).addOnSuccessListener(aVoid -> Log.d("DB_PRODUCTS", "Product "+product.getUUID()+" updated in Firestore"))
-                .addOnFailureListener(e -> Log.e("DB_PRODUCTS", "Error updating product "+product.getUUID()+" in Firestore", e));
+        DocumentReference productRef = db.collection("products").document(product.getId());
+        productRef.set(product).addOnSuccessListener(aVoid -> Log.d("DB_PRODUCTS", "Product "+product.getId()+" updated in Firestore"))
+                .addOnFailureListener(e -> Log.e("DB_PRODUCTS", "Error updating product "+product.getId()+" in Firestore", e));
     }
+*/
 
     /**
      * Delete a product from Firestore
@@ -253,13 +253,15 @@ public class DataManagerDB {
     public static List<Product> searchProducts(String query) {
         List<Product> result = new ArrayList<>();
 
-        db.collection("products").get().addOnSuccessListener(queryDocumentSnapshots -> {
-
+        Task<QuerySnapshot> task = db.collection("products").get();
+        try {
+            QuerySnapshot queryDocumentSnapshots = Tasks.await(task);
             List<Product> products = new ArrayList<>();
 
             for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
                 Product product = document.toObject(Product.class);
                 String productName = product.getName();
+
                 int distance = levenshteinDistance(productName.toLowerCase(), query.toLowerCase());
 
                 if (productName.toLowerCase().contains(query) && distance < 3) {
@@ -283,14 +285,18 @@ public class DataManagerDB {
             products = products.subList(0, Math.min(products.size(), 5));
 
             result.addAll(products);
+
             // Mostrar los resultados
             for (Product product : products) {
                 Log.d("DB_PRODUCTS", product.getName());
             }
-        }).addOnFailureListener(e -> Log.e("DB_PRODUCTS", "Error searching products", e));
+        } catch (ExecutionException | InterruptedException e) {
+            Log.e("DB_PRODUCTS", "Error searching products", e);
+        }
 
         return result;
     }
+
 
     //FIN BLOQUE PRODUCTS
 
@@ -352,7 +358,7 @@ public class DataManagerDB {
     /**
      * Función que actualiza una wishlist
      */
-    public static void updateWishlist(Wishlist wishlist) {
+    /*public static void updateWishlist(Wishlist wishlist) {
         Map<String, Object> data = new HashMap<>();
         data.put("created_at", wishlist.getCreated_at());
 
@@ -363,10 +369,10 @@ public class DataManagerDB {
         data.put("id_user", wishlist.getId_user());
         data.put("name", wishlist.getName());
 
-        db.collection("wishlist").document(wishlist.getUUID()).set(data)
+        db.collection("wishlist").document(wishlist.getId()).set(data)
                 .addOnSuccessListener(aVoid -> Log.d("DB_WISHLIST", "Wishlist updated successfully"))
                 .addOnFailureListener(e -> Log.e("DB_WISHLIST", "Error updating wishlist", e));
-    }
+    }*/
 
     /**
      * Elimina una wishlist de la base de datos.
@@ -437,19 +443,19 @@ public class DataManagerDB {
      * @param id El UUID del regalo.
      * @return El regalo correspondiente al UUID especificado, o null si no existe.
      */
-    public static Gift getGift(String id) {
+   /* public static Gift getGift(String id) {
         Gift gift = null;
         try {
             DocumentSnapshot document = Tasks.await(db.collection("gifts").document(id).get());
             if (document.exists()) {
                 gift = document.toObject(Gift.class);
-                gift.setUUID(document.getId());
+                gift.setId(document.getId());
             }
         } catch (ExecutionException | InterruptedException e) {
             Log.e("DB_GIFTS", "Error getting gift", e);
         }
         return gift;
-    }
+    }*/
 
     /**
      * Actualiza los datos de un regalo en la base de datos.

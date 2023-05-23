@@ -16,7 +16,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.socialgift.R;
-import com.example.socialgift.controller.LoginController;
+import com.example.socialgift.controller.UsersController;
 import com.google.firebase.FirebaseApp;
 
 public class LoginActivity extends AppCompatActivity {
@@ -27,7 +27,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private Button registerButton;
 
-    private LoginController loginController;
+    private UsersController usersController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,8 +39,8 @@ public class LoginActivity extends AppCompatActivity {
         passwordEditText = findViewById(R.id.passwordEditText);
         loginButton = findViewById(R.id.loginButton);
         registerButton = findViewById(R.id.registerButton);
-        loginController = new LoginController(this);
-
+        //loginController = new LoginController(this);
+        usersController = new UsersController(this, this);
         loginButton.setEnabled(false);
 
 
@@ -60,7 +60,7 @@ public class LoginActivity extends AppCompatActivity {
                     return;
                 }
 
-                loginController.login(email, password);
+                usersController.loginUser(email, password);
             }
         });
 
@@ -122,6 +122,8 @@ public class LoginActivity extends AppCompatActivity {
     public void onLoginSuccess() {
         // El login fue exitoso, hacer algo aquí
         Log.d(TAG, "Inicio de sesión exitoso");
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
         Toast.makeText(this, "Login exitoso", Toast.LENGTH_SHORT).show();
     }
 
