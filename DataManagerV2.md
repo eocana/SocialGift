@@ -32,8 +32,15 @@ Tabla de contenidos:
     - [editProduct](#editproduct)
     - [searchProduct](#searchproduct)
     - [deleteProduct](#deleteproduct) [TODO]
+  - [Bloque_Categories](#bloque-categories)
+    - [getCategories](#getcategories)
+    - [getCategory](#getcategory)
+    - [createCategory](#createcategory)
+    - [editCategory](#editcategory)
+    - [deleteCategory](#deletecategory)
   - Next blocks...
-  - [Interfaces_Callback](#interfaces-de-callback)
+   
+- [Interfaces_Callback](#interfaces-de-callback)
 
 ## Atributos
 
@@ -82,6 +89,12 @@ Indice por bloques, que estan divididos por los endpoints de la API.
   - [editProduct](#editproduct)
   - [searchProduct](#searchproduct)
   - [deleteProduct](#deleteproduct) [TODO]
+- [Bloque_Categories](#bloque-categories)
+  - [getCategories](#getcategories)
+  - [getCategory](#getcategory)
+  - [createCategory](#createcategory)
+  - [editCategory](#editcategory)
+  - [deleteCategory](#deletecategory)
 - Next blocks...
 - [Interfaces_Callback](#interfaces-de-callback) 
   -[Ejemplo de como usar los callbacks](#ejemplo-de-como-usar-los-callbacks)
@@ -290,6 +303,7 @@ public static void createProduct(Product product, Context context, DataManagerCa
   - `callback` (DataManagerCallback): El callback para gestionar la respuesta. Mirar en [Interfaces de Callback](#interfaces-de-callback).
 
 #### getAProduct
+
 Obtiene la información del producto con el id proporcionado.
 
 ```java
@@ -328,9 +342,73 @@ public static void searchProduct(String query, Context context, DataManagerCallb
   - `List<Product>`: La lista de productos que coinciden con la query de busqueda.
 
 
+### Bloque categories
+
+#### getCategories
+Obtiene la lista de categorias.
+
+```java
+public static void getCategories(Context context, DataManagerCallbackCategoryList<Category> callback)
+```
+##### Parámetros:
+  - `context` (Context): El contexto de la aplicación (Activity/Fragment).
+  - `callback` (DataManagerCallbackCategoryList<Category>): El callback para gestionar la respuesta. Mirar en [Interfaces de Callback](#interfaces-de-callback).
+##### Devuelve:
+  - `List<Category>`: La lista de categorias.
+
+#### getCategory
+Obtiene la categoria con el id proporcionado.
+
+```java
+public static void getCategory(String categoryId, Context context, DataManagerCallbackCategory<Category> callback)
+```
+##### Parámetros:
+  - `categoryId` (String): El id de la categoria.
+  - `context` (Context): El contexto de la aplicación (Activity/Fragment).
+  - `callback` (DataManagerCallbackCategory<Category>): El callback para gestionar la respuesta. Mirar en [Interfaces de Callback](#interfaces-de-callback).
+##### Devuelve:
+  - `Category`: La categoria con el id proporcionado.
+
+#### editCategory
+Edita la categoria con los datos proporcionados.
+
+```java
+public static void editCategory(Category category, Context context, DataManagerCallback callback)
+```
+##### Parámetros:
+  - `category` (Category): La categoria a editar.
+  - `context` (Context): El contexto de la aplicación (Activity/Fragment).
+  - `callback` (DataManagerCallback): El callback para gestionar la respuesta. Mirar en [Interfaces de Callback](#interfaces-de-callback).
+
+#### createCategory
+Crea una nueva categoria con los datos proporcionados.
+
+```java
+public static void createCategory(Category category, Context context, DataManagerCallback callback)
+```
+##### Parámetros:
+  - `category` (Category): La categoria a crear. (No todos los atributos deben estar rellenos).
+  - `context` (Context): El contexto de la aplicación (Activity/Fragment).
+  - `callback` (DataManagerCallback): El callback para gestionar la respuesta. Mirar en [Interfaces de Callback](#interfaces-de-callback).
+
+#### deleteCategory
+Elimina la categoria con el id proporcionado.
+
+```java
+public static void deleteCategory(String categoryId, Context context, DataManagerCallback callback)
+```
+##### Parámetros:
+  - `categoryId` (String): El id de la categoria.
+  - `context` (Context): El contexto de la aplicación (Activity/Fragment).
+  - `callback` (DataManagerCallback): El callback para gestionar la respuesta. Mirar en [Interfaces de Callback](#interfaces-de-callback).
+
+
+
+
+
 
 ## Interfaces de Callback
-
+No pondré todas la interfaces de callback, ya que son repteitivas y solo cambia el tipo de dato que se devuelve.
 #### DataManagerCallback
 Se utiliza para manejar respuestas exitosas o errores en las operaciones que no devuelven ningún dato específico.
 
@@ -396,6 +474,7 @@ public interface DataManagerCallbackWishlist<Wishlist> {
 ##### Métodos:
   - `onSuccess(List<Wishlist> wishlists)`: Se ejecuta cuando la operación se ha realizado correctamente. Aqui es cuando necesitamos devolver una lista de wishlists.
   - `onError(String errorMessage)`: Se ejecuta cuando la operación falla y devuelve un mensaje de error.
+
 
  ###### Ejemplo de como usar los callbacks:
 

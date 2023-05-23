@@ -25,7 +25,7 @@ public interface DataManagerCallbacks {
     }
 
     interface DataManagerCallbackWishlists<Wishlist> {
-        void onSuccess(List<Wishlist> wishlist);
+        void onSuccess(List<Wishlist> wishlistList);
         void onError(String errorMessage);
     }
 
@@ -35,17 +35,27 @@ public interface DataManagerCallbacks {
     }
 
     interface DataManagerCallbackGift<Gift> {
-        void onSuccess(Gift wishlist);
+        void onSuccess(Gift gift);
         void onError(String errorMessage);
     }
 
     interface DataManagerCallbackProduct<Product> {
-        void onSuccess(Product user);
+        void onSuccess(Product product);
         void onError(String errorMessage);
     }
 
     interface DataManagerCallbackProductList<Product> {
         void onSuccess(List<Product> productList);
+        void onError(String errorMessage);
+    }
+
+    interface DataManagerCallbackCategory<Category> {
+        void onSuccess(Category category);
+        void onError(String errorMessage);
+    }
+
+    interface  DataManagerCallbackCategories<Category> {
+        void onSuccess(List<Category> categoryList);
         void onError(String errorMessage);
     }
 }
