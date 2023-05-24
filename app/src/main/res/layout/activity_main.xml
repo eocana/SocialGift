@@ -153,33 +153,32 @@
         android:layout_alignParentBottom="true"
         android:orientation="horizontal"
         android:padding="15dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="">
+        app:layout_constraintBottom_toBottomOf="parent">
 
 
         <Button
-            android:id="@+id/btn1"
+            android:id="@+id/btnHome"
             android:layout_width="50dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
             android:text="1" />
 
         <Button
-            android:id="@+id/btn2"
+            android:id="@+id/btnSocial"
             android:layout_width="50dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
             android:text="2" />
 
         <Button
-            android:id="@+id/btn3"
+            android:id="@+id/btnWishlist"
             android:layout_width="50dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
             android:text="3" />
 
         <Button
-            android:id="@+id/btn4"
+            android:id="@+id/btnUser"
             android:layout_width="50dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"

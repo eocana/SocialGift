@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:tools="http://schemas.android.com/tools" xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+    <!-- When selected, use grey -->
+    <item android:drawable="@drawable/ic_user"
+        android:state_selected="true"
+        app:imageTint="@color/grey"
+        tools:ignore="ResourceCycle" />
+    <!-- When not selected, use white-->
+    <item android:drawable="@drawable/ic_user"
+        android:state_selected="false"
+        app:imageTint="@color/white"
+        tools:ignore="ResourceCycle" />
+
+</selector>
