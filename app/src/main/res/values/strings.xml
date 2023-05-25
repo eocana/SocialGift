@@ -10,4 +10,6 @@
     <string name="hint_register_email">Your email</string>
     <string name="hint_register_password">Your password</string>
     <string name="hint_register_confirm_password">Confirm your password</string>
+    <string name="btn_edit">Edit</string>
+    <string name="btn_logout">Logout</string>
 </resources>

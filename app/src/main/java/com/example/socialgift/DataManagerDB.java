@@ -165,21 +165,24 @@ public class DataManagerDB {
      * @param email El correo electrónico del usuario
      * @return Un objeto User si se encuentra el usuario en Firestore, o null si no se encuentra
      */
-    public static User getUserByEmail(String email) {
+    public static Task<User> getUserByEmail(String email) {
         String documentName = email.split("@")[0];
-        Task<DocumentSnapshot> documentTask = db.collection("users").document(documentName).get();
-        try {
-            DocumentSnapshot document = Tasks.await(documentTask);
-            if (document.exists()) {
-                User user = document.toObject(User.class);
-                return user;
+        DocumentReference documentRef = db.collection("users").document(documentName);
+
+        return documentRef.get().continueWith(task -> {
+            if (task.isSuccessful()) {
+                DocumentSnapshot document = task.getResult();
+                if (document.exists()) {
+                    User user = document.toObject(User.class);
+                    return user;
+                } else {
+                    return null;
+                }
             } else {
-                return null;
+                Exception e = task.getException();
+                throw e;
             }
-        } catch (ExecutionException | InterruptedException e) {
-            Log.e("DB_USERS", "Error getting user by email from Firestore", e);
-            return null;
-        }
+        });
     }
     // FIN BLOQUE USER
 
@@ -253,13 +256,15 @@ public class DataManagerDB {
     public static List<Product> searchProducts(String query) {
         List<Product> result = new ArrayList<>();
 
-        db.collection("products").get().addOnSuccessListener(queryDocumentSnapshots -> {
-
+        Task<QuerySnapshot> task = db.collection("products").get();
+        try {
+            QuerySnapshot queryDocumentSnapshots = Tasks.await(task);
             List<Product> products = new ArrayList<>();
 
             for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
                 Product product = document.toObject(Product.class);
                 String productName = product.getName();
+
                 int distance = levenshteinDistance(productName.toLowerCase(), query.toLowerCase());
 
                 if (productName.toLowerCase().contains(query) && distance < 3) {
@@ -283,14 +288,18 @@ public class DataManagerDB {
             products = products.subList(0, Math.min(products.size(), 5));
 
             result.addAll(products);
+
             // Mostrar los resultados
             for (Product product : products) {
                 Log.d("DB_PRODUCTS", product.getName());
             }
-        }).addOnFailureListener(e -> Log.e("DB_PRODUCTS", "Error searching products", e));
+        } catch (ExecutionException | InterruptedException e) {
+            Log.e("DB_PRODUCTS", "Error searching products", e);
+        }
 
         return result;
     }
+
 
     //FIN BLOQUE PRODUCTS
 
