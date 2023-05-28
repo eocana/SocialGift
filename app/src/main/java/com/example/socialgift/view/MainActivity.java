@@ -23,9 +23,15 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        TextView textView = findViewById(R.id.test2);
         BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigationbar);
         bottomNavigationView.getMenu().clear();
         bottomNavigationView.inflateMenu(R.menu.menu);
+
+        if (savedInstanceState == null) {
+            getSupportFragmentManager().beginTransaction()
+                    .setReorderingAllowed(true)
+                    .add(R.id.fragment_searchBar, SearchFragment.class, null)
+                    .commit();
+        }
     }
 }
