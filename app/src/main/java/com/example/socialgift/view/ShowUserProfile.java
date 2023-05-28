@@ -2,14 +2,17 @@ package com.example.socialgift.view;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 import com.example.socialgift.R;
 import com.example.socialgift.view.SearchFragment;
@@ -23,11 +26,11 @@ public class ShowUserProfile extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_user_profile);
 
-        System.out.println("email :: "+ SearchFragment.user.getEmail());
-        System.out.println("class :: "+ SearchFragment.user.getClass());
-        System.out.println("image :: "+ SearchFragment.user.getImage());
-        System.out.println("name :: "+ SearchFragment.user.getName());
-        System.out.println("lastName :: "+ SearchFragment.user.getLastName());
+
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+
         TextView myAwesomeTextView2 = (TextView)findViewById(R.id.textView2);
         TextView myAwesomeTextView3 = (TextView)findViewById(R.id.textView3);
         TextView myAwesomeTextView4 = (TextView)findViewById(R.id.textView4);
@@ -38,7 +41,15 @@ public class ShowUserProfile extends AppCompatActivity {
         myAwesomeTextView3.setText("Name : "+SearchFragment.user.getName());
         myAwesomeTextView4.setText("Lastname : "+SearchFragment.user.getLastName());
     }
+    public boolean onOptionsItemSelected(MenuItem item){
+        Intent myIntent = new Intent(getApplicationContext(), MainActivity.class);
+        int id = item.getItemId();
 
+        if (id==android.R.id.home) {
+            finish();
+        }
+        return true;
+    }
     private class DownloadImageFromInternet extends AsyncTask<String, Void, Bitmap> {
         ImageView imageView;
         public DownloadImageFromInternet(ImageView imageView) {
