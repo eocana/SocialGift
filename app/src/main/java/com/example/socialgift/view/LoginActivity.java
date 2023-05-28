@@ -125,6 +125,8 @@ public class LoginActivity extends AppCompatActivity {
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
         Toast.makeText(this, "Login exitoso", Toast.LENGTH_SHORT).show();
+        Intent homepage = new Intent(LoginActivity.this, MainActivity.class);
+        startActivity(homepage);
     }
 
     public void onLoginError(String message) {
