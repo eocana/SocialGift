@@ -5,8 +5,9 @@
     android:layout_height="match_parent"
     tools:context=".view.SearchFragment">
 
-    <SearchView
+    <android.widget.SearchView
         android:id="@+id/sv_fragmentSearch"
+        android:background="@drawable/background"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:icon="@drawable/ic_search"
