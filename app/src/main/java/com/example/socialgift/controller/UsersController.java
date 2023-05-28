@@ -2,13 +2,18 @@ package com.example.socialgift.controller;
 
 import android.content.Context;
 import android.util.Log;
+import android.view.View;
 
 import com.example.socialgift.datamanager.DataManagerAPI;
+import com.example.socialgift.datamanager.DataManagerCallbacks;
 import com.example.socialgift.model.User;
 import com.example.socialgift.view.EditUserFragment;
 import com.example.socialgift.view.LoginActivity;
 import com.example.socialgift.view.RegisterActivity;
+import com.example.socialgift.view.SearchFragment;
 import com.example.socialgift.view.ShowMyUserFragment;
+
+import java.util.List;
 
 public class UsersController {
 
@@ -17,8 +22,17 @@ public class UsersController {
 
     private EditUserFragment editUserFragment;
     private LoginActivity loginActivity;
+    private SearchFragment searchFragment;
     private Context context;
-
+    /**
+     * Constructor de la clase UsersController cuando quiero loggearme
+     * @param searchFragment Fragmento que implementa la interfaz ShowMyUserFragment
+     * @param context Contexto de la aplicación
+     */
+    public UsersController(SearchFragment searchFragment, Context context) {
+        this.searchFragment = searchFragment;
+        this.context = context;
+    }
     /**
      * Constructor de la clase UsersController cuando quiero registrarme
      * @param registerActivity Fragmento que implementa la interfaz ShowMyUserFragment
@@ -143,6 +157,28 @@ public class UsersController {
             @Override
             public void onError(String errorMessage) {
                 Log.e("API_ERROR_UPDATE_USER", errorMessage);
+            }
+        });
+    }
+    public void searchUser(String searchTerm) {
+        DataManagerAPI.searchUser(searchTerm, context, new DataManagerCallbacks.DataManagerCallbackUserList<>(){
+        
+            @Override
+            public void onSuccess(List<User> list) {
+                Log.d("API_SUCCESS_SEARCH_USER", "Mi LISTA DE USUARIOS ES:  " + list);
+                System.out.println("lista :: "+list);
+                for (User u: list ) {
+                    SearchFragment.arrayList.add(u.getEmail());
+                }
+                SearchFragment.listView.setVisibility(View.VISIBLE);
+                SearchFragment.adapter.getFilter().filter(searchTerm);
+                System.out.println(SearchFragment.arrayList);
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+                Log.e("API_ERROR_SEARCH_USER", errorMessage);
+
             }
         });
     }

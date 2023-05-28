@@ -10,27 +10,32 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SearchView;
 
 import com.example.socialgift.R;
+import com.example.socialgift.controller.UsersController;
+import com.example.socialgift.model.User;
 
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class SearchFragment extends Fragment {
 
-    ArrayList<String> arrayList;
-    ArrayAdapter<String> adapter;
+    public static ArrayList<String> arrayList;
+    public static ArrayAdapter<String> adapter;
 
-    ListView listView;
+    private UsersController usersController;
+
+    public static ListView listView;
     SearchView searchView;
     Activity activity = getActivity();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        usersController = new UsersController(this, getActivity());
         View rootView = inflater.inflate(R.layout.fragment_search, container, false);
 
         //ImageView imageView = (ImageView) getView().findViewById(R.id.);
@@ -40,13 +45,6 @@ public class SearchFragment extends Fragment {
         listView.setVisibility(View.GONE);
 
         arrayList = new ArrayList<>();
-        arrayList.add("Monday");
-        arrayList.add("Tuesday");
-        arrayList.add("Wednesday");
-        arrayList.add("Thursday");
-        arrayList.add("Friday");
-        arrayList.add("Saturday");
-        arrayList.add("Sunday");
 
         adapter = new ArrayAdapter<>(rootView.getContext(), android.R.layout.simple_list_item_1, arrayList);
         listView.setAdapter(adapter);
@@ -61,8 +59,10 @@ public class SearchFragment extends Fragment {
                 if(TextUtils.isEmpty(s)){
                     listView.setVisibility(View.GONE);
                 }else{
-                    listView.setVisibility(View.VISIBLE);
-                    adapter.getFilter().filter(s);
+
+                    System.out.println("s :: " +s);
+                    usersController.searchUser(s);
+
                 }
                 return false;
             }
