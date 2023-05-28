@@ -1,6 +1,7 @@
 package com.example.socialgift.view;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -9,6 +10,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.SearchView;
@@ -29,6 +31,9 @@ public class SearchFragment extends Fragment {
     private UsersController usersController;
 
     public static ListView listView;
+    public static List<User> lstUsers = new ArrayList<>();
+    public static User user = new User();
+
     SearchView searchView;
     Activity activity = getActivity();
 
@@ -67,6 +72,25 @@ public class SearchFragment extends Fragment {
                 return false;
             }
         });
+        listView.setClickable(true);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
+                Object o = listView.getItemAtPosition(position);
+                String str= (String) o;
+
+                System.out.println(str);
+                for (User u: lstUsers) {
+                    if(u.getEmail() == str){
+                        user=u;
+                    }
+                }
+                Intent homepage = new Intent(getActivity(), ShowUserProfile.class);
+                startActivity(homepage);
+            }
+        });
         return rootView;
     }
+
 }

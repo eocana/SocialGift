@@ -167,12 +167,15 @@ public class UsersController {
             public void onSuccess(List<User> list) {
                 Log.d("API_SUCCESS_SEARCH_USER", "Mi LISTA DE USUARIOS ES:  " + list);
                 System.out.println("lista :: "+list);
-                for (User u: list ) {
-                    SearchFragment.arrayList.add(u.getEmail());
+                if(list!=null){
+                    for (User u: list ) {
+                        SearchFragment.arrayList.add(u.getEmail());
+                        SearchFragment.lstUsers.add(u);
+                    }
+                    SearchFragment.listView.setVisibility(View.VISIBLE);
+                    SearchFragment.adapter.getFilter().filter(searchTerm);
+                    System.out.println(SearchFragment.arrayList);
                 }
-                SearchFragment.listView.setVisibility(View.VISIBLE);
-                SearchFragment.adapter.getFilter().filter(searchTerm);
-                System.out.println(SearchFragment.arrayList);
             }
 
             @Override
