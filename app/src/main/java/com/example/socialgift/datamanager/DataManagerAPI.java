@@ -760,8 +760,8 @@ public class DataManagerAPI implements DataManagerCallbacks{
                                 // Crear una instancia de regalo reservado y establecer sus atributos
                                 Gift giftReserved = new Gift();
                                 giftReserved.setId(giftObject.getInt("id"));
-                                giftReserved.setWishlistId(giftObject.getInt("wishlist_id"));
-                                giftReserved.setProductUrl(giftObject.getString("product_url"));
+                                giftReserved.setWishlist_id(giftObject.getInt("wishlist_id"));
+                                giftReserved.setProduct_url(giftObject.getString("product_url"));
                                 giftReserved.setPriority(giftObject.getInt("priority"));
                                 giftReserved.setBooked(giftObject.getBoolean("booked"));
 
