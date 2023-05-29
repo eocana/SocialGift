@@ -32,7 +32,7 @@ import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
-public class DataManagerDB {
+public class DataManagerDB_old {
     private static FirebaseFirestore db;
 
     // Connection to DB Firestore

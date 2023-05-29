@@ -11,6 +11,7 @@ Tabla de contenidos:
     - [createUser](#createuser)
     - [loginUser](#loginuser)
     - [getMyUser](#getmyuser)
+    - [getUser](#getuser)
     - [updateUser](#updateuser)
     - [searchUser](#searchuser)
     - [deleteMyUser](#deletemyuser)
@@ -39,7 +40,6 @@ Tabla de contenidos:
     - [editCategory](#editcategory)
     - [deleteCategory](#deletecategory)
   - Next blocks...
-   
 - [Interfaces_Callback](#interfaces-de-callback)
 
 ## Atributos
@@ -68,6 +68,7 @@ Indice por bloques, que estan divididos por los endpoints de la API.
   - [createUser](#createuser)
   - [loginUser](#loginuser)
   - [getMyUser](#getmyuser)
+  - [getUser](#getuser)
   - [updateUser](#updateuser)
   - [searchUser](#searchuser)
   - [deleteMyUser](#deletemyuser)
@@ -98,6 +99,8 @@ Indice por bloques, que estan divididos por los endpoints de la API.
 - Next blocks...
 - [Interfaces_Callback](#interfaces-de-callback) 
   -[Ejemplo de como usar los callbacks](#ejemplo-de-como-usar-los-callbacks)
+
+
 ### Bloque usuarios
 
 #### createUser
@@ -137,6 +140,13 @@ public static void getMyUser(Context context, DataManagerCallbackUser<User> call
   - `callback` (DataManagerCallbackUser<User>): El callback para gestionar la respuesta. Mirar en [Interfaces de Callback](#interfaces-de-callback).
 ##### Devuelve:
   - `User`: El objeto User con la información del usuario actualmente autenticado EN FORMA DE CALLBACK.
+
+#### getUser
+Obtiene la información del usuario con el ID proporcionado.
+
+```java
+public static void getUser(int userId, Context context, DataManagerCallbackUser<User> callback)
+```
 
 #### updateUser
 Actualiza el perfil del usuario con los datos proporcionados.
@@ -210,6 +220,7 @@ public static void getWishlist(String wishlistId, Context context, DataManagerCa
   - `Wishlist`: La lista de deseos con el id proporcionado.
 
 ### Bloque gifts
+
 
 #### createGift
 Crea un nuevo regalo con los datos proporcionados.

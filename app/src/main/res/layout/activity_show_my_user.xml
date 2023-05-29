@@ -26,12 +26,12 @@
         android:layout_marginTop="16dp"/>
 
 
-   <!--<fragment
-        android:id="@+id/show_my_user_footer"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="8dp"
-        android:layout_alignParentBottom="true"/> -->
+       <!--<fragment
+            android:id="@+id/show_my_user_footer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="8dp"
+            android:layout_alignParentBottom="true"/> -->
 
 </RelativeLayout>

@@ -39,6 +39,11 @@ public interface DataManagerCallbacks {
         void onError(String errorMessage);
     }
 
+    interface DataManagerCallbackListGift<Gift> {
+        void onSuccess(List<Gift> gift);
+        void onError(String errorMessage);
+    }
+
     interface DataManagerCallbackProduct<Product> {
         void onSuccess(Product product);
         void onError(String errorMessage);

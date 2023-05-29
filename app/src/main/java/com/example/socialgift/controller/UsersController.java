@@ -133,6 +133,7 @@ public class UsersController {
      */
     public void updateUser(String firstName, String lastName, String imageUrl) {
         // Llamada al método updateUser del DataManagerAPI
+        //TODO: url image
         DataManagerAPI.updateUser(firstName, lastName, imageUrl, context, new DataManagerAPI.DataManagerCallback() {
             @Override
             public void onSuccess() {

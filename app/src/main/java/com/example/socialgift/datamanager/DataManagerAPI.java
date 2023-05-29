@@ -66,10 +66,12 @@ public class DataManagerAPI implements DataManagerCallbacks{
     }
 
     public static void logOut() {
+
         userSession = null;
         accessToken = null;
         MyIdSession = -1;
         mailSession = null;
+
     }
 
     private static Date parseDateFromString(String dateString) {
@@ -345,6 +347,55 @@ public class DataManagerAPI implements DataManagerCallbacks{
         queue.add(request);
     }
 
+    public static void getUser(int id_user, Context context, DataManagerCallbackUser<User> callback){
+        String urlUsers = url + "users/" + id_user;
+
+        // Crear la solicitud GET utilizando Volley
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, urlUsers, null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            // Crear el objeto User con los datos obtenidos
+                            User user = new User();
+                            user.setId(response.getInt("id"));
+                            user.setName(response.getString("name"));
+                            user.setLastName(response.getString("last_name"));
+                            user.setEmail(response.getString("email"));
+                            user.setImage(response.getString("image"));
+
+                            // Llamar al callback onSuccess con el usuario obtenido
+                            callback.onSuccess(user);
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            // Llamar al callback onError en caso de error en el formato de la respuesta JSON
+                            callback.onError("Error al procesar la respuesta del servidor");
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // Llamar al callback onError en caso de error en la solicitud
+                        callback.onError("Error en la solicitud: " + error.getMessage());
+                    }
+                }) {
+            @Override
+            public Map<String, String> getHeaders() {
+                // Agregar el encabezado Authorization con el token de acceso
+                Map<String, String> headers = new HashMap<>();
+                headers.put("Authorization", "Bearer " + DataManagerAPI.getAccessToken());
+                return headers;
+            }
+        };
+
+        // Agregar la solicitud a la cola de solicitudes de Volley
+        RequestQueue queue = Volley.newRequestQueue(context);
+        queue.add(request);
+    }
+
+
     /**
      * !!WARNING IF YOU DELETE THE USER CAN BE CRASH THE APP!!
      * Método para eliminar un usuario
@@ -478,7 +529,7 @@ public class DataManagerAPI implements DataManagerCallbacks{
      * @param context
      * @param callback
      */
-    public static void wishlistsOfUser(Context context, DataManagerCallbackWishlists<Wishlist> callback){
+    public static void wishlistsMyUser(Context context, DataManagerCallbackWishlists<Wishlist> callback){
         String urlWishlists = url + "users/" + userSession.getId() + "/wishlists";
 
         // Crear la solicitud GET utilizando Volley
@@ -584,6 +635,169 @@ public class DataManagerAPI implements DataManagerCallbacks{
         queue.add(request);
     }
 
+    public static void wishlistsUser(int id, Context context, DataManagerCallbackWishlists<Wishlist> callback){
+        String urlWishlists = url + "users/" + id + "/wishlists";
+
+        // Crear la solicitud GET utilizando Volley
+        JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, urlWishlists, null,
+                new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        try {
+                            // Crear una lista para almacenar las wishlists
+
+                            List<Wishlist> wishlistList = new ArrayList<>();
+
+                            // Recorrer cada elemento del JSONArray
+                            for (int i = 0; i < response.length(); i++) {
+
+                                // Obtener el objeto JSON de cada wishlist
+                                JSONObject wishlistObject = response.getJSONObject(i);
+
+                                // Obtener los datos de la wishlist
+                                int id = wishlistObject.getInt("id");
+                                String name = wishlistObject.getString("name");
+                                String description = wishlistObject.getString("description");
+                                int userId = wishlistObject.getInt("user_id");
+                                String creationDateString = wishlistObject.getString("creation_date");
+
+                                // Verificar si el campo 'end_date' está presente en el JSON
+                                String endDateString = wishlistObject.has("end_date") ? wishlistObject.getString("end_date") : null;
+
+                                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault());
+                                Date creationDate = sdf.parse(creationDateString);
+                                Date endDate = null;
+                                if (endDateString != null) {
+                                    endDate = sdf.parse(endDateString);
+                                }
+
+                                // Crear una lista para almacenar los gifts de la wishlist
+                                List<Gift> giftList = new ArrayList<>();
+
+                                // Verificar si el campo 'gifts' está presente en el JSON
+                                if (wishlistObject.has("gifts")) {
+                                    // Obtener el JSONArray de gifts de la wishlist
+                                    JSONArray giftArray = wishlistObject.getJSONArray("gifts");
+                                    // Recorrer cada elemento del JSONArray de gifts
+                                    for (int j = 0; j < giftArray.length(); j++) {
+                                        // Obtener el objeto JSON de cada gift
+                                        JSONObject giftObject = giftArray.getJSONObject(j);
+
+                                        // Obtener los datos del gift
+                                        int giftId = giftObject.getInt("id");
+                                        int wishlistId = giftObject.getInt("wishlist_id");
+                                        String productUrl = giftObject.getString("product_url");
+                                        int priority = giftObject.getInt("priority");
+                                        boolean booked = giftObject.getBoolean("booked");
+
+                                        // Crear el objeto Gift y agregarlo a la lista
+                                        Gift gift = new Gift(giftId, wishlistId, productUrl, priority, booked);
+                                        giftList.add(gift);
+                                    }
+                                }
+
+                                // Crear el objeto Wishlist y agregarlo a la lista de wishlists
+                                Wishlist wishlist = new Wishlist(id, name, description, userSession.getId(), creationDate);
+
+                                if (endDate != null) {
+                                    wishlist.setEndDate(endDate);
+                                }
+                                if (giftList.size() > 0) {
+                                    wishlist.setGifts(giftList);
+                                }
+
+                                wishlistList.add(wishlist);
+                            }
+
+                            // Llamar al callback onSuccess con la lista de wishlists
+                            callback.onSuccess(wishlistList);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            // Llamar al callback onError en caso de error en el formato de la respuesta JSON
+                            callback.onError("Error al procesar la respuesta del servidor");
+                        } catch (ParseException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // Llamar al callback onError en caso de error en la solicitud
+                        callback.onError("Error en la solicitud: " + error.getMessage());
+                    }
+                }) {
+            @Override
+            public Map<String, String> getHeaders() {
+                // Agregar el encabezado Authorization con el token de acceso
+                Map<String, String> headers = new HashMap<>();
+                headers.put("Authorization", "Bearer " + DataManagerAPI.getAccessToken());
+                return headers;
+            }
+        };
+
+        // Agregar la solicitud a la cola de solicitudes de Volley
+        RequestQueue queue = Volley.newRequestQueue(context);
+        queue.add(request);
+    }
+
+    public static void getGiftsReserved(int userId, Context context, DataManagerCallbackListGift<Gift> callback){
+        String urlGiftsReserved = url + "users/" + userId + "/gifts/reserved";
+
+        // Realizar la solicitud GET utilizando Volley
+        JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, urlGiftsReserved, null,
+                new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        // Crear una lista para almacenar los regalos reservados
+                        List<Gift> giftsReservedList = new ArrayList<>();
+
+                        // Recorrer el JSONArray de respuesta y parsear cada objeto de regalo reservado
+                        for (int i = 0; i < response.length(); i++) {
+                            try {
+                                JSONObject giftObject = response.getJSONObject(i);
+
+                                // Crear una instancia de regalo reservado y establecer sus atributos
+                                Gift giftReserved = new Gift();
+                                giftReserved.setId(giftObject.getInt("id"));
+                                giftReserved.setWishlistId(giftObject.getInt("wishlist_id"));
+                                giftReserved.setProductUrl(giftObject.getString("product_url"));
+                                giftReserved.setPriority(giftObject.getInt("priority"));
+                                giftReserved.setBooked(giftObject.getBoolean("booked"));
+
+                                // Agregar el regalo reservado a la lista
+                                giftsReservedList.add(giftReserved);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+
+                        // Llamar al callback onSuccess con la lista de regalos reservados obtenidos
+                        callback.onSuccess(giftsReservedList);
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // Llamar al callback onError en caso de error
+                        String errorMessage = "Error en la solicitud: " + error.getMessage();
+                        callback.onError(errorMessage);
+                    }
+                }) {
+            @Override
+            public Map<String, String> getHeaders() {
+                // Agregar el encabezado Authorization con el token de acceso
+                Map<String, String> headers = new HashMap<>();
+                headers.put("Authorization", "Bearer " + DataManagerAPI.getAccessToken());
+                return headers;
+            }
+        };
+
+        // Agregar la solicitud a la cola de solicitudes de Volley
+        RequestQueue queue = Volley.newRequestQueue(context);
+        queue.add(request);
+
+    }
     //-----------------------FIN BLOQUE USERS---------------------------------//
 
     /**************************************************************************
