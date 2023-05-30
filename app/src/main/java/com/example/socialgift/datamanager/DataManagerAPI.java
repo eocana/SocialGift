@@ -49,7 +49,7 @@ public class DataManagerAPI implements DataManagerCallbacks{
     private static UserSession userSession;
 
     private static int MyIdSession;
-    private static final String url = "https://balandrau.salle.url.edu/i3/socialgift/api/v1/";
+    protected static final String url = "https://balandrau.salle.url.edu/i3/socialgift/api/v1/";
 
 
 
