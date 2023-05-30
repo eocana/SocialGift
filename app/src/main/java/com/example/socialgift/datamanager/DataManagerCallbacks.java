@@ -63,4 +63,6 @@ public interface DataManagerCallbacks {
         void onSuccess(List<Category> categoryList);
         void onError(String errorMessage);
     }
+
+
 }

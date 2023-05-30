@@ -1,7 +1,9 @@
 package com.example.socialgift.view;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +24,7 @@ import com.example.socialgift.model.User;
 public class ShowMyUserFragment extends Fragment {
 
     private ImageView userImageView;
-    private TextView nameTextView;
+    private TextView nameTextView, friendsCountTextView, reservedGiftsCountTextView, wishlistsCountTextView;
 
     private Button editButton, logoutButton;
 
@@ -35,6 +37,9 @@ public class ShowMyUserFragment extends Fragment {
 
         // Obtener los elementos de la interfaz de usuario
         userImageView = view.findViewById(R.id.user_image);
+        friendsCountTextView = view.findViewById(R.id.friends_count);
+        reservedGiftsCountTextView = view.findViewById(R.id.reserved_gifts_count);
+        wishlistsCountTextView = view.findViewById(R.id.wishlists_count);
         nameTextView = view.findViewById(R.id.user_name);
         editButton = view.findViewById(R.id.edit_button);
         logoutButton = view.findViewById(R.id.logout_button);
@@ -69,8 +74,46 @@ public class ShowMyUserFragment extends Fragment {
         return view;
     }
 
+    @SuppressLint("SetTextI18n")
     public void showUserData(User user) {
         // Mostrar los datos del usuario en la interfaz de usuario
+        userController.getWishlistsCount(new UsersController.DataManagerCallback<Integer>() {
+            @Override
+            public void onSuccess(Integer count) {
+                wishlistsCountTextView.setText("Wishlists: " + count);
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+                Log.e("API_ERROR_GET_WISHLISTS", errorMessage);
+            }
+        });
+
+        userController.getReservedGiftsCount(new UsersController.DataManagerCallback<Integer>() {
+            @Override
+            public void onSuccess(Integer count) {
+                reservedGiftsCountTextView.setText("Regalos reservados: " + count);
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+                Log.e("API_ERROR_GET_GIFTS_RESERVED", errorMessage);
+            }
+        });
+
+        userController.getFriendsCount(new UsersController.DataManagerCallback<Integer>() {
+            @Override
+            public void onSuccess(Integer count) {
+                TextView friendsCountTextView = requireView().findViewById(R.id.friends_count);
+                friendsCountTextView.setText("Amigos: " + count);
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+                Log.e("API_ERROR_GET_FRIENDS", errorMessage);
+            }
+        });
+
         nameTextView.setText(user.getName() + " " + user.getLastName());
         ImageView userImageView = requireView().findViewById(R.id.user_image);
         String url = user.getImage();
@@ -80,6 +123,8 @@ public class ShowMyUserFragment extends Fragment {
                 .error(R.drawable.baseline_person_24)
                 .circleCrop()
                 .into(userImageView);
+
+
     }
 
     public void goToLoginActivity() {

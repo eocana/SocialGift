@@ -4,11 +4,17 @@ import android.content.Context;
 import android.util.Log;
 
 import com.example.socialgift.datamanager.DataManagerAPI;
+import com.example.socialgift.datamanager.DataManagerCallbacks;
+import com.example.socialgift.datamanager.DataManagerSocial;
+import com.example.socialgift.model.Gift;
 import com.example.socialgift.model.User;
+import com.example.socialgift.model.Wishlist;
 import com.example.socialgift.view.EditUserFragment;
 import com.example.socialgift.view.LoginActivity;
 import com.example.socialgift.view.RegisterActivity;
 import com.example.socialgift.view.ShowMyUserFragment;
+
+import java.util.List;
 
 public class UsersController {
 
@@ -18,6 +24,11 @@ public class UsersController {
     private EditUserFragment editUserFragment;
     private LoginActivity loginActivity;
     private Context context;
+
+    public interface DataManagerCallback<T> {
+        void onSuccess(T data);
+        void onError(String errorMessage);
+    }
 
     /**
      * Constructor de la clase UsersController cuando quiero registrarme
@@ -60,6 +71,8 @@ public class UsersController {
                 Log.e("API_ERROR_GET_MY_USER", errorMessage);
             }
         });
+
+
     }
 
     /**
@@ -144,6 +157,49 @@ public class UsersController {
             @Override
             public void onError(String errorMessage) {
                 Log.e("API_ERROR_UPDATE_USER", errorMessage);
+            }
+        });
+    }
+
+    public void getWishlistsCount(DataManagerCallback<Integer> callback) {
+        DataManagerAPI.wishlistsMyUser(context, new DataManagerCallbacks.DataManagerCallbackWishlists<Wishlist>() {
+            @Override
+            public void onSuccess(List<Wishlist> wishlists) {
+                int count = wishlists.size();
+                callback.onSuccess(count);
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+                callback.onError(errorMessage);
+            }
+        });
+    }
+    public void getReservedGiftsCount(DataManagerCallback<Integer> callback) {
+        DataManagerAPI.getGiftsReserved(DataManagerAPI.getObjectUser().getId(), context, new DataManagerCallbacks.DataManagerCallbackListGift<Gift>() {
+            @Override
+            public void onSuccess(List<Gift> gifts) {
+                int count = gifts.size();
+                callback.onSuccess(count);
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+                callback.onError(errorMessage);
+            }
+        });
+    }
+    public void getFriendsCount(DataManagerCallback<Integer> callback) {
+        DataManagerSocial.getUserFriends(DataManagerAPI.getObjectUser().getId(), context, new DataManagerCallbacks.DataManagerCallbackUserList<User>() {
+            @Override
+            public void onSuccess(List<User> users) {
+                int count = users.size();
+                callback.onSuccess(count);
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+                callback.onError(errorMessage);
             }
         });
     }

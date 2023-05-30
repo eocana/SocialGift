@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="16dp"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    android:padding="16dp">
 
     <ImageView
         android:id="@+id/user_image"
@@ -25,12 +24,40 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="16dp"/>
 
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@id/user_name"
+        android:layout_centerHorizontal="true">
+
+        <TextView
+            android:id="@+id/friends_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Amigos:"
+            android:layout_marginEnd="16dp"/>
+
+        <TextView
+            android:id="@+id/wishlists_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Wishlists:"
+            android:layout_marginEnd="16dp"/>
+
+        <TextView
+            android:id="@+id/reserved_gifts_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Regalos reservados:"/>
+    </LinearLayout>
+
     <Button
         android:id="@+id/edit_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/user_name"
-        android:layout_marginTop="9dp"
+        android:layout_below="@id/user_name"
+        android:layout_marginTop="53dp"
         android:backgroundTint="@color/button_enabled"
         android:drawablePadding="8dp"
         android:padding="8dp"
@@ -41,10 +68,10 @@
         android:id="@+id/logout_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/user_name"
-        android:layout_marginStart="208dp"
-        android:layout_marginTop="9dp"
-        android:layout_toEndOf="@+id/edit_button"
+        android:layout_below="@id/user_name"
+        android:layout_marginStart="197dp"
+        android:layout_marginTop="53dp"
+        android:layout_toEndOf="@id/edit_button"
         android:backgroundTint="@color/button_enabled"
         android:drawableStart="@drawable/ic_logout"
         android:drawablePadding="8dp"
