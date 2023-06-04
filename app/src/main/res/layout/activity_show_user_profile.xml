@@ -7,34 +7,78 @@
     tools:context=".view.ShowUserProfile">
 
     <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="80dp"
+        android:id="@+id/user_image"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:src="@drawable/ic_user"
+        android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
+        android:scaleType="centerCrop"
+        android:layout_marginTop="50dp"
         tools:src="@tools:sample/avatars" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/userName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="TextView"
+        android:textSize="24sp"
+        android:textColor="@color/black"
+        android:text="Lore Ipsum Dolor"
+        android:layout_below="@+id/user_image"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="300dp"/>
+        android:layout_marginTop="16dp"/>
 
-    <TextView
-        android:id="@+id/textView3"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="TextView"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="340dp"/>
+        android:orientation="horizontal"
+        android:layout_below="@id/userName"
+        android:layout_centerHorizontal="true">
 
-    <TextView
-        android:id="@+id/textView4"
+        <TextView
+            android:id="@+id/friends_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Amigos:"
+            android:layout_marginEnd="16dp"/>
+
+        <TextView
+            android:id="@+id/wishlists_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Wishlists:"
+            android:layout_marginEnd="16dp"/>
+
+        <TextView
+            android:id="@+id/reserved_gifts_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Regalos reservados:"/>
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/wishlist"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="TextView"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="380dp"/>
+        android:layout_marginTop="53dp"
+        android:drawablePadding="8dp"
+        android:layout_below="@id/userName"
+        android:padding="8dp"
+        android:text="Wishlist"
+        android:textColor="@color/white"
+        android:layout_marginStart="75dp"/>
+
+    <Button
+        android:id="@+id/reserved"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/userName"
+        android:layout_marginStart="75dp"
+        android:layout_marginTop="53dp"
+        android:layout_toEndOf="@id/wishlist"
+        android:drawableStart="@drawable/ic_logout"
+        android:drawablePadding="8dp"
+        android:padding="8dp"
+        android:text="Reserved"
+        android:textColor="@color/white"/>
 </RelativeLayout>
