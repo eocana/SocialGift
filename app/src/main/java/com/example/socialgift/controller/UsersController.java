@@ -15,6 +15,7 @@ import com.example.socialgift.view.LoginActivity;
 import com.example.socialgift.view.RegisterActivity;
 import com.example.socialgift.view.SearchFragment;
 import com.example.socialgift.view.ShowMyUserFragment;
+import com.example.socialgift.view.ShowWishlistActivity;
 
 import java.util.List;
 
@@ -25,6 +26,7 @@ public class UsersController {
     private SearchFragment searchFragment;
     private EditUserFragment editUserFragment;
     private LoginActivity loginActivity;
+    private ShowWishlistActivity showWishlistActivity;
     private Context context;
 
 
@@ -53,6 +55,10 @@ public class UsersController {
         this.context = context;
     }
 
+    public UsersController(ShowWishlistActivity showWishlistActivity, Context context) {
+        this.showWishlistActivity = showWishlistActivity;
+        this.context = context;
+    }
     /**
      * Constructor de la clase UsersController cuando quiero loggearme
      * @param loginActivity Fragmento que implementa la interfaz ShowMyUserFragment
@@ -247,7 +253,22 @@ public class UsersController {
             @Override
             public void onSuccess(List<Wishlist> wishlists) {
                 Log.d("API_SUCCESS_SEARCH_USER", "Mi LISTA DE WISHLIST ES:  " + wishlists);
-                System.out.println("lista :: "+wishlists);
+                System.out.println("lista wishlists :: "+wishlists);
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+                Log.e("API_ERROR_SEARCH_USER", errorMessage);
+            }
+        });
+    }
+    public void getGiftsReserved(int id){
+        DataManagerAPI.getGiftsReserved(id, context, new DataManagerCallbacks.DataManagerCallbackListGift<>() {
+
+            @Override
+            public void onSuccess(List<Gift> gift) {
+                Log.d("API_SUCCESS_SEARCH_USER", "Mi LISTA DE WISHLIST ES:  " + gift);
+                System.out.println("lista :: "+gift);
             }
 
             @Override

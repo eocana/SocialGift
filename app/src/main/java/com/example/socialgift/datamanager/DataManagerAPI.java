@@ -688,7 +688,7 @@ public class DataManagerAPI implements DataManagerCallbacks{
                                         int wishlistId = giftObject.getInt("wishlist_id");
                                         String productUrl = giftObject.getString("product_url");
                                         int priority = giftObject.getInt("priority");
-                                        boolean booked = giftObject.getBoolean("booked");
+                                        boolean booked = Boolean.valueOf(String.valueOf(giftObject.getInt("booked")));
 
                                         // Crear el objeto Gift y agregarlo a la lista
                                         Gift gift = new Gift(giftId, wishlistId, productUrl, priority, booked);

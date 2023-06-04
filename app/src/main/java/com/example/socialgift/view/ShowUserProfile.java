@@ -58,13 +58,15 @@ public class ShowUserProfile extends AppCompatActivity {
         wishlist = (Button) findViewById(R.id.wishlist);
         wishlist.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                userController.wishlistsUser(SearchFragment.user.getId());
+                Intent myIntent = new Intent(getApplicationContext(), ShowWishlistActivity.class);
+                startActivity(myIntent);
             }
         });
+
         reserved = (Button) findViewById(R.id.reserved);
         reserved.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Log.d("BUTTONS", "User tapped the Supabutton");
+                userController.getGiftsReserved(SearchFragment.user.getId());
             }
         });
     }
