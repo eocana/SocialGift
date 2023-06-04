@@ -2,16 +2,19 @@ package com.example.socialgift.view;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.widget.TextView;
 import android.util.Log;
 import android.widget.Button;
 
 import com.example.socialgift.R;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.example.socialgift.datamanager.DataManagerAPI;
 import com.example.socialgift.datamanager.DataManagerCallbacks;
 import com.example.socialgift.datamanager.MercadoExpressAPI;
 import com.example.socialgift.model.User;
-import com.example.socialgift.model.Wishlist;
 
 import java.util.List;
 
@@ -23,6 +26,17 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigationbar);
+        bottomNavigationView.getMenu().clear();
+        bottomNavigationView.inflateMenu(R.menu.menu);
+
+        if (savedInstanceState == null) {
+            getSupportFragmentManager().beginTransaction()
+                    .setReorderingAllowed(true)
+                    .add(R.id.fragment_searchBar, SearchFragment.class, null)
+                    .commit();
+        }
         DataManagerAPI.getMyUser(this, new DataManagerCallbacks.DataManagerCallbackUser<User>() {
             @Override
             public void onSuccess(User user) {
