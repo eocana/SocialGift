@@ -14,8 +14,11 @@ import com.example.socialgift.view.EditUserFragment;
 import com.example.socialgift.view.LoginActivity;
 import com.example.socialgift.view.RegisterActivity;
 import com.example.socialgift.view.SearchFragment;
+import com.example.socialgift.view.ShowGiftFragment;
 import com.example.socialgift.view.ShowMyUserFragment;
+import com.example.socialgift.view.ShowReservedActivity;
 import com.example.socialgift.view.ShowWishlistActivity;
+import com.example.socialgift.view.ShowWishlistFragment;
 
 import java.util.List;
 
@@ -26,7 +29,9 @@ public class UsersController {
     private SearchFragment searchFragment;
     private EditUserFragment editUserFragment;
     private LoginActivity loginActivity;
-    private ShowWishlistActivity showWishlistActivity;
+    private ShowWishlistFragment showWishlistFragment;
+    private ShowGiftFragment showGiftFragment;
+    private ShowReservedActivity showReservedActivity;
     private Context context;
 
 
@@ -55,8 +60,16 @@ public class UsersController {
         this.context = context;
     }
 
-    public UsersController(ShowWishlistActivity showWishlistActivity, Context context) {
-        this.showWishlistActivity = showWishlistActivity;
+    public UsersController(ShowWishlistFragment showWishlistFragment, Context context) {
+        this.showWishlistFragment = showWishlistFragment;
+        this.context = context;
+    }
+    public UsersController(ShowGiftFragment showGiftFragment, Context context) {
+        this.showGiftFragment = showGiftFragment;
+        this.context = context;
+    }
+    public UsersController(ShowReservedActivity showReservedActivity, Context context) {
+        this.showReservedActivity = showReservedActivity;
         this.context = context;
     }
     /**
@@ -249,11 +262,19 @@ public class UsersController {
     }
 
     public void wishlistsUser(int id) {
-        DataManagerAPI.wishlistsUser(id, context, new DataManagerCallbacks.DataManagerCallbackWishlists<>() {
+        DataManagerAPI.wishlistsUser(1, context, new DataManagerCallbacks.DataManagerCallbackWishlists<>() {
             @Override
             public void onSuccess(List<Wishlist> wishlists) {
                 Log.d("API_SUCCESS_SEARCH_USER", "Mi LISTA DE WISHLIST ES:  " + wishlists);
                 System.out.println("lista wishlists :: "+wishlists);
+                if(wishlists!=null){
+                    for (Wishlist w: wishlists ) {
+                        System.out.println("w :: "+w.getName());
+                        ShowWishlistFragment.lstWishlist.add(w);
+                        ShowWishlistFragment.arrayList.add(w.getName());
+                    }
+                    ShowWishlistFragment.listView.setVisibility(View.VISIBLE);
+                }
             }
 
             @Override

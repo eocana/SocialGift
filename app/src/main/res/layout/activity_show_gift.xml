@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.ShowWishlistActivity">
+    tools:context=".view.ShowGiftActivity">
 
-    <fragment
-        android:id="@+id/show_wishlist_fragment"
-        android:name="com.example.socialgift.view.ShowWishlistFragment"
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/show_gift_fragment"
+        android:name="com.example.socialgift.view.ShowGiftFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 

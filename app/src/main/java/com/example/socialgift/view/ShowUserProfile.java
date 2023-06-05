@@ -22,6 +22,7 @@ import com.example.socialgift.R;
 import com.example.socialgift.controller.UsersController;
 import com.example.socialgift.model.User;
 import com.example.socialgift.view.SearchFragment;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.io.InputStream;
 
@@ -66,7 +67,8 @@ public class ShowUserProfile extends AppCompatActivity {
         reserved = (Button) findViewById(R.id.reserved);
         reserved.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                userController.getGiftsReserved(SearchFragment.user.getId());
+                Intent myIntent = new Intent(getApplicationContext(), ShowReservedActivity.class);
+                startActivity(myIntent);
             }
         });
     }
