@@ -77,9 +77,7 @@ public class ShowWishlistFragment extends Fragment {
                 if(wishlist.getGifts()==null){
                     Toast.makeText(getActivity().getApplicationContext(), "No tiene regalos relacionados",Toast.LENGTH_SHORT).show();
                 }else{
-                    Intent myIntent = new Intent(getActivity().getApplicationContext(), ShowGiftActivity.class);
-                    ShowGiftFragment.lstGifts = wishlist.getGifts();
-                    startActivity(myIntent);
+                    startActivity( new Intent(getActivity().getApplicationContext(), ShowGiftActivity.class));
                 }
             }
         });

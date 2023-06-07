@@ -80,7 +80,7 @@ public class MercadoExpressAPI extends DataManagerAPI implements DataManagerCall
      * @param context Contexto de la aplicación
      * @param callback Callback para manejar la respuesta del servidor
      */
-    public void getAProduct(int productId, Context context, DataManagerCallbackProduct<Product> callback) {
+    public static void getAProduct(int productId, Context context, DataManagerCallbackProduct<Product> callback) {
         String url = getBaseUrl() + "products/" + productId;
 
         // Realiza la solicitud GET utilizando Volley
@@ -98,7 +98,7 @@ public class MercadoExpressAPI extends DataManagerAPI implements DataManagerCall
                             String photo = response.getString("photo");
                             float price = response.getInt("price");
                             int is_active = response.getInt("is_active");
-                            JSONArray categoryIdsArray = response.getJSONArray("category_ids");
+                            JSONArray categoryIdsArray = response.getJSONArray("categoryIds");
                             int[] categoryIds = new int[categoryIdsArray.length()];
                             for (int i = 0; i < categoryIdsArray.length(); i++) {
                                 categoryIds[i] = categoryIdsArray.getInt(i);

@@ -13,15 +13,14 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.example.socialgift.R;
-import com.example.socialgift.controller.UsersController;
+import com.example.socialgift.controller.MercadoExpressController;
 import com.example.socialgift.model.Gift;
-import com.example.socialgift.model.User;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ShowGiftFragment extends Fragment {
-    private UsersController usersController;
+    private MercadoExpressController mercadoExpressController;
     public static ListView listView;
     public static List<Gift> lstGifts = new ArrayList<>();
     public static ArrayList<String> arrayList = new ArrayList<>();
@@ -29,11 +28,16 @@ public class ShowGiftFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        usersController = new UsersController(this, getActivity());
+        mercadoExpressController = new MercadoExpressController(this, getActivity());
         View rootView = inflater.inflate(R.layout.fragment_show_gift, container, false);
+        lstGifts = ShowWishlistFragment.wishlist.getGifts();
+        System.out.println("lstGifts.size() :: "+lstGifts.size());
         if(lstGifts.size() > 0){
             for (Gift g: lstGifts) {
-                arrayList.add(g.getProductUrl());
+                System.out.println("producto");
+                String[] result = g.getProductUrl().split("/");
+                mercadoExpressController.getAProduct(Integer.parseInt(result[result.length-1]));
+                //arrayList.add(g.getProductUrl());
             }
         }
         //ImageView imageView = (ImageView) getView().findViewById(R.id.);
@@ -41,13 +45,12 @@ public class ShowGiftFragment extends Fragment {
 
         listView.setVisibility(View.GONE);
 
-        arrayList = new ArrayList<>();
+        //arrayList = new ArrayList<>();
 
         adapter = new ArrayAdapter<>(rootView.getContext(), android.R.layout.simple_list_item_1, arrayList);
         listView.setAdapter(adapter);
         listView.requestLayout();
-        System.out.println("arraylist :: "+arrayList);
-        listView.setVisibility(View.VISIBLE);
+
         return rootView;
     }
 }
