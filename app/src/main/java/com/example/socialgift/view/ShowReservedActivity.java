@@ -19,8 +19,10 @@ public class ShowReservedActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
 
-        usersController = new UsersController(this, this);
-        usersController.wishlistsUser(SearchFragment.user.getId());
+        ShowReservedFragment showReservedFragment = new ShowReservedFragment();
+        getSupportFragmentManager().beginTransaction()
+                .add(R.id.show_reserved_fragment, showReservedFragment)
+                .commit();
     }
     public boolean onOptionsItemSelected(MenuItem item){
         Intent myIntent = new Intent(getApplicationContext(), MainActivity.class);

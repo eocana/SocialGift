@@ -3,6 +3,7 @@ package com.example.socialgift.controller;
 import android.content.Context;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.example.socialgift.datamanager.DataManagerAPI;
 import com.example.socialgift.datamanager.DataManagerCallbacks;
@@ -17,7 +18,7 @@ import com.example.socialgift.view.SearchFragment;
 import com.example.socialgift.view.ShowGiftFragment;
 import com.example.socialgift.view.ShowMyUserFragment;
 import com.example.socialgift.view.ShowReservedActivity;
-import com.example.socialgift.view.ShowWishlistActivity;
+import com.example.socialgift.view.ShowReservedFragment;
 import com.example.socialgift.view.ShowWishlistFragment;
 
 import java.util.List;
@@ -30,6 +31,7 @@ public class UsersController {
     private EditUserFragment editUserFragment;
     private LoginActivity loginActivity;
     private ShowWishlistFragment showWishlistFragment;
+    private ShowReservedFragment showReservedFragment;
     private ShowGiftFragment showGiftFragment;
     private ShowReservedActivity showReservedActivity;
     private Context context;
@@ -68,8 +70,8 @@ public class UsersController {
         this.showGiftFragment = showGiftFragment;
         this.context = context;
     }
-    public UsersController(ShowReservedActivity showReservedActivity, Context context) {
-        this.showReservedActivity = showReservedActivity;
+    public UsersController(ShowReservedFragment showReservedFragment, Context context) {
+        this.showReservedFragment = showReservedFragment;
         this.context = context;
     }
     /**
@@ -289,7 +291,15 @@ public class UsersController {
             @Override
             public void onSuccess(List<Gift> gift) {
                 Log.d("API_SUCCESS_SEARCH_USER", "Mi LISTA DE WISHLIST ES:  " + gift);
-                System.out.println("lista :: "+gift);
+                System.out.println("lista reseved gifts:: "+gift);
+                if(gift!=null){
+                    for (Gift w: gift ) {
+                        ShowReservedFragment.lstGift.add(w.getProductUrl());
+                    }
+                    ShowGiftFragment.productsId = ShowReservedFragment.lstGift;
+                }else{
+                    Toast.makeText(context, "No tiene regalos reservados",Toast.LENGTH_SHORT).show();
+                }
             }
 
             @Override

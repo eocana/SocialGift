@@ -25,20 +25,31 @@ public class ShowGiftFragment extends Fragment {
     public static List<Gift> lstGifts = new ArrayList<>();
     public static ArrayList<String> arrayList = new ArrayList<>();
 
+    public static List<String> productsId;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mercadoExpressController = new MercadoExpressController(this, getActivity());
         View rootView = inflater.inflate(R.layout.fragment_show_gift, container, false);
-        lstGifts = ShowWishlistFragment.wishlist.getGifts();
+
         System.out.println("lstGifts.size() :: "+lstGifts.size());
         if(lstGifts.size() > 0){
+            arrayList.clear();
             for (Gift g: lstGifts) {
                 System.out.println("producto");
                 String[] result = g.getProductUrl().split("/");
                 mercadoExpressController.getAProduct(Integer.parseInt(result[result.length-1]));
                 //arrayList.add(g.getProductUrl());
             }
+        }else if(productsId.size() > 0){
+            arrayList.clear();
+            for (String g: productsId) {
+                String[] result = g.split("/");
+                mercadoExpressController.getAProduct(Integer.parseInt(result[result.length-1]));
+            }
+        }else{
+
         }
         //ImageView imageView = (ImageView) getView().findViewById(R.id.);
         listView = (ListView) rootView.findViewById(R.id.lv_fragmentGift);
