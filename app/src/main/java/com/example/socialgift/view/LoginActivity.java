@@ -16,7 +16,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.socialgift.R;
-import com.example.socialgift.controller.LoginController;
+import com.example.socialgift.controller.UsersController;
 import com.google.firebase.FirebaseApp;
 
 public class LoginActivity extends AppCompatActivity {
@@ -27,7 +27,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private Button registerButton;
 
-    private LoginController loginController;
+    private UsersController usersController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,33 +39,39 @@ public class LoginActivity extends AppCompatActivity {
         passwordEditText = findViewById(R.id.passwordEditText);
         loginButton = findViewById(R.id.loginButton);
         registerButton = findViewById(R.id.registerButton);
-        loginController = new LoginController(this);
-
+        //loginController = new LoginController(this);
+        usersController = new UsersController(this, this);
         loginButton.setEnabled(false);
 
 
-        loginButton.setOnClickListener(view -> {
-            String email = emailEditText.getText().toString().trim();
-            String password = passwordEditText.getText().toString().trim();
+        loginButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String email = emailEditText.getText().toString().trim();
+                String password = passwordEditText.getText().toString().trim();
 
-            if (!isValidEmail(email)) {
-                emailEditText.setError("Correo inválido");
-                return;
+                if (!isValidEmail(email)) {
+                    emailEditText.setError("Correo inválido");
+                    return;
+                }
+
+                if (TextUtils.isEmpty(email) || TextUtils.isEmpty(password)) {
+                    Toast.makeText(LoginActivity.this, "Por favor complete todos los campos", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                usersController.loginUser(email, password);
             }
-
-            if (TextUtils.isEmpty(email) || TextUtils.isEmpty(password)) {
-                Toast.makeText(LoginActivity.this, "Por favor complete todos los campos", Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            loginController.login(email, password);
         });
 
 
-        registerButton.setOnClickListener(view -> {
-            //Toast.makeText(LoginActivity.this, "Me quiero registrar", Toast.LENGTH_SHORT).show();
-            Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
-            startActivity(intent);
+        registerButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //Toast.makeText(LoginActivity.this, "Me quiero registrar", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
+                startActivity(intent);
+            }
         });
 
 
@@ -116,10 +122,9 @@ public class LoginActivity extends AppCompatActivity {
     public void onLoginSuccess() {
         // El login fue exitoso, hacer algo aquí
         Log.d(TAG, "Inicio de sesión exitoso");
-        Toast.makeText(this, "Login exitoso", Toast.LENGTH_SHORT).show();
-        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-        intent.putExtra("email", emailEditText.getText().toString().trim());
+        Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
+        Toast.makeText(this, "Login exitoso", Toast.LENGTH_SHORT).show();
     }
 
     public void onLoginError(String message) {

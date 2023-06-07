@@ -1,32 +1,37 @@
 package com.example.socialgift.model;
 
 public class Product {
-    private String UUID;
+    private int id;
     private String name;
     private String description;
-    private String photo;
-    private String price;
-    private String id_category;
     private String link;
+    private String photo;
+    private float price;
 
-    public Product(String UUID, String name, String description, String photo, String price, String id_category, String link) {
-        this.UUID = UUID;
+    private int is_active;
+    private int[] categoryIds;
+
+    public Product() {    }
+
+    public Product(int id, String name, String description, String link, String photo, float price, int is_active, int[] categoryIds) {
+        this.id = id;
         this.name = name;
         this.description = description;
+        this.link = link;
         this.photo = photo;
         this.price = price;
-        this.id_category = id_category;
-        this.link = link;
+        this.is_active = is_active;
+        this.categoryIds = categoryIds;
     }
 
     // getters and setters
 
-    public String getUUID() {
-        return UUID;
+    public int getId() {
+        return id;
     }
 
-    public void setUUID(String UUID) {
-        this.UUID = UUID;
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -45,6 +50,14 @@ public class Product {
         this.description = description;
     }
 
+    public String getLink() {
+        return link;
+    }
+
+    public void setLink(String link) {
+        this.link = link;
+    }
+
     public String getPhoto() {
         return photo;
     }
@@ -53,27 +66,27 @@ public class Product {
         this.photo = photo;
     }
 
-    public String getPrice() {
+    public float getPrice() {
         return price;
     }
 
-    public void setPrice(String price) {
+    public void setPrice(float price) {
         this.price = price;
     }
 
-    public String getId_category() {
-        return id_category;
+    public int getIsActive() {
+        return is_active;
     }
 
-    public void setId_category(String id_category) {
-        this.id_category = id_category;
+    public void setIs_active(int is_active) {
+        this.is_active = is_active;
     }
 
-    public String getLink() {
-        return link;
+    public int[] getCategoryIds() {
+        return categoryIds;
     }
 
-    public void setLink(String link) {
-        this.link = link;
+    public void setCategoryIds(int[] categoryIds) {
+        this.categoryIds = categoryIds;
     }
 }

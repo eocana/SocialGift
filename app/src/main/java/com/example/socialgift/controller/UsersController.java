@@ -3,7 +3,7 @@ package com.example.socialgift.controller;
 import android.content.Context;
 import android.util.Log;
 
-import com.example.socialgift.DataManagerAPI;
+import com.example.socialgift.datamanager.DataManagerAPI;
 import com.example.socialgift.model.User;
 import com.example.socialgift.view.EditUserFragment;
 import com.example.socialgift.view.LoginActivity;
