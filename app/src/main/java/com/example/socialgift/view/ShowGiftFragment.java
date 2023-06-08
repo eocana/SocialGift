@@ -36,20 +36,13 @@ public class ShowGiftFragment extends Fragment {
         System.out.println("lstGifts.size() :: "+lstGifts.size());
         if(lstGifts.size() > 0){
             arrayList.clear();
+
             for (Gift g: lstGifts) {
                 System.out.println("producto");
                 String[] result = g.getProductUrl().split("/");
-                mercadoExpressController.getAProduct(Integer.parseInt(result[result.length-1]));
+                mercadoExpressController.getAProduct(Integer.parseInt(result[result.length-1]),0);
                 //arrayList.add(g.getProductUrl());
             }
-        }else if(productsId.size() > 0){
-            arrayList.clear();
-            for (String g: productsId) {
-                String[] result = g.split("/");
-                mercadoExpressController.getAProduct(Integer.parseInt(result[result.length-1]));
-            }
-        }else{
-
         }
         //ImageView imageView = (ImageView) getView().findViewById(R.id.);
         listView = (ListView) rootView.findViewById(R.id.lv_fragmentGift);

@@ -10,9 +10,11 @@ import com.example.socialgift.datamanager.MercadoExpressAPI;
 import com.example.socialgift.model.Product;
 import com.example.socialgift.view.RegisterActivity;
 import com.example.socialgift.view.ShowGiftFragment;
+import com.example.socialgift.view.ShowReservedFragment;
 
 public class MercadoExpressController {
     private ShowGiftFragment showGiftFragment;
+    private ShowReservedFragment showReservedFragment;
 
     private Context context;
 
@@ -26,17 +28,33 @@ public class MercadoExpressController {
         this.context = context;
     }
 
-    public void getAProduct(int productId){
+    public MercadoExpressController(ShowReservedFragment showReservedFragment, Context context) {
+        this.showReservedFragment = showReservedFragment;
+        this.context = context;
+    }
+
+    public void getAProduct(int productId, int flag){
         MercadoExpressAPI.getAProduct(productId, context, new DataManagerCallbacks.DataManagerCallbackProduct<>(){
             @Override
             public void onSuccess(Product product) {
                 if(product!=null){
-                    System.out.println(product);
-                    System.out.println(product.getId());
-                    System.out.println(product.getName());
-                    ShowGiftFragment.arrayList.add(product.getName());
-                    ShowGiftFragment.listView.requestLayout();
-                    ShowGiftFragment.listView.setVisibility(View.VISIBLE);
+                    if(flag==0){
+                        System.out.println(product);
+                        System.out.println(product.getId());
+                        System.out.println(product.getName());
+                        ShowGiftFragment.arrayList.add(product.getName());
+                        ShowGiftFragment.listView.requestLayout();
+                        ShowGiftFragment.listView.setVisibility(View.VISIBLE);
+                    } else if (flag==1) {
+                        System.out.println(product);
+                        System.out.println(product.getId());
+                        System.out.println(product.getName());
+                        ShowReservedFragment.arrayList.add(product.getName());
+                        ShowReservedFragment.listView.requestLayout();
+                        ShowReservedFragment.listView.setVisibility(View.VISIBLE);
+                    }else{
+
+                    }
                 }
             }
 

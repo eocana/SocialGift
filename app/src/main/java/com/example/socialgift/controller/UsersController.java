@@ -264,12 +264,13 @@ public class UsersController {
     }
 
     public void wishlistsUser(int id) {
-        DataManagerAPI.wishlistsUser(1, context, new DataManagerCallbacks.DataManagerCallbackWishlists<>() {
+        DataManagerAPI.wishlistsUser(id, context, new DataManagerCallbacks.DataManagerCallbackWishlists<>() {
             @Override
             public void onSuccess(List<Wishlist> wishlists) {
                 Log.d("API_SUCCESS_SEARCH_USER", "Mi LISTA DE WISHLIST ES:  " + wishlists);
                 System.out.println("lista wishlists :: "+wishlists);
                 if(wishlists!=null){
+                    ShowWishlistFragment.arrayList.clear();
                     for (Wishlist w: wishlists ) {
                         System.out.println("w :: "+w.getName());
                         ShowWishlistFragment.lstWishlist.add(w);
@@ -290,13 +291,18 @@ public class UsersController {
 
             @Override
             public void onSuccess(List<Gift> gift) {
+                System.out.println("MI ID QUE LE ESTOY PASANDO AL RESERVADO ES :: "+id);
                 Log.d("API_SUCCESS_SEARCH_USER", "Mi LISTA DE WISHLIST ES:  " + gift);
                 System.out.println("lista reseved gifts:: "+gift);
                 if(gift!=null){
                     for (Gift w: gift ) {
-                        ShowReservedFragment.lstGift.add(w.getProductUrl());
+                        //ShowReservedFragment.lstGift.add(w);
+                        String[] result = w.getProductUrl().split("/");
+                        //ShowReservedFragment.arrayList.add(result[result.length-1]);
+                        ShowReservedFragment.mercadoExpressController.getAProduct(Integer.parseInt(result[result.length-1]),1);
                     }
-                    ShowGiftFragment.productsId = ShowReservedFragment.lstGift;
+                    ShowReservedFragment.listView.setVisibility(View.VISIBLE);;
+                    //ShowGiftFragment.productsId = ShowReservedFragment.lstGift;
                 }else{
                     Toast.makeText(context, "No tiene regalos reservados",Toast.LENGTH_SHORT).show();
                 }
@@ -305,6 +311,20 @@ public class UsersController {
             @Override
             public void onError(String errorMessage) {
                 Log.e("API_ERROR_SEARCH_USER", errorMessage);
+            }
+        });
+    }
+
+    public void bookGift(int giftId){
+        DataManagerAPI.bookGift(giftId, context, new DataManagerCallbacks.DataManagerCallback() {
+            @Override
+            public void onSuccess() {
+                Toast.makeText(context, "Se ha creado la reserva",Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+                Toast.makeText(context, "No se ha creado la reserva",Toast.LENGTH_SHORT).show();
             }
         });
     }

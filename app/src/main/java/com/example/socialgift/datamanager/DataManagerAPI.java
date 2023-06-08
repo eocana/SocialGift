@@ -750,7 +750,7 @@ public class DataManagerAPI implements DataManagerCallbacks{
                     @Override
                     public void onResponse(JSONArray response) {
                         // Crear una lista para almacenar los regalos reservados
-                        List<Gift> giftsReservedList = new ArrayList<>();
+                        List<Gift> lstGiftsReserved = new ArrayList<>();
 
                         // Recorrer el JSONArray de respuesta y parsear cada objeto de regalo reservado
                         for (int i = 0; i < response.length(); i++) {
@@ -763,17 +763,20 @@ public class DataManagerAPI implements DataManagerCallbacks{
                                 giftReserved.setWishlist_id(giftObject.getInt("wishlist_id"));
                                 giftReserved.setProduct_url(giftObject.getString("product_url"));
                                 giftReserved.setPriority(giftObject.getInt("priority"));
+                                lstGiftsReserved.add(giftReserved);
+                                System.out.println("lst :: "+lstGiftsReserved);
                                 giftReserved.setBooked(giftObject.getBoolean("booked"));
 
                                 // Agregar el regalo reservado a la lista
-                                giftsReservedList.add(giftReserved);
+
+
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
                         }
 
                         // Llamar al callback onSuccess con la lista de regalos reservados obtenidos
-                        callback.onSuccess(giftsReservedList);
+                        callback.onSuccess(lstGiftsReserved);
                     }
                 },
                 new Response.ErrorListener() {

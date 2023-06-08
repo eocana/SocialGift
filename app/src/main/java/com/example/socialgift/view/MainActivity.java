@@ -8,14 +8,22 @@ import android.os.Bundle;
 import android.widget.TextView;
 import android.util.Log;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.example.socialgift.R;
+import com.example.socialgift.controller.MercadoExpressController;
+import com.example.socialgift.controller.UsersController;
+import com.example.socialgift.model.Gift;
+import com.example.socialgift.model.Product;
+import com.example.socialgift.model.Wishlist;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.example.socialgift.datamanager.DataManagerAPI;
 import com.example.socialgift.datamanager.DataManagerCallbacks;
 import com.example.socialgift.datamanager.MercadoExpressAPI;
 import com.example.socialgift.model.User;
 
+import java.sql.SQLOutput;
+import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -51,8 +59,39 @@ public class MainActivity extends AppCompatActivity {
                 // por ejemplo, mostrar un mensaje de error o realizar otras operaciones necesarias
             }
         });
+        /*Gift gift = new Gift();
+        gift.setPriority(1);
+        gift.setProduct_url("https://balandrau.salle.url.edu/i3/mercadoexpress/api/v1/products/2");
+        gift.setWishlist_id(605);
 
-/*        MercadoExpressAPI.getAllProducts(this, new DataManagerCallbacks.DataManagerCallbackProducts<List>() {
+        DataManagerAPI.createGift(gift, this, new DataManagerCallbacks.DataManagerCallback(){
+            @Override
+            public void onSuccess() {
+                System.out.println("SE HA CREADO EL GIFT");
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+                System.out.println("NO SE HA CREADO EL GIFT");
+                System.out.println("Error :: "+errorMessage);
+            }
+        });*/
+
+        /*DataManagerAPI.bookGift(329,this, new DataManagerCallbacks.DataManagerCallback(){
+
+            @Override
+            public void onSuccess() {
+                System.out.println("Se ha creado la reserva");
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+                System.out.println("No se ha creado la reserva");
+                System.out.println("Error : "+errorMessage);
+            }
+        });*/
+
+       /*MercadoExpressAPI.getAllProducts(this, new DataManagerCallbacks.DataManagerCallbackProductList<Product>() {
             @Override
             public void onSuccess(List list) {
                 // Manejar el usuario encontrado
@@ -65,27 +104,35 @@ public class MainActivity extends AppCompatActivity {
                 // Manejar el error en la búsqueda del usuario
                 // por ejemplo, mostrar un mensaje de error o realizar otras operaciones necesarias
             }
-        });*/
-
-/*        Wishlist wishlist1 = new Wishlist();
+        });
+*/
+       /*Wishlist wishlist1 = new Wishlist();
         wishlist1.setName("Wishlist 1");
         wishlist1.setDescription("Description 1");
-        wishlist1.setIdUser(1);*/
 
-/*      DataManagerAPI.createWishlist(wishlist1, this, new DataManagerCallbacks.DataManagerCallback() {
+        Gift gift = new Gift();
+        gift.setPriority(1);
+        gift.setProduct_url("https://balandrau.salle.url.edu/i3/mercadoexpress/api/v1/products/2");
+        List<Gift> lst = new ArrayList<>();
+        lst.add(gift);
+        wishlist1.setGifts(lst);
+
+        System.out.println("get GIFTS :: "+wishlist1.getGifts());*/
+
+
+/*
+      DataManagerAPI.createWishlist(wishlist1, this, new DataManagerCallbacks.DataManagerCallback() {
             @Override
             public void onSuccess() {
-                // Manejar la creación de la wishlist
-                // por ejemplo, mostrar un mensaje de éxito o realizar otras operaciones necesarias
+                System.out.println("SE HA CREADO LA WISHLIST");
             }
 
             @Override
             public void onError(String errorMessage) {
-                // Manejar el error en la creación de la wishlist
-                // por ejemplo, mostrar un mensaje de error o realizar otras operaciones necesarias
+                System.out.println("NO SE HA CREADO LA WISHLIST");
             }
 
-        });*/
+        });
 
      /* DataManagerAPI.getWishlist(105, this, new DataManagerCallbacks.DataManagerCallbackWishlist<Wishlist>() {
            @Override
