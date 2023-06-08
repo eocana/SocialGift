@@ -77,7 +77,7 @@ public class ShowMyUserFragment extends Fragment {
     @SuppressLint("SetTextI18n")
     public void showUserData(User user) {
         // Mostrar los datos del usuario en la interfaz de usuario
-        userController.getWishlistsCount(new UsersController.DataManagerCallback<Integer>() {
+        userController.getWishlistsCount(user.getId(), new UsersController.DataManagerCallback<Integer>() {
             @Override
             public void onSuccess(Integer count) {
                 wishlistsCountTextView.setText("Wishlists: " + count);

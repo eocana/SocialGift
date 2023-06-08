@@ -19,6 +19,7 @@ import com.example.socialgift.view.ShowGiftFragment;
 import com.example.socialgift.view.ShowMyUserFragment;
 import com.example.socialgift.view.ShowReservedActivity;
 import com.example.socialgift.view.ShowReservedFragment;
+import com.example.socialgift.view.ShowUserProfile;
 import com.example.socialgift.view.ShowWishlistFragment;
 
 import java.util.List;
@@ -29,6 +30,7 @@ public class UsersController {
     private RegisterActivity registerActivity;
     private SearchFragment searchFragment;
     private EditUserFragment editUserFragment;
+    private ShowUserProfile showUserProfile;
     private LoginActivity loginActivity;
     private ShowWishlistFragment showWishlistFragment;
     private ShowReservedFragment showReservedFragment;
@@ -49,6 +51,10 @@ public class UsersController {
      */
     public UsersController(RegisterActivity registerActivity, Context context) {
         this.registerActivity = registerActivity;
+        this.context = context;
+    }
+    public UsersController(ShowUserProfile showUserProfile, Context context) {
+        this.showUserProfile = showUserProfile;
         this.context = context;
     }
 
@@ -195,8 +201,8 @@ public class UsersController {
         });
     }
 
-    public void getWishlistsCount(DataManagerCallback<Integer> callback) {
-        DataManagerAPI.wishlistsMyUser(context, new DataManagerCallbacks.DataManagerCallbackWishlists<Wishlist>() {
+    public void getWishlistsCount(int id,DataManagerCallback<Integer> callback) {
+        DataManagerAPI.wishlistsUser(id,context, new DataManagerCallbacks.DataManagerCallbackWishlists<Wishlist>() {
             @Override
             public void onSuccess(List<Wishlist> wishlists) {
                 int count = wishlists.size();
@@ -268,7 +274,6 @@ public class UsersController {
             @Override
             public void onSuccess(List<Wishlist> wishlists) {
                 Log.d("API_SUCCESS_SEARCH_USER", "Mi LISTA DE WISHLIST ES:  " + wishlists);
-                System.out.println("lista wishlists :: "+wishlists);
                 if(wishlists!=null){
                     ShowWishlistFragment.arrayList.clear();
                     for (Wishlist w: wishlists ) {

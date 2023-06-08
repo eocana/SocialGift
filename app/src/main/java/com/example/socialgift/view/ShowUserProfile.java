@@ -55,7 +55,8 @@ public class ShowUserProfile extends AppCompatActivity {
         friendsCountTextView = findViewById(R.id.friends_count);
         reservedGiftsCountTextView = findViewById(R.id.reserved_gifts_count);
         wishlistsCountTextView = findViewById(R.id.wishlists_count);
-
+        userController = new UsersController(this, getApplicationContext());
+        showUserData(SearchFragment.user);
         wishlist = (Button) findViewById(R.id.wishlist);
         wishlist.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
@@ -63,6 +64,7 @@ public class ShowUserProfile extends AppCompatActivity {
                 startActivity(myIntent);
             }
         });
+
 
         reserved = (Button) findViewById(R.id.reserved);
         reserved.setOnClickListener(new View.OnClickListener() {
@@ -106,15 +108,21 @@ public class ShowUserProfile extends AppCompatActivity {
     }
     public void showUserData(User user) {
         // Mostrar los datos del usuario en la interfaz de usuario
-        userController.getWishlistsCount(new UsersController.DataManagerCallback<Integer>() {
+        userController.getWishlistsCount(user.getId(), new UsersController.DataManagerCallback<Integer>() {
             @Override
             public void onSuccess(Integer count) {
-                wishlistsCountTextView.setText("Wishlists: " + count);
+                if(count!=null){
+                    wishlistsCountTextView.setText("Wishlists: " + count);
+                }else{
+                    wishlistsCountTextView.setText("Wishlists: 0");
+                }
+
             }
 
             @Override
             public void onError(String errorMessage) {
                 Log.e("API_ERROR_GET_WISHLISTS", errorMessage);
+                wishlistsCountTextView.setText("Wishlists: 0");
             }
         });
 
@@ -127,6 +135,8 @@ public class ShowUserProfile extends AppCompatActivity {
             @Override
             public void onError(String errorMessage) {
                 Log.e("API_ERROR_GET_GIFTS_RESERVED", errorMessage);
+                reservedGiftsCountTextView.setText("Regalos reservados: 0");
+
             }
         });
 
@@ -134,12 +144,19 @@ public class ShowUserProfile extends AppCompatActivity {
             @Override
             public void onSuccess(Integer count) {
                 TextView friendsCountTextView = findViewById(R.id.friends_count);
-                friendsCountTextView.setText("Amigos: " + count);
+                if(count!=null){
+                    friendsCountTextView.setText("Amigos: " + count);
+                }else{
+                    friendsCountTextView.setText("Amigos: 0");
+                }
+
+
             }
 
             @Override
             public void onError(String errorMessage) {
                 Log.e("API_ERROR_GET_FRIENDS", errorMessage);
+                friendsCountTextView.setText("Amigos: 0");
             }
         });
     }

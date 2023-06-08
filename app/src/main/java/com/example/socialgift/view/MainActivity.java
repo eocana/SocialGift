@@ -2,6 +2,7 @@ package com.example.socialgift.view;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -29,15 +30,31 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     private Button editUserButton;
-
+    BottomNavigationView bottomNavigationView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        BottomNavigationView bottomNavigationView = findViewById(R.id.bottom_navigationbar);
+        bottomNavigationView = findViewById(R.id.bottom_navigationbar);
         bottomNavigationView.getMenu().clear();
         bottomNavigationView.inflateMenu(R.menu.menu);
+
+
+        bottomNavigationView.setOnItemSelectedListener(item -> {
+            switch (item.getItemId()){
+                case R.id.ic_home:
+                    break;
+                case R.id.ic_user:
+                    startActivity(new Intent(this, ShowMyUserActivity.class));
+                    break;
+                case R.id.ic_basket:
+                    break;
+                case R.id.ic_menu:
+                    break;
+            }
+            return false;
+        });
 
         if (savedInstanceState == null) {
             getSupportFragmentManager().beginTransaction()
@@ -60,9 +77,10 @@ public class MainActivity extends AppCompatActivity {
             }
         });
         /*Gift gift = new Gift();
+        gift.setBooked(false);
         gift.setPriority(1);
         gift.setProduct_url("https://balandrau.salle.url.edu/i3/mercadoexpress/api/v1/products/2");
-        gift.setWishlist_id(605);
+        gift.setWishlist_id(1);
 
         DataManagerAPI.createGift(gift, this, new DataManagerCallbacks.DataManagerCallback(){
             @Override
@@ -110,17 +128,13 @@ public class MainActivity extends AppCompatActivity {
         wishlist1.setName("Wishlist 1");
         wishlist1.setDescription("Description 1");
 
-        Gift gift = new Gift();
-        gift.setPriority(1);
-        gift.setProduct_url("https://balandrau.salle.url.edu/i3/mercadoexpress/api/v1/products/2");
+
         List<Gift> lst = new ArrayList<>();
-        lst.add(gift);
+        lst.add();
         wishlist1.setGifts(lst);
 
-        System.out.println("get GIFTS :: "+wishlist1.getGifts());*/
 
 
-/*
       DataManagerAPI.createWishlist(wishlist1, this, new DataManagerCallbacks.DataManagerCallback() {
             @Override
             public void onSuccess() {
