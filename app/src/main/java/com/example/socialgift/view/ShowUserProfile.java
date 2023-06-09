@@ -56,6 +56,7 @@ public class ShowUserProfile extends AppCompatActivity {
         reservedGiftsCountTextView = findViewById(R.id.reserved_gifts_count);
         wishlistsCountTextView = findViewById(R.id.wishlists_count);
         userController = new UsersController(this, getApplicationContext());
+        System.out.println("USER ID :: "+SearchFragment.user.getId());
         showUserData(SearchFragment.user);
         wishlist = (Button) findViewById(R.id.wishlist);
         wishlist.setOnClickListener(new View.OnClickListener() {
@@ -126,7 +127,7 @@ public class ShowUserProfile extends AppCompatActivity {
             }
         });
 
-        userController.getReservedGiftsCount(new UsersController.DataManagerCallback<Integer>() {
+        userController.getReservedGiftsCount(user.getId(), new UsersController.DataManagerCallback<Integer>() {
             @Override
             public void onSuccess(Integer count) {
                 reservedGiftsCountTextView.setText("Regalos reservados: " + count);

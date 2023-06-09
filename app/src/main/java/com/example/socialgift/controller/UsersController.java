@@ -215,8 +215,8 @@ public class UsersController {
             }
         });
     }
-    public void getReservedGiftsCount(DataManagerCallback<Integer> callback) {
-        DataManagerAPI.getGiftsReserved(DataManagerAPI.getObjectUser().getId(), context, new DataManagerCallbacks.DataManagerCallbackListGift<Gift>() {
+    public void getReservedGiftsCount(int id,DataManagerCallback<Integer> callback) {
+        DataManagerAPI.getGiftsReserved(id, context, new DataManagerCallbacks.DataManagerCallbackListGift<Gift>() {
             @Override
             public void onSuccess(List<Gift> gifts) {
                 int count = gifts.size();

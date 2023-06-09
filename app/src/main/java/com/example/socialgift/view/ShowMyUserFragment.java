@@ -89,7 +89,7 @@ public class ShowMyUserFragment extends Fragment {
             }
         });
 
-        userController.getReservedGiftsCount(new UsersController.DataManagerCallback<Integer>() {
+        userController.getReservedGiftsCount(user.getId(), new UsersController.DataManagerCallback<Integer>() {
             @Override
             public void onSuccess(Integer count) {
                 reservedGiftsCountTextView.setText("Regalos reservados: " + count);

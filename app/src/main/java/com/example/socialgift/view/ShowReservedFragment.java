@@ -39,6 +39,7 @@ public class ShowReservedFragment extends Fragment {
         usersController = new UsersController(this, getActivity());
         mercadoExpressController = new MercadoExpressController(this, getActivity());
         View rootView = inflater.inflate(R.layout.fragment_show_reserved, container, false);
+        System.out.println("USER ID :: "+SearchFragment.user.getId());
         usersController.getGiftsReserved(SearchFragment.user.getId());
         //ImageView imageView = (ImageView) getView().findViewById(R.id.);
         listView = (ListView) rootView.findViewById(R.id.lv_fragmentReserved);
