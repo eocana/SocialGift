@@ -582,7 +582,7 @@ public class DataManagerAPI implements DataManagerCallbacks{
                                         int wishlistId = giftObject.getInt("wishlist_id");
                                         String productUrl = giftObject.getString("product_url");
                                         int priority = giftObject.getInt("priority");
-                                        boolean booked = giftObject.getBoolean("booked");
+                                        int booked = giftObject.getInt("booked");
 
                                         // Crear el objeto Gift y agregarlo a la lista
                                         Gift gift = new Gift(giftId, wishlistId, productUrl, priority, booked);
@@ -688,7 +688,7 @@ public class DataManagerAPI implements DataManagerCallbacks{
                                         int wishlistId = giftObject.getInt("wishlist_id");
                                         String productUrl = giftObject.getString("product_url");
                                         int priority = giftObject.getInt("priority");
-                                        boolean booked = Boolean.valueOf(String.valueOf(giftObject.getInt("booked")));
+                                        int booked = giftObject.getInt("booked");
 
                                         // Crear el objeto Gift y agregarlo a la lista
                                         Gift gift = new Gift(giftId, wishlistId, productUrl, priority, booked);
@@ -763,12 +763,12 @@ public class DataManagerAPI implements DataManagerCallbacks{
                                 giftReserved.setWishlist_id(giftObject.getInt("wishlist_id"));
                                 giftReserved.setProduct_url(giftObject.getString("product_url"));
                                 giftReserved.setPriority(giftObject.getInt("priority"));
-                                lstGiftsReserved.add(giftReserved);
+
                                 System.out.println("lst :: "+lstGiftsReserved);
-                                giftReserved.setBooked(giftObject.getBoolean("booked"));
+                                giftReserved.setBooked(giftObject.getInt("booked"));
 
                                 // Agregar el regalo reservado a la lista
-
+                                lstGiftsReserved.add(giftReserved);
 
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -1084,7 +1084,7 @@ public class DataManagerAPI implements DataManagerCallbacks{
                             int wishlistId = response.getInt("wishlist_id");
                             String productUrl = response.getString("product_url");
                             int priority = response.getInt("priority");
-                            boolean booked = response.getBoolean("booked");
+                            int booked = response.getInt("booked");
 
                             // Crear el objeto Gift con los datos obtenidos
                             Gift gift = new Gift(id, wishlistId, productUrl, priority, booked);

@@ -41,9 +41,11 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigationView.inflateMenu(R.menu.menu);
 
 
+
         bottomNavigationView.setOnItemSelectedListener(item -> {
             switch (item.getItemId()){
                 case R.id.ic_home:
+                    startActivity(new Intent(this, MainActivity.class));
                     break;
                 case R.id.ic_user:
                     startActivity(new Intent(this, ShowMyUserActivity.class));
