@@ -26,7 +26,7 @@ public class ShowMyUserFragment extends Fragment {
     private ImageView userImageView;
     private TextView nameTextView, friendsCountTextView, reservedGiftsCountTextView, wishlistsCountTextView;
 
-    private Button editButton, logoutButton;
+    private Button editButton, logoutButton, friendsButton, requestButton;
 
     //private MyUserController userController;
     private UsersController userController;
@@ -43,6 +43,8 @@ public class ShowMyUserFragment extends Fragment {
         nameTextView = view.findViewById(R.id.user_name);
         editButton = view.findViewById(R.id.edit_button);
         logoutButton = view.findViewById(R.id.logout_button);
+        friendsButton = view.findViewById(R.id.friends_button);
+        requestButton = view.findViewById(R.id.requests_button);
 
         // Crear el controlador
         //userController = new MyUserController(this);
@@ -67,6 +69,19 @@ public class ShowMyUserFragment extends Fragment {
             public void onClick(View v) {
                 // Cerrar sesión del usuario y navegar a la pantalla de inicio de sesión
                 userController.signOut(ShowMyUserFragment.this);
+            }
+        });
+        friendsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getActivity(), UserFriendsActivity.class));
+            }
+        });
+
+        requestButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getActivity(), RequestsActivity.class));
             }
         });
 

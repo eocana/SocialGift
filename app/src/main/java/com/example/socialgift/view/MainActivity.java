@@ -31,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
 
     private Button editUserButton;
     BottomNavigationView bottomNavigationView;
+    public static User me;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,6 +71,7 @@ public class MainActivity extends AppCompatActivity {
                 // Manejar el usuario encontrado
                 // por ejemplo, mostrarlo en un formulario o realizar otras operaciones necesarias
                 System.out.println("MI ID ES: "+user.getId());
+                me = user;
             }
 
             @Override
