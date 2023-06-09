@@ -1,14 +1,16 @@
-package com.example.socialgift.view;
+package com.example.socialgift.view.myuser.fragments;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -20,13 +22,20 @@ import com.bumptech.glide.Glide;
 import com.example.socialgift.R;
 import com.example.socialgift.controller.UsersController;
 import com.example.socialgift.model.User;
+import com.example.socialgift.model.Wishlist;
+import com.example.socialgift.view.LoginActivity;
+import com.example.socialgift.view.myuser.MyFriendsActivity;
+import com.example.socialgift.view.myuser.MyGiftsActivity;
+import com.example.socialgift.view.myuser.MyWishlistsActivity;
+
+import java.util.List;
 
 public class ShowMyUserFragment extends Fragment {
 
     private ImageView userImageView;
     private TextView nameTextView, friendsCountTextView, reservedGiftsCountTextView, wishlistsCountTextView;
-
-    private Button editButton, logoutButton;
+    private LinearLayout wishlistContainer;
+    private Button editButton, logoutButton, allWishlistsButton;
 
     //private MyUserController userController;
      private UsersController userController;
@@ -43,10 +52,48 @@ public class ShowMyUserFragment extends Fragment {
         nameTextView = view.findViewById(R.id.user_name);
         editButton = view.findViewById(R.id.edit_button);
         logoutButton = view.findViewById(R.id.logout_button);
+        allWishlistsButton = view.findViewById(R.id.view_all_button);
+
+        wishlistContainer = view.findViewById(R.id.wishlist_container);
+
 
         // Crear el controlador
         //userController = new MyUserController(this);
         userController = new UsersController(this, this.getContext());
+
+        allWishlistsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), MyWishlistsActivity.class);
+                startActivity(intent);
+            }
+        });
+        // Configurar los clics en los elementos para abrir nuevas actividades
+        friendsCountTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), MyFriendsActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        wishlistsCountTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), MyWishlistsActivity.class);
+                startActivity(intent);
+            }
+        });
+
+
+
+        reservedGiftsCountTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), MyGiftsActivity.class);
+                startActivity(intent);
+            }
+        });
 
         // Agregar el listener del botón "Editar"
         editButton.setOnClickListener(new View.OnClickListener() {
@@ -92,7 +139,7 @@ public class ShowMyUserFragment extends Fragment {
         userController.getReservedGiftsCount(new UsersController.DataManagerCallback<Integer>() {
             @Override
             public void onSuccess(Integer count) {
-                reservedGiftsCountTextView.setText("Regalos reservados: " + count);
+                reservedGiftsCountTextView.setText("Gifts: " + count);
             }
 
             @Override
@@ -124,6 +171,24 @@ public class ShowMyUserFragment extends Fragment {
                 .circleCrop()
                 .into(userImageView);
 
+        userController.getClosestWishlists(new UsersController.DataManagerCallback<List<Wishlist>>() {
+            @Override
+            public void onSuccess(List<Wishlist> wishlists) {
+                int count = 0;
+                for (Wishlist wishlist : wishlists) {
+                    if (count >= 3) {
+                        break;
+                    }
+                    addWishlistTextView(wishlist.getName()+" ("+wishlist.getEndDate()+")");
+                    count++;
+                }
+            }
+
+            @Override
+            public void onError(String errorMessage) {
+                Log.e("API_GET_WISHLISTS", errorMessage);
+            }
+        });
 
     }
 
@@ -132,6 +197,16 @@ public class ShowMyUserFragment extends Fragment {
         Intent intent = new Intent(getActivity(), LoginActivity.class);
         startActivity(intent);
         requireActivity().finish();
+    }
+
+    private void addWishlistTextView(String wishlistName) {
+        TextView textView = new TextView(requireContext());
+        textView.setText(wishlistName);
+        textView.setLayoutParams(new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT));
+        textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+        wishlistContainer.addView(textView);
     }
 
 

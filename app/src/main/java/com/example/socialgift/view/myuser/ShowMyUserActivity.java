@@ -1,14 +1,12 @@
-package com.example.socialgift.view;
+package com.example.socialgift.view.myuser;
 
 
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.socialgift.R;
-
+import com.example.socialgift.view.myuser.fragments.ShowMyUserFragment;
 
 
 public class ShowMyUserActivity extends AppCompatActivity {
@@ -17,6 +15,10 @@ public class ShowMyUserActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_my_user);
+
+
+
+ /*       */
 
         // Agregar el fragmento del encabezado
         /*HeaderFragment headerFragment = new HeaderFragment();

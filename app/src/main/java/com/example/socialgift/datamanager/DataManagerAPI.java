@@ -257,7 +257,9 @@ public class DataManagerAPI implements DataManagerCallbacks{
 
                             // Llamar al callback onSuccess con el usuario obtenido
                             setMyIdSession(user.getId());
+                            Log.d("ID_getMyUser", String.valueOf(user.getId()));
                             userSession = new UserSession(user);
+                            Log.d("getMyUser", userSession.getName());
                             userSession.setToken(getAccessToken());
                             callback.onSuccess(user);
 
@@ -822,8 +824,8 @@ public class DataManagerAPI implements DataManagerCallbacks{
             String currentDate = sdf.format(new Date());
             requestBody.put("date", currentDate);
 
-            if (wishlist.getEnd_date() != null) {
-                requestBody.put("finished_at", wishlist.getEnd_date());
+            if (wishlist.getEndDate() != null) {
+                requestBody.put("finished_at", wishlist.getEndDate());
             }
 
             if (wishlist.getGifts() != null) {
@@ -986,8 +988,8 @@ public class DataManagerAPI implements DataManagerCallbacks{
             requestBody.put("creation_date", wishlist.getCreationDate());
 
 
-            if (wishlist.getEnd_date() != null){
-                requestBody.put("end_date", wishlist.getEnd_date());
+            if (wishlist.getEndDate() != null){
+                requestBody.put("end_date", wishlist.getEndDate());
             }
             // Agregar otros campos de la wishlist según sea necesario
         } catch (JSONException e) {

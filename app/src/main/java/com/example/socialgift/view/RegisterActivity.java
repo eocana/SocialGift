@@ -1,10 +1,15 @@
 package com.example.socialgift.view;
 
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -16,8 +21,10 @@ import com.example.socialgift.controller.UsersController;
 public class RegisterActivity extends AppCompatActivity {
 
     private EditText etEmail, etPassword, etFirstName, etLastName, etConfirmPassword;
-    private Button btnRegister;
+    private Button btnRegister, selectImageButton;
     private UsersController usersController;
+    private Uri selectedImageUri;
+    private ActivityResultLauncher<String> imageSelectionLauncher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,10 +37,30 @@ public class RegisterActivity extends AppCompatActivity {
         etFirstName = findViewById(R.id.register_name);
         etLastName = findViewById(R.id.register_last_name);
         btnRegister = findViewById(R.id.register_button);
+        selectImageButton = findViewById(R.id.select_image_button);
         btnRegister.setEnabled(true);
 
         //controller = new RegisterController(this);
         usersController = new UsersController(this, this);
+
+        imageSelectionLauncher = registerForActivityResult(new ActivityResultContracts.GetContent(),
+                new ActivityResultCallback<Uri>() {
+                    @Override
+                    public void onActivityResult(Uri result) {
+                        if (result != null) {
+                            selectedImageUri = result;
+                            Log.d("EditUserFragment", "Selected Image Uri: " + selectedImageUri);
+                        }
+                    }
+                });
+
+
+        selectImageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                imageSelectionLauncher.launch("image/*");
+            }
+        });
 
 
         btnRegister.setOnClickListener(new View.OnClickListener() {
@@ -49,7 +76,7 @@ public class RegisterActivity extends AppCompatActivity {
                     btnRegister.setEnabled(true);
                 }
 
-                usersController.createUser(email, password, firstName, lastName, "https://rockfm-cdnmed.agilecontent.com/resources/jpg/1/2/1627558630021.jpg");
+                usersController.createUser(email, password, firstName, lastName, selectedImageUri);
 
 
             }

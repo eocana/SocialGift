@@ -31,25 +31,67 @@
         android:layout_below="@id/user_name"
         android:layout_centerHorizontal="true">
 
-        <TextView
-            android:id="@+id/friends_count"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Amigos:"
-            android:layout_marginEnd="16dp"/>
+            android:orientation="vertical"
+            android:gravity="center">
 
-        <TextView
-            android:id="@+id/wishlists_count"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Wishlists:"
-            android:layout_marginEnd="16dp"/>
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_friends" />
 
-        <TextView
-            android:id="@+id/reserved_gifts_count"
+            <TextView
+                android:id="@+id/friends_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Amigos:" />
+        </LinearLayout>
+
+        <Space
+            android:layout_width="16dp"
+            android:layout_height="1dp" />
+
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Regalos reservados:"/>
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_wishlists" />
+
+            <TextView
+                android:id="@+id/wishlists_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Wishlists:" />
+        </LinearLayout>
+
+        <Space
+            android:layout_width="16dp"
+            android:layout_height="1dp" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/asset_gift" />
+
+            <TextView
+                android:id="@+id/reserved_gifts_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Gifts:"/>
+        </LinearLayout>
     </LinearLayout>
 
     <Button
@@ -78,5 +120,40 @@
         android:padding="8dp"
         android:text="@string/btn_logout"
         android:textColor="@color/white" />
+    <TextView
+        android:id="@+id/ending_soon_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/logout_button"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp"
+        android:text="Tus siguientes wishlist próximas por finalizar:"
+        android:textSize="18sp" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/ending_soon_text"/>
 
+    <LinearLayout
+        android:id="@+id/wishlist_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/ending_soon_text"
+        android:orientation="vertical"
+        android:layout_marginTop="16dp">
+
+        <!-- Aquí se mostrarán las 3 listas -->
+
+    </LinearLayout>
+
+
+    <Button
+        android:id="@+id/view_all_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="31dp"
+        android:layout_centerHorizontal="true"
+        android:backgroundTint="@color/button_enabled"
+        android:layout_below="@id/wishlist_container"
+        android:text="All wishlists" />
 </RelativeLayout>
