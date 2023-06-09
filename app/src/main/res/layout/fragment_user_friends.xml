@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     tools:context=".view.UserFriendsFragment">
 
-    
+
     <ListView
         android:id="@+id/lv_fragmentUserFriends"
         android:layout_width="match_parent"
