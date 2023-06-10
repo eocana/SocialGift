@@ -17,6 +17,8 @@ import android.widget.Toast;
 
 import com.example.socialgift.R;
 import com.example.socialgift.controller.UsersController;
+import com.example.socialgift.model.SessionManager;
+import com.example.socialgift.view.myuser.ShowMyUserActivity;
 import com.google.firebase.FirebaseApp;
 
 public class LoginActivity extends AppCompatActivity {
@@ -29,11 +31,17 @@ public class LoginActivity extends AppCompatActivity {
 
     private UsersController usersController;
 
+    private SessionManager sessionManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         FirebaseApp.initializeApp(this);
+
+        sessionManager = SessionManager.getInstance(this);
+
+
 
         emailEditText = findViewById(R.id.emailEditText);
         passwordEditText = findViewById(R.id.passwordEditText);
@@ -43,6 +51,9 @@ public class LoginActivity extends AppCompatActivity {
         usersController = new UsersController(this, this);
         loginButton.setEnabled(false);
 
+        if (sessionManager.isTokenValid()) {
+            usersController.loginUser(sessionManager.getEmail(), sessionManager.getPassword());
+        }
 
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -119,10 +130,12 @@ public class LoginActivity extends AppCompatActivity {
     private boolean isValidEmail(CharSequence email) {
         return !TextUtils.isEmpty(email) && android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
-    public void onLoginSuccess() {
+    public void onLoginSuccess(String token) {
         // El login fue exitoso, hacer algo aquí
         Log.d(TAG, "Inicio de sesión exitoso");
-        Intent intent = new Intent(this, MainActivity.class);
+        Intent intent = new Intent(this, ShowMyUserActivity.class);
+        sessionManager.saveToken(emailEditText.getText().toString().trim(), passwordEditText.getText().toString().trim(),token);
+        sessionManager.saveCredentials(emailEditText.getText().toString().trim(), passwordEditText.getText().toString().trim());
         startActivity(intent);
         Toast.makeText(this, "Login exitoso", Toast.LENGTH_SHORT).show();
     }

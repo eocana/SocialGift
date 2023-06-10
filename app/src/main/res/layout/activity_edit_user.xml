@@ -15,7 +15,7 @@
     <!-- Fragment ShowMyUserFragment -->
     <fragment
         android:id="@+id/edit_user_fragrment"
-        android:name="com.example.socialgift.view.EditUserFragment"
+        android:name="com.example.socialgift.view.myuser.fragments.EditUserFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
        <!-- android:layout_below="@id/show_my_user_header"

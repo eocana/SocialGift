@@ -257,7 +257,9 @@ public class DataManagerAPI implements DataManagerCallbacks{
 
                             // Llamar al callback onSuccess con el usuario obtenido
                             setMyIdSession(user.getId());
+                            Log.d("ID_getMyUser", String.valueOf(user.getId()));
                             userSession = new UserSession(user);
+                            Log.d("getMyUser", userSession.getName());
                             userSession.setToken(getAccessToken());
                             callback.onSuccess(user);
 
@@ -582,7 +584,7 @@ public class DataManagerAPI implements DataManagerCallbacks{
                                         int wishlistId = giftObject.getInt("wishlist_id");
                                         String productUrl = giftObject.getString("product_url");
                                         int priority = giftObject.getInt("priority");
-                                        boolean booked = giftObject.getBoolean("booked");
+                                        int booked = giftObject.getInt("booked");
 
                                         // Crear el objeto Gift y agregarlo a la lista
                                         Gift gift = new Gift(giftId, wishlistId, productUrl, priority, booked);
@@ -604,6 +606,7 @@ public class DataManagerAPI implements DataManagerCallbacks{
                             }
 
                             // Llamar al callback onSuccess con la lista de wishlists
+                            System.out.println("WISHLIST SIZE (API): " + wishlistList.size());
                             callback.onSuccess(wishlistList);
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -688,7 +691,7 @@ public class DataManagerAPI implements DataManagerCallbacks{
                                         int wishlistId = giftObject.getInt("wishlist_id");
                                         String productUrl = giftObject.getString("product_url");
                                         int priority = giftObject.getInt("priority");
-                                        boolean booked = giftObject.getBoolean("booked");
+                                        int booked = giftObject.getInt("booked");
 
                                         // Crear el objeto Gift y agregarlo a la lista
                                         Gift gift = new Gift(giftId, wishlistId, productUrl, priority, booked);
@@ -763,7 +766,7 @@ public class DataManagerAPI implements DataManagerCallbacks{
                                 giftReserved.setWishlist_id(giftObject.getInt("wishlist_id"));
                                 giftReserved.setProduct_url(giftObject.getString("product_url"));
                                 giftReserved.setPriority(giftObject.getInt("priority"));
-                                giftReserved.setBooked(giftObject.getBoolean("booked"));
+                                giftReserved.setBooked(giftObject.getInt("booked"));
 
                                 // Agregar el regalo reservado a la lista
                                 giftsReservedList.add(giftReserved);
@@ -821,8 +824,8 @@ public class DataManagerAPI implements DataManagerCallbacks{
             String currentDate = sdf.format(new Date());
             requestBody.put("date", currentDate);
 
-            if (wishlist.getEnd_date() != null) {
-                requestBody.put("finished_at", wishlist.getEnd_date());
+            if (wishlist.getEndDate() != null) {
+                requestBody.put("finished_at", wishlist.getEndDate());
             }
 
             if (wishlist.getGifts() != null) {
@@ -985,8 +988,8 @@ public class DataManagerAPI implements DataManagerCallbacks{
             requestBody.put("creation_date", wishlist.getCreationDate());
 
 
-            if (wishlist.getEnd_date() != null){
-                requestBody.put("end_date", wishlist.getEnd_date());
+            if (wishlist.getEndDate() != null){
+                requestBody.put("end_date", wishlist.getEndDate());
             }
             // Agregar otros campos de la wishlist según sea necesario
         } catch (JSONException e) {
@@ -1081,7 +1084,7 @@ public class DataManagerAPI implements DataManagerCallbacks{
                             int wishlistId = response.getInt("wishlist_id");
                             String productUrl = response.getString("product_url");
                             int priority = response.getInt("priority");
-                            boolean booked = response.getBoolean("booked");
+                            int booked = response.getInt("booked");
 
                             // Crear el objeto Gift con los datos obtenidos
                             Gift gift = new Gift(id, wishlistId, productUrl, priority, booked);

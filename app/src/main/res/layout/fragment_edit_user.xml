@@ -45,11 +45,21 @@
         android:layout_marginEnd="16dp"/>
 
     <Button
+        android:id="@+id/select_image_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/edit_user_image_url"
+        android:layout_marginTop="6dp"
+        android:backgroundTint="@color/button_enabled"
+        android:layout_centerHorizontal="true"
+        android:text="Seleccionar imagen" />
+
+    <Button
         android:id="@+id/edit_user_save_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Guardar"
-        android:layout_below="@id/edit_user_image_url"
+        android:layout_below="@id/select_image_button"
         android:backgroundTint="@color/button_enabled"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="16dp"/>

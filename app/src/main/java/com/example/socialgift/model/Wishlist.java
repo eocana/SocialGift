@@ -42,7 +42,7 @@ public class Wishlist {
         this.creation_date = creation_date;
     }
 
-    public Date getEnd_date() {
+    public Date getEndDate() {
         return end_date;
     }
 
