@@ -223,7 +223,7 @@ public class UsersController {
             public void onSuccess(String accessToken) {
                 Log.d("API_LOGIN_USER", "Mi token de acceso es: " + accessToken);
                 //saveAccessToken(accessToken);
-                loginActivity.onLoginSuccess();
+                loginActivity.onLoginSuccess(accessToken);
             }
 
             @Override

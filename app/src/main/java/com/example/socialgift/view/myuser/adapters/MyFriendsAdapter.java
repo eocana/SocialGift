@@ -1,4 +1,4 @@
-package com.example.socialgift.view.myuser;
+package com.example.socialgift.view.myuser.adapters;
 
 import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
@@ -10,7 +10,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.socialgift.R;
-import com.example.socialgift.model.Friendship;
 import com.example.socialgift.model.User;
 
 import java.util.List;

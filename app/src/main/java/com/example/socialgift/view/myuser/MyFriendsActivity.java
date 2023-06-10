@@ -11,6 +11,7 @@ import android.util.Log;
 import com.example.socialgift.R;
 import com.example.socialgift.controller.MyFriendsController;
 import com.example.socialgift.model.User;
+import com.example.socialgift.view.myuser.adapters.MyFriendsAdapter;
 
 import java.util.ArrayList;
 import java.util.List;

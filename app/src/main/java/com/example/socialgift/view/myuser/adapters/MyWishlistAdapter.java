@@ -1,4 +1,4 @@
-package com.example.socialgift.view.myuser;
+package com.example.socialgift.view.myuser.adapters;
 
 import android.annotation.SuppressLint;
 import android.view.LayoutInflater;

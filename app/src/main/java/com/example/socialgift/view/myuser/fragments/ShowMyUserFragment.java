@@ -21,6 +21,7 @@ import androidx.fragment.app.FragmentTransaction;
 import com.bumptech.glide.Glide;
 import com.example.socialgift.R;
 import com.example.socialgift.controller.UsersController;
+import com.example.socialgift.model.SessionManager;
 import com.example.socialgift.model.User;
 import com.example.socialgift.model.Wishlist;
 import com.example.socialgift.view.LoginActivity;
@@ -36,6 +37,8 @@ public class ShowMyUserFragment extends Fragment {
     private TextView nameTextView, friendsCountTextView, reservedGiftsCountTextView, wishlistsCountTextView;
     private LinearLayout wishlistContainer;
     private Button editButton, logoutButton, allWishlistsButton;
+
+    private SessionManager sessionManager;
 
     //private MyUserController userController;
      private UsersController userController;
@@ -56,6 +59,7 @@ public class ShowMyUserFragment extends Fragment {
 
         wishlistContainer = view.findViewById(R.id.wishlist_container);
 
+        sessionManager = SessionManager.getInstance(this.getContext());
 
         // Crear el controlador
         //userController = new MyUserController(this);
@@ -113,6 +117,7 @@ public class ShowMyUserFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 // Cerrar sesión del usuario y navegar a la pantalla de inicio de sesión
+                sessionManager.logout();
                 userController.signOut(ShowMyUserFragment.this);
             }
         });
