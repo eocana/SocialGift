@@ -20,9 +20,7 @@ public class RequestsActivity extends AppCompatActivity {
 
     public static ListView listView;
     public static ArrayList<String> list = new ArrayList<>();
-    public static ArrayList<String> auxList = new ArrayList<>();
     public static ArrayList<User> lstUsers = new ArrayList<>();
-    public static ArrayList<User> auxLstUsers = new ArrayList<>();
     private static FriendsController friendsController;
 
     @Override
