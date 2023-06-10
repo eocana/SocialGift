@@ -58,7 +58,7 @@
     </LinearLayout>
 
     <Button
-        android:id="@+id/wishlist"
+        android:id="@+id/wishlistButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="53dp"
@@ -68,15 +68,26 @@
         android:text="Wishlist"
         android:textColor="@color/white"
         android:layout_marginStart="75dp"/>
+    <Button
+        android:id="@+id/rBeFriendsButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/wishlistButton"
+        android:layout_marginTop="53dp"
+        android:layout_centerInParent="true"
+        android:drawablePadding="8dp"
+        android:padding="8dp"
+        android:text="Request be friends"
+        android:textColor="@color/white"/>
 
     <Button
-        android:id="@+id/reserved"
+        android:id="@+id/reservedButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/userName"
         android:layout_marginStart="75dp"
         android:layout_marginTop="53dp"
-        android:layout_toEndOf="@id/wishlist"
+        android:layout_toEndOf="@id/wishlistButton"
         android:drawableStart="@drawable/ic_logout"
         android:drawablePadding="8dp"
         android:padding="8dp"

@@ -9,6 +9,8 @@ import android.widget.ListView;
 
 import com.example.socialgift.R;
 import com.example.socialgift.controller.FriendsController;
+import com.example.socialgift.model.User;
+import com.google.android.material.internal.ContextUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -16,9 +18,12 @@ import java.util.List;
 
 public class RequestsActivity extends AppCompatActivity {
 
-    ListView listView;
-    public ArrayList<String> list = new ArrayList<>();
-    private FriendsController friendsController;
+    public static ListView listView;
+    public static ArrayList<String> list = new ArrayList<>();
+    public static ArrayList<String> auxList = new ArrayList<>();
+    public static ArrayList<User> lstUsers = new ArrayList<>();
+    public static ArrayList<User> auxLstUsers = new ArrayList<>();
+    private static FriendsController friendsController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +39,7 @@ public class RequestsActivity extends AppCompatActivity {
         friendsController = new FriendsController(this, this);
         friendsController.getFriendRequests();
 
-        listView.setAdapter(new RequestsAdapter( list, this) );
+
     }
 
     public boolean onOptionsItemSelected(MenuItem item){
@@ -45,6 +50,20 @@ public class RequestsActivity extends AppCompatActivity {
             finish();
         }
         return true;
+    }
+    public static void acceptRequest(String emailUser){
+        for (User u : lstUsers) {
+            if (u.getEmail() == emailUser){
+                friendsController.acceptFriendRequest(u.getId(), emailUser);
+            }
+        }
+    }
+    public static void rejectRequest(String emailUser){
+        for (User u : lstUsers) {
+            if (u.getEmail() == emailUser){
+                friendsController.rejectFriendRequest(u.getId(), emailUser);
+            }
+        }
     }
 
 }

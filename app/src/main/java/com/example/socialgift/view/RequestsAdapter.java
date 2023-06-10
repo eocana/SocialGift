@@ -1,5 +1,6 @@
 package com.example.socialgift.view;
 
+import android.content.ClipData;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -55,15 +56,21 @@ public class RequestsAdapter extends BaseAdapter implements ListAdapter {
 
         aprove.setOnClickListener(new View.OnClickListener(){
             @Override
-            public void onClick(View v) {
-                //do something
-
+            public void onClick(View view) {
+                String item = (String) getItem(position);
+                System.out.println("item :: "+item);
+                System.out.println("position :: "+position);
+                RequestsActivity.acceptRequest(item);
             }
         });
         Button reject= (Button)view.findViewById(R.id.reject);
         reject.setOnClickListener(new View.OnClickListener(){
             @Override
-            public void onClick(View v) {
+            public void onClick(View view) {
+                String item = (String) getItem(position);
+                System.out.println("item :: "+item);
+                System.out.println("position :: "+position);
+                RequestsActivity.rejectRequest(item);
             }
         });
 

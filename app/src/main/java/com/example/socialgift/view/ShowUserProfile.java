@@ -19,6 +19,7 @@ import android.widget.Toolbar;
 
 import com.bumptech.glide.Glide;
 import com.example.socialgift.R;
+import com.example.socialgift.controller.FriendsController;
 import com.example.socialgift.controller.UsersController;
 import com.example.socialgift.model.User;
 import com.example.socialgift.view.SearchFragment;
@@ -29,11 +30,11 @@ import java.io.InputStream;
 
 public class ShowUserProfile extends AppCompatActivity {
 
-        Button wishlist;
-        Button reserved;
+        Button wishlist, reserved, requestBeFriends;
         private TextView nameTextView, friendsCountTextView, reservedGiftsCountTextView, wishlistsCountTextView;
         User user;
         UsersController userController;
+        FriendsController friendsController;
 
 
     @Override
@@ -56,9 +57,15 @@ public class ShowUserProfile extends AppCompatActivity {
         reservedGiftsCountTextView = findViewById(R.id.reserved_gifts_count);
         wishlistsCountTextView = findViewById(R.id.wishlists_count);
         userController = new UsersController(this, getApplicationContext());
+        friendsController = new FriendsController(this, getApplicationContext());
         System.out.println("USER ID :: "+SearchFragment.user.getId());
         showUserData(SearchFragment.user);
-        wishlist = (Button) findViewById(R.id.wishlist);
+
+
+        wishlist = (Button) findViewById(R.id.wishlistButton);
+        requestBeFriends = (Button) findViewById(R.id.rBeFriendsButton);
+        reserved = (Button) findViewById(R.id.reservedButton);
+
         wishlist.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent myIntent = new Intent(getApplicationContext(), ShowWishlistActivity.class);
@@ -66,12 +73,16 @@ public class ShowUserProfile extends AppCompatActivity {
             }
         });
 
-
-        reserved = (Button) findViewById(R.id.reserved);
         reserved.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent myIntent = new Intent(getApplicationContext(), ShowReservedActivity.class);
                 startActivity(myIntent);
+            }
+        });
+
+        requestBeFriends.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+            friendsController.sendFriendRequest(SearchFragment.user.getId());
             }
         });
     }
