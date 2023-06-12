@@ -563,8 +563,14 @@ public class DataManagerAPI implements DataManagerCallbacks{
                                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault());
                                 Date creationDate = sdf.parse(creationDateString);
                                 Date endDate = null;
-                                if (endDateString != null) {
-                                    endDate = sdf.parse(endDateString);
+                                if (endDateString != null || !endDateString.isEmpty() || !endDateString.equals("null") || !endDateString.equals("")) {
+                                    try {
+                                        endDate = sdf.parse(endDateString);
+                                    } catch (ParseException e) {
+                                        e.printStackTrace();
+                                        // Manejar la excepción en caso de que no se pueda analizar la fecha de finalización
+                                        Log.d("WISHLIST", "Error al analizar la fecha de finalización");
+                                    }
                                 }
 
                                 // Crear una lista para almacenar los gifts de la wishlist
@@ -613,6 +619,7 @@ public class DataManagerAPI implements DataManagerCallbacks{
                             // Llamar al callback onError en caso de error en el formato de la respuesta JSON
                             callback.onError("Error al procesar la respuesta del servidor");
                         } catch (ParseException e) {
+                            e.printStackTrace();
                             throw new RuntimeException(e);
                         }
                     }

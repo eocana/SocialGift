@@ -72,7 +72,7 @@ public class ShowMyUserFragment extends Fragment {
                 startActivity(intent);
             }
         });
-        // Configurar los clics en los elementos para abrir nuevas actividades
+
         friendsCountTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -157,7 +157,7 @@ public class ShowMyUserFragment extends Fragment {
             @Override
             public void onSuccess(Integer count) {
                 TextView friendsCountTextView = requireView().findViewById(R.id.friends_count);
-                friendsCountTextView.setText("Amigos: " + count);
+                friendsCountTextView.setText("Friends: " + count);
             }
 
             @Override

@@ -46,7 +46,7 @@
                 android:id="@+id/friends_count"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Amigos:" />
+                android:text="Friends:" />
         </LinearLayout>
 
         <Space
@@ -127,7 +127,7 @@
         android:layout_below="@id/logout_button"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="16dp"
-        android:text="Tus siguientes wishlist próximas por finalizar:"
+        android:text="Tus siguientes wishlist por finalizar:"
         android:textSize="18sp" />
     <TextView
         android:layout_width="wrap_content"
