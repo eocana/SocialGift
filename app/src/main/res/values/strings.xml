@@ -1,3 +1,15 @@
 <resources>
     <string name="app_name">SocialGift</string>
+    <string name="hint_password">**********</string>
+    <string name="login">Login</string>
+    <string name="register">Register</string>
+    <string name="hint_email">lore.ipsum@email.com</string>
+    <string name="register_title">Welcome! Who are you?</string>
+    <string name="hint_register_name">Your name</string>
+    <string name="hint_register_last_name">Your last name</string>
+    <string name="hint_register_email">Your email</string>
+    <string name="hint_register_password">Your password</string>
+    <string name="hint_register_confirm_password">Confirm your password</string>
+    <string name="btn_edit">Edit</string>
+    <string name="btn_logout">Logout</string>
 </resources>

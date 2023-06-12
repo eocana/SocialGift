@@ -1,0 +1,37 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/show_my_user_container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- <fragment
+        android:id="@+id/show_my_user_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        tools:ignore="HardcodedText"/> -->
+
+    <fragment
+        android:id="@+id/show_my_user_fragment"
+        android:name="com.example.socialgift.view.myuser.fragments.ShowMyUserFragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+       <!-- android:layout_below="@+id/show_my_user_header"
+        android:layout_above="@+id/show_my_user_footer"/> -->
+
+    <FrameLayout
+        android:id="@+id/edit_user_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/show_my_user_fragment"
+        android:layout_marginTop="16dp"/>
+
+
+       <!--<fragment
+            android:id="@+id/show_my_user_footer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="8dp"
+            android:layout_alignParentBottom="true"/> -->
+
+</RelativeLayout>

@@ -28,7 +28,7 @@ it, there would be the possibility of moving it to another list for a future eve
 
 - [x] User register
 - [x] Login
-- [ ] Login with token
+- [x] Login with token
 - [x] Logout
 - [x] View profile
 - [x] Edit profile

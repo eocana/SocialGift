@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- Fragment header
+    <fragment
+        android:id="@+id/show_my_user_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:name="com.example.socialgift.view.HeaderFragment"
+        app:layout_constraintTop_toTopOf="parent"/>-->
+
+    <!-- Fragment ShowMyUserFragment -->
+    <fragment
+        android:id="@+id/edit_user_fragrment"
+        android:name="com.example.socialgift.view.myuser.fragments.EditUserFragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+       <!-- android:layout_below="@id/show_my_user_header"
+        android:layout_above="@id/show_my_user_footer"/> -->
+
+    <!-- Button Edit -->
+    <Button
+        android:id="@+id/show_my_user_edit_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="16dp"
+        android:layout_marginStart="16dp"
+        android:text="@string/btn_edit"
+        android:textColor="@color/white"
+        android:backgroundTint="@color/button_enabled"
+        android:drawablePadding="8dp"
+        android:padding="8dp" />
+
+    <!-- Button Sign Out -->
+    <Button
+        android:id="@+id/show_my_user_sign_out_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="16dp"
+        android:text="@string/btn_logout"
+        android:backgroundTint="@color/button_enabled"
+        android:textColor="@color/white"
+        android:drawableStart="@drawable/ic_logout"
+        android:drawablePadding="8dp"
+        android:padding="8dp" />
+
+    <!-- Fragment footer
+    <fragment
+        android:id="@+id/show_my_user_footer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal"
+        android:name="com.example.socialgift.view.FooterFragment"
+        android:padding="8dp"/>-->
+
+</RelativeLayout>
